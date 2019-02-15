@@ -13,6 +13,14 @@ Sample implementation:
 panel\js\katalon\newformatters\sample.js
 ```
 
+## Resources
+
+https://github.com/katalon-studio/katalon-recorder-helper
+
+https://github.com/katalon-studio/katalon-recorder-samples
+
+https://github.com/katalon-studio/katalon-recorder-sample-plugin
+
 ## License
 
 See NOTICE, LICENSE, and KATALON RECORDER OPEN-SOURCE LICENSE AGREEMENT.
