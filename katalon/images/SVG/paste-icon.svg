@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>paste-icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="3" y="3" width="9" height="11" rx="1"></rect>
+        <polygon id="path-2" points="0.652557885 1.64990463 0.652557885 9.86028715 2.88957644 9.86028715 2.88957644 2.91870266 9.84170108 2.91870266 9.84170108 0.155568848 0.652557885 0.501225757"></polygon>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="paste-icon">
+            <g id="Group" transform="translate(1.500000, 0.500000)">
+                <g id="Rectangle-3">
+                    <use fill="#D1D1D1" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    <rect stroke="#76787B" stroke-width="1.1" x="3.55" y="3.55" width="7.9" height="9.9" rx="1"></rect>
+                </g>
+                <g id="Rectangle-3-Copy">
+                    <mask id="mask-3" fill="white">
+                        <use xlink:href="#path-2"></use>
+                    </mask>
+                    <g id="Mask"></g>
+                    <rect stroke="#76787B" stroke-width="1.1" mask="url(#mask-3)" x="1.55" y="1.55" width="8.9" height="8.9" rx="1"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

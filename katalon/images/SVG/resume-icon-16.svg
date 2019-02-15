@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>resume-icon-16</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="resume-icon-16">
+            <g id="new-icon" transform="translate(2.000000, 2.000000)"></g>
+            <path d="M15.2032732,8.22486874 L3.80020229,14.8262102 C3.70460836,14.8815504 3.58225207,14.8489183 3.52691187,14.7533243 C3.50928299,14.7228724 3.5,14.6883086 3.5,14.653122 L3.5,1.34953936 C3.5,1.23908241 3.58954305,1.14953936 3.7,1.14953936 C3.73563447,1.14953936 3.77062185,1.15906004 3.80134282,1.17711653 L15.2044137,7.87935779 C15.2996402,7.93532788 15.3314638,8.05789694 15.2754937,8.15312344 C15.2580114,8.18286747 15.233132,8.20758321 15.2032732,8.22486874 Z" id="Triangle-Copy-2" stroke="#979797" stroke-width="1.4"></path>
+            <path d="M1,1 L1,15" id="Line" stroke="#979797" stroke-width="1.4" stroke-linecap="round"></path>
+        </g>
+    </g>
+</svg>

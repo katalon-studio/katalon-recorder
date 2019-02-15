@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="19px" height="16px" viewBox="0 0 19 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>play-all-icon-16</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="play-all-icon-16" stroke="#979797" stroke-width="1.4">
+            <path d="M12.7005418,8.22443145 L1.10057134,14.9728418 C1.00509569,15.0283858 0.882670059,14.9960148 0.827126047,14.9005392 C0.809359475,14.8699999 0.800000012,14.8352992 0.800000012,14.7999679 L0.800000012,1.19999935 C0.800000012,1.0895424 0.889543062,0.999999348 1.00000001,0.999999348 C1.03578034,0.999999348 1.07090551,1.00959808 1.10171319,1.02779474 L12.7016837,7.87935287 C12.7967897,7.93552751 12.8283498,8.05816468 12.7721751,8.15327066 C12.7547766,8.18272714 12.7301128,8.20722821 12.7005418,8.22443145 Z" id="Triangle-Copy-4"></path>
+            <path d="M15,3 L18,3" id="Line" stroke-linecap="round"></path>
+            <path d="M15,13 L18,13" id="Line-Copy-2" stroke-linecap="round"></path>
+            <path d="M15,8 L18,8" id="Line-Copy" stroke-linecap="round"></path>
+        </g>
+    </g>
+</svg>

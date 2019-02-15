@@ -1,0 +1,69 @@
+{
+    "description": "Best automation recorder. Exports Selenium WebDriver code. Provides reports, logs, screenshots. Fast & extensible.",
+    "manifest_version": 2,
+    "name": "addon_name_placeholder",
+    "version": "3.6.12",
+    "homepage_url":"https://www.katalon.com/",
+    "icons":
+    {
+        "16": "katalon/images/branding_16.png",
+        "48": "katalon/images/branding_48.png",
+       "128": "katalon/images/branding_128.png"
+    },
+    "permissions": [
+        "tabs",
+        "activeTab",
+        "webRequest",
+        "contextMenus",
+        "downloads",
+        "webNavigation",
+        "notifications",
+        "http://*/",
+        "https://*/",
+        "storage",
+        "unlimitedStorage",
+        "<all_urls>",
+        "debugger"
+    ],
+
+    "content_security_policy": "script-src 'self' 'unsafe-eval' https://ssl.google-analytics.com; object-src 'self'",
+
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["common/browser-polyfill.js", "content/prompt-injecter.js", "content/runScript-injecter.js"],
+            "match_about_blank": true,
+            "all_frames": true,
+            "run_at": "document_start"
+        },
+        {
+            "matches": ["<all_urls>"],
+            "js": ["content/bowser.js", "content/atoms.js", "content/utils.js", "content/selenium-commandhandlers.js", "content/selenium-browserbot.js",
+                    "common/escape.js", "content/selenium-api.js","content/locatorBuilders.js", "content/recorder.js", "content/recorder-handlers.js", "content/command-receiver.js",
+                   "content/targetSelecter.js", "content/sizzle.js", "content/kar.js"],
+            "match_about_blank": true,
+            "all_frames": true
+        },
+        {
+            "matches": ["<all_urls>"],
+            "js": ["content/jquery.simulate.js"],
+            "match_about_blank": true,
+            "all_frames": true
+        }
+    ],
+
+    "background":
+    {
+        "scripts": ["content/bowser.js","common/browser-polyfill.js", "background/background.js", "background/install.js", "background/kar.js"]
+    },
+
+    "browser_action":
+    {
+        "default_icon": "katalon/images/branding_16.png",
+        "default_title": "Katalon Recorder"
+    },
+
+    "web_accessible_resources": ["page/prompt.js", "page/runScript.js"],
+
+    "offline_enabled": true
+}

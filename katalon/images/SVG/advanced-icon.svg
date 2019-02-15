@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>advanced-icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Katalon-recoder-help-popup" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-474.000000, -396.000000)">
+        <g id="advanced-icon" transform="translate(475.000000, 397.000000)" stroke="#3BBA00" stroke-width="1.44">
+            <rect id="Rectangle" x="14.7777778" y="27.4444444" width="8.44444444" height="2.11111111"></rect>
+            <polygon id="Path-2" transform="translate(19.048222, 16.365117) rotate(-270.000000) translate(-19.048222, -16.365117) " points="18.5233462 20.592451 28.0388174 20.592451 28.0388174 12.2441833 18.5233462 12.2441833 18.5233462 6.86884663 10.057626 16.3651173 18.5233462 25.861388"></polygon>
+            <circle id="Oval-2" cx="19" cy="19" r="19"></circle>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
+    <title>stop-icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Katalon-Recorder" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Katalon-recoder-new-icon-hover" transform="translate(-184.000000, -58.000000)">
+            <g id="stop-icon" transform="translate(184.000000, 58.000000)">
+                <g id="record-icon" fill-rule="evenodd"></g>
+                <circle id="Oval-Copy-7" stroke="#329D00" cx="12" cy="12" r="11"></circle>
+                <rect id="Rectangle" stroke="#329D00" x="8.5" y="8.5" width="7" height="7" rx="1"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

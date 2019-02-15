@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>save-icon-hover</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="save-icon-hover" stroke="#2B8500">
+            <g id="Group-2" transform="translate(1.000000, 1.000000)">
+                <g id="Group">
+                    <path d="M13.45,2.97204699 L11.157017,0.55 L1,0.55 C0.751471863,0.55 0.55,0.751471863 0.55,1 L0.55,13 C0.55,13.2485281 0.751471863,13.45 1,13.45 L13,13.45 C13.2485281,13.45 13.45,13.2485281 13.45,13 L13.45,2.97204699 Z" id="Rectangle-6" stroke-width="1.1"></path>
+                    <circle id="Oval-5" cx="7" cy="8.69999981" r="2.5"></circle>
+                    <path d="M4,0 L4,3.46580943 C4,3.57626638 4.08954305,3.66580943 4.2,3.66580943 L9.60097558,3.66580943 C9.71143253,3.66580943 9.80097558,3.57626638 9.80097558,3.46580943 L9.80097558,0" id="Path-2"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

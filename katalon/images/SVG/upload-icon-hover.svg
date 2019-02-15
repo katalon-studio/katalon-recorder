@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="16px" viewBox="0 0 18 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>upload-icon-hover</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.8">
+        <g id="upload-icon-hover">
+            <g id="Group-Copy" transform="translate(0.000000, 1.000000)">
+                <path d="M12.3195392,13 L13.7183921,13 C16.0468136,13 17.7980887,11.0238225 17.9858024,8.74720742 C18.1555162,6.68856608 16.7900918,4.79542336 14.6198127,4.79542336 C14.6198127,1.87295996 11.7333929,0 8.99354406,0 C6.25240955,0 3.75941713,2.28065168 3.75941713,4.79542336 C1.06199677,5.29191921 0,7.18640745 0,8.4646488 C0,10.2084391 1.15700174,13 4.1642783,13 L6.09155815,13" id="Page-1" fill="#2B8500"></path>
+                <path d="M9,6.54377079 L9,13.0002136" id="Line" stroke="#FFFFFF" stroke-width="1.1"></path>
+                <path d="M9,6 L11.5,8.5" id="Line-Copy" stroke="#FFFFFF" stroke-width="1.1" stroke-linecap="round"></path>
+                <path d="M6,6 L8.5,8.5" id="Line-Copy-2" stroke="#FFFFFF" stroke-width="1.1" stroke-linecap="round" transform="translate(7.500000, 7.500000) scale(-1, 1) translate(-7.500000, -7.500000) "></path>
+            </g>
+        </g>
+    </g>
+</svg>

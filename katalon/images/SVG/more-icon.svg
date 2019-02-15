@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="5px" height="16px" viewBox="0 0 5 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>more-icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="more-icon">
+            <g>
+                <rect id="Path" x="0" y="0" width="5" height="16"></rect>
+                <g id="more" transform="translate(1.000000, 2.000000)" fill="#979797">
+                    <path d="M1.5,3 C2.325,3 3,2.325 3,1.5 C3,0.675 2.325,0 1.5,0 C0.675,0 0,0.675 0,1.5 C0,2.325 0.675,3 1.5,3 L1.5,3 Z M1.5,4.5 C0.675,4.5 0,5.175 0,6 C0,6.825 0.675,7.5 1.5,7.5 C2.325,7.5 3,6.825 3,6 C3,5.175 2.325,4.5 1.5,4.5 L1.5,4.5 Z M1.5,9 C0.675,9 0,9.675 0,10.5 C0,11.325 0.675,12 1.5,12 C2.325,12 3,11.325 3,10.5 C3,9.675 2.325,9 1.5,9 L1.5,9 Z" id="Shape"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

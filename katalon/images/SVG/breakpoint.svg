@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="9px" height="12px" viewBox="0 0 9 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>breakpoint</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="breakpoint" fill="#2B8500">
+            <path d="M9.37893191,6.24952607 L0.466410059,12.1912073 C0.328551452,12.283113 0.142290649,12.2458609 0.0503849117,12.1080023 C0.0175314082,12.058722 1.77474723e-15,12.0008197 2.10942375e-15,11.9415922 L3.33066907e-16,0.0582297432 C3.12776295e-16,-0.107455682 0.134314575,-0.241770257 0.3,-0.241770257 C0.359227496,-0.241770257 0.417129804,-0.224238849 0.466410059,-0.191385345 L9.37893191,5.75029589 C9.51679052,5.84220163 9.55404268,6.02846243 9.46213694,6.16632104 C9.44016648,6.19927672 9.4118876,6.22755561 9.37893191,6.24952607 Z"></path>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="38px" height="38px" viewBox="0 0 38 38" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>videos-icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Katalon-recoder-help-popup" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-475.000000, -243.000000)">
+        <g id="videos-icon" transform="translate(475.000000, 243.000000)" fill="#3BBA00" fill-rule="nonzero">
+            <path d="M19,0 C8.51579504,0 0,8.51579504 0,19 C0,29.484205 8.51579504,38 19,38 C29.484205,38 38,29.484205 38,19 C38,8.51579504 29.484205,0 19,0 Z M19,1.65217391 C28.5903533,1.65217391 36.3478261,9.40964674 36.3478261,19 C36.3478261,28.5903533 28.5903533,36.3478261 19,36.3478261 C9.40964674,36.3478261 1.65217391,28.5903533 1.65217391,19 C1.65217391,9.40964674 9.40964674,1.65217391 19,1.65217391 Z M13.2173913,9.29347826 L13.2173913,28.7065217 L14.4565217,27.9836957 L28.5,19.7228261 L29.7133152,19 L28.5,18.2771739 L14.4565217,10.0163043 L13.2173913,9.29347826 Z M14.8695652,12.1847826 L26.4347826,19 L14.8695652,25.8152174 L14.8695652,12.1847826 Z" id="Shape"></path>
+        </g>
+    </g>
+</svg>
