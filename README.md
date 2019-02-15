@@ -24,3 +24,5 @@ https://github.com/katalon-studio/katalon-recorder-sample-plugin
 ## License
 
 See NOTICE, LICENSE, and KATALON RECORDER OPEN-SOURCE LICENSE AGREEMENT.
+
+If you found any unlicensed part of source code, please let us know.
