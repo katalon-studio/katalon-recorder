@@ -255,6 +255,11 @@ section#main {
     background-image: url(/katalon/images/SVG/help-icon.svg);
 }
 
+.sub_btn#help img {
+    width: 16px;
+    height: 16px;
+}
+
 /* #playSuites{
     display: none;
 }  */

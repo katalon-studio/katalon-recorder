@@ -47,16 +47,16 @@ $(document).ready(function() {
 
     $(".tablesorter").tablesorter();
 
-    $("#help").click(function() {
-        browser.tabs.create({
-            url: "http://sideex.org/",
-            windowId: contentWindowId
-        });
-    });
+    // $("#help").click(function() {
+    //     browser.tabs.create({
+    //         url: "http://sideex.org/",
+    //         windowId: contentWindowId
+    //     });
+    // });
 
     $("#options").click(function() {
-        browser.runtime.openOptionsPage();		
-    });	
+        browser.runtime.openOptionsPage();
+    });
 
     //init dropdown width
     $("#command-dropdown").css({
@@ -137,9 +137,9 @@ $(document).ready(function() {
 
     $("#command-dropdown,#command-command-list").html(genCommandDatalist());
 
-    $(".record-bottom").click(function() { 
+    $(".record-bottom").click(function() {
         $(this).addClass("active");
-        $('#records-grid .selectedRecord').removeClass('selectedRecord'); 
+        $('#records-grid .selectedRecord').removeClass('selectedRecord');
     });
 
     $("#slider").slider({
