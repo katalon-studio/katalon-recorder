@@ -2,7 +2,7 @@ newFormatters.sample = function(name, commands) {
   var content = '';
   for (var i = 0; i < commands.length; i++) {
     var command = commands[i];
-    content += command.command + ' | ' + command.target + ' | ' + command.value + '\n';
+    content += ' 3 ' + command.command + ' | ' + command.target + ' | ' + command.value + '\n';
   }
   return {
     content: content,
