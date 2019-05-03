@@ -56,6 +56,8 @@ We would like to take this opportunity to express our warmest thanks to Katalon 
 
 ## License
 
-See NOTICE, LICENSE, and KATALON RECORDER OPEN-SOURCE LICENSE AGREEMENT.
+See NOTICE and KATALON RECORDER OPEN-SOURCE LICENSE AGREEMENT.
+
+APACHE LICENSE 2.0 was included as required for 3rd party components.
 
 If you found any unlicensed part of source code, please let us know.
