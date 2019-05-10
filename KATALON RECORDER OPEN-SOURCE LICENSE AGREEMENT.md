@@ -8,17 +8,17 @@ Copies of this agreement are available for download and printing by using curren
 
 This is a license and not a sale. The Recorder with which this Agreement is provided is licensed to you under the following terms and conditions which define what you can and cannot do with the Recorder. This Agreement comprises the entire agreement between you and Katalon, and supersedes any other agreement, terms or promises, oral or written, with respect to the subject matter of this Agreement.
 
-#### INTRODUCTION.
+INTRODUCTION.
 
 Katalon Recorder is a browser plugin for Chrome and Firefox that assists automation testing recording and playback and allows for the export of results to Katalon Analytics and to various frameworks such as C#, Java, Ruby, Python and Robot. More information can be found in the online guides and documentation that accompany the Recorder or are made available at http://docs.katalon.com (the “Documentation”).
 
-#### LICENSE.
+LICENSE.
 
 Subject to the terms and conditions of this Agreement, Katalon grants you a nonexclusive, nontransferable, nonsublicensable license to (a) use the Recorder solely on your computers in accordance with the Documentation in order to assist you with automation testing of your applications, and (b) make modifications and corrections to the Recorder (collectively, “Modifications’) in connection with this permitted use and subject to the instructions in any Documentation.  
 
 If you are an organization, then your use of the Recorder includes use by your Affiliates (as defined below) and will be considered part of “you” and “your organization,” subject to all provisions of this Agreement and the following (a) you are responsible for each of your Affiliates’ compliance with this Agreement and will be be jointly and severally liable with each of the Affiliates for any breach of the provisions of this Agreement, and (b) the entity may not use the Recorder under your license once it stops being an Affiliate.  As used herein, an “Affiliate” means any entity that controls, is controlled by, or is under common control with you, where “control” means ownership of at least 50% of the voting stock of such entity. You may also use the Documentation solely in connection with your use of the Recorder. You may make a reasonable number of copies of the Recorder and Documentation in connection with your use. This license only applies to the version of the Recorder you have downloaded and not any future versions.
 
-#### CONDITIONS AND LIMITATIONS. 
+CONDITIONS AND LIMITATIONS. 
 
 The following conditions and limitations on your use of the Recorder apply. You may not:
 	- access the Recorder if you are or become Katalon’s direct competitor, except with Katalon’s prior written consent;
@@ -32,30 +32,30 @@ The following conditions and limitations on your use of the Recorder apply. You 
 	
 If you believe you are entitled to reverse engineer the Recorder because of rights that may be granted as a matter of local law, such as the Directive 2009/24/EC of the European Parliament and of the Council of 23 April 2009 on the legal protection of computer programs (as amended), then (1) you shall first request the technical information from Katalon, (2) this technical information may be used only for the purposes of ensuring interoperability and compatibility, and (2) the technical information will be considered Katalon’s confidential information and treated as such according to the terms set forth in this Agreement.
 
-#### MODIFICATIONS AND FEEDBACK. 
+MODIFICATIONS AND FEEDBACK. 
 
 You may submit Modifications to Katalon through Katalon’s Git repository. Modifications must be made and submitted according to the Documentation ( http://docs.katalon.com). All Modifications and all suggestions, enhancement requests, recommendations or other feedback provided by you, including relating to the Recorder (“Feedback”) are owned exclusively by Katalon, and you on behalf of yourself and any of your users hereby assign to Katalon all right, title and interest, including all intellectual property rights, in and to all Modifications and Feedback. To the extent ownership rights are not effectively transferred to Katalon above, you grant Katalon a royalty-free, worldwide, irrevocable, perpetual license to copy, display, perform, distribute, modify, create derivative works of, and otherwise use and exploit any Feedback and Modifications and incorporate into them into the Recorder and authorize others to do the same. Katalon may use and incorporate any Feedback and Modifications without any compensation or acknowledgement to you. Katalon is not obligated to use or include any Feedback or Modifications which have been submitted.  In addition to any conditions and requirements in the Documentation, the following apply to any Modifications you make:
 	-all Modifications must be made available by you in source code form if you would like the Modification included in a release of Recorder;
 -you may not distribute the Modifications together with the Recorder; as steward of the Recorder, only Katalon may release updated versions of the Recorder that may or may not contain Modifications;
 -you represent, warrant and covenant that you will not include in any Modifications any material to which you do not have full rights to provide or any software subject to any license terms that require as a condition of its use, modification or distribution that such software (A) be disclosed or distributed in source code form, or (B) be made available for the purpose of making derivative works.
 
-#### RESERVATION OF RIGHTS. 
+RESERVATION OF RIGHTS. 
 
 Except for the limited rights expressly granted above in this Agreement, Katalon reserves all rights, title and interest in and to the Recorder and any Modifications, including all related intellectual property rights. No rights are granted to you hereunder other than as expressly set forth above in this Agreement. You acknowledge and agree that the Recorder and all Documentation and the information in them represent Katalon’s confidential and proprietary information. You agree to keep all such information confidential by exercising the necessary care required to prevent its disclosure and not to disclose or use such information for any purpose whatsoever other than as expressly authorized by this Agreement.
 
-#### THIRD PARTY COMPONENTS. 
+THIRD PARTY COMPONENTS. 
 
 The Recorder may include software licensed from third parties including open source software (collectively, “Third Party Software”), and such third parties may be third party beneficiaries of this Agreement with the ability to directly enforce the provisions pertaining to their Third Party Software. You shall comply with the additional license terms, restrictions and conditions (including notices) pertaining to Third Party Software that accompany the Recorder or which Katalon makes available via the Documentation (“Third Party Terms”). To the extent the Third Party Terms conflict with this Agreement, then the Third Party Terms will control solely with respect to the Third Party Software to which they apply.
 
-#### TERMINATION.
+TERMINATION.
 
 Your license to the Recorder and Documentation terminates immediately upon the earlier to occur of the following: (a) when you stop using the Recorder, or (b) upon your breach of any of the terms contained in this Agreement. Upon termination for any reason, you shall immediately destroy all copies of the Recorder and any related Documentation in your possession or control.
 
-#### DISCLAIMERS. 
+DISCLAIMERS. 
 
 The Recorder is provided free of charge and “as-is.” CONSEQUENTLY, KATALON MAKES NO, AND DISCLAIMS, ALL WARRANTIES AND CONDITIONS OF ANY KIND, WHETHER EXPRESS, IMPLIED, STATUTORY OR OTHERWISE, INCLUDING ANY WARRANTIES OF MERCHANTABILITY, NONINFRINGEMENT, SATISFACTORY QUALITY OR FITNESS FOR A PARTICULAR PURPOSE, TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW.
 
-#### LIMITATION OF LIABILITY. 
+LIMITATION OF LIABILITY. 
 
 In no event will Katalon or its officers, directors, agents, and employees, be liable to you under this Agreement or otherwise, regardless of the form of claim or action, in an amount that exceeds $100. In no event will Katalon or its officers, directors, agents, and employees, be liable to you for consequential, exemplary, incidental, or indirect damages or costs (including legal fees and expenses) or loss of goodwill or profit in connection with the Recorder or this Agreement, even if Katalon has been advised of the possibility of such damages or costs. Some jurisdictions do not allow the limitation or exclusion of liability for incidental or consequential damages, so this paragraph may not apply to you.
 
