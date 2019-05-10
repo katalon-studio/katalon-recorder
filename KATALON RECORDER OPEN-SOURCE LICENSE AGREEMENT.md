@@ -15,14 +15,14 @@ This is a license and not a sale. The Recorder with which this Agreement is prov
 If you are an organization, then your use of the Recorder includes use by your Affiliates (as defined below) and will be considered part of “you” and “your organization,” subject to all provisions of this Agreement and the following (a) you are responsible for each of your Affiliates’ compliance with this Agreement and will be be jointly and severally liable with each of the Affiliates for any breach of the provisions of this Agreement, and (b) the entity may not use the Recorder under your license once it stops being an Affiliate.  As used herein, an “Affiliate” means any entity that controls, is controlled by, or is under common control with you, where “control” means ownership of at least 50% of the voting stock of such entity. You may also use the Documentation solely in connection with your use of the Recorder. You may make a reasonable number of copies of the Recorder and Documentation in connection with your use. This license only applies to the version of the Recorder you have downloaded and not any future versions.
 
 **CONDITIONS AND LIMITATIONS**. The following conditions and limitations on your use of the Recorder apply. You may not:
-	- access the Recorder if you are or become Katalon’s direct competitor, except with Katalon’s prior written consent;
-	- use the Recorder for purposes of monitoring the Recorder’s performance or functionality or for any other benchmarking or competitive purposes;
-	- distribute outside your organization, sublicense, copy, or publicly display the Recorder, including binary versions of the Recorder;
-	- use on behalf of any third party, or permit any third party to use, the Recorder;
-	- decompile or reverse engineer the Recorder;
-	- remove any proprietary rights notices on the Recorder;
+- access the Recorder if you are or become Katalon’s direct competitor, except with Katalon’s prior written consent;
+- use the Recorder for purposes of monitoring the Recorder’s performance or functionality or for any other benchmarking or competitive purposes;
+- distribute outside your organization, sublicense, copy, or publicly display the Recorder, including binary versions of the Recorder;
+- use on behalf of any third party, or permit any third party to use, the Recorder;
+- decompile or reverse engineer the Recorder;
+- remove any proprietary rights notices on the Recorder;
 - use the Recorder in violation of the Documentation; or
-	- attempt to gain unauthorized access to the Recorder or circumvent any security measures within the Recorder.
+- attempt to gain unauthorized access to the Recorder or circumvent any security measures within the Recorder.
 	
 If you believe you are entitled to reverse engineer the Recorder because of rights that may be granted as a matter of local law, such as the Directive 2009/24/EC of the European Parliament and of the Council of 23 April 2009 on the legal protection of computer programs (as amended), then (1) you shall first request the technical information from Katalon, (2) this technical information may be used only for the purposes of ensuring interoperability and compatibility, and (2) the technical information will be considered Katalon’s confidential information and treated as such according to the terms set forth in this Agreement.
 
