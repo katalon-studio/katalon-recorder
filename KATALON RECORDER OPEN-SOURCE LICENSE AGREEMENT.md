@@ -23,6 +23,7 @@ If you are an organization, then your use of the Recorder includes use by your A
   (b) the entity may not use the Recorder under your license once it stops being an Affiliate.  As used herein, an “Affiliate” means any entity that controls, is controlled by, or is under common control with you, where “control” means ownership of at least 50% of the voting stock of such entity. You may also use the Documentation solely in connection with your use of the Recorder. You may make a reasonable number of copies of the Recorder and Documentation in connection with your use. This license only applies to the version of the Recorder you have downloaded and not any future versions.
 
 **CONDITIONS AND LIMITATIONS**. The following conditions and limitations on your use of the Recorder apply. You may not:
+
 -access the Recorder if you are or become Katalon’s direct competitor, except with Katalon’s prior written consent;
 
 -use the Recorder for purposes of monitoring the Recorder’s performance or functionality or for any other benchmarking or competitive purposes;
