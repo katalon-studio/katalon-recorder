@@ -56,8 +56,8 @@ We would like to take this opportunity to express our warmest thanks to Katalon 
 
 ## License
 
-See NOTICE and KATALON RECORDER OPEN-SOURCE LICENSE AGREEMENT.
+Refer to NOTICE and KATALON RECORDER CONTRIBUTION LICENSE AGREEMENT for Katalon Recorder.
 
-APACHE LICENSE 2.0 was included as required for 3rd party components.
+Refer to APACHE LICENSE 2.0 for SideeX.
 
-If you found any unlicensed part of source code, please let us know.
+Please inform us if you found any unlicensed part of source code.
