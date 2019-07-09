@@ -63,7 +63,7 @@ newFormatters.protractorts = function(name, commands) {
         "clickAndWait": 
             "const el__STEP_ = element(_BY_LOCATOR_);\n" +
             "\t\tawait browser.wait(EC.elementToBeClickable(el__STEP_));\n" + 
-            "\t\tawait await el__STEP_.click();",
+            "\t\tawait el__STEP_.click();",
         "doubleClick": "await browser.actions().doubleClick(element(_BY_LOCATOR_)).perform();",
         "type": "await element(_BY_LOCATOR_).sendKeys('_VALUE_');",
         "pause": "await browser.sleep(_VALUE_);",
