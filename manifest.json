@@ -31,16 +31,33 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
-            "js": ["common/browser-polyfill.js", "content/prompt-injecter.js", "content/runScript-injecter.js"],
+            "js": [
+                "common/browser-polyfill.js",
+                "content/prompt-injecter.js",
+                "content/runScript-injecter.js"
+            ],
             "match_about_blank": true,
             "all_frames": true,
             "run_at": "document_start"
         },
         {
             "matches": ["<all_urls>"],
-            "js": ["content/bowser.js", "content/atoms.js", "content/utils.js", "content/selenium-commandhandlers.js", "content/selenium-browserbot.js",
-                    "common/escape.js", "content/selenium-api.js","content/locatorBuilders.js", "content/recorder.js", "content/recorder-handlers.js", "content/command-receiver.js",
-                   "content/targetSelecter.js", "content/sizzle.js", "content/kar.js"],
+            "js": [
+                "content/bowser.js",
+                "content/atoms.js",
+                "content/utils.js",
+                "content/selenium-commandhandlers.js",
+                "content/selenium-browserbot.js",
+                "common/escape.js",
+                "content/selenium-api.js",
+                "content/locatorBuilders.js",
+                "content/recorder.js",
+                "content/recorder-handlers.js",
+                "content/command-receiver.js",
+                "content/targetSelecter.js",
+                "content/sizzle.js",
+                "content/kar.js"
+            ],
             "match_about_blank": true,
             "all_frames": true
         },
@@ -54,7 +71,13 @@
 
     "background":
     {
-        "scripts": ["content/bowser.js","common/browser-polyfill.js", "background/background.js", "background/install.js", "background/kar.js"]
+        "scripts": [
+            "content/bowser.js",
+            "common/browser-polyfill.js",
+            "background/background.js",
+            "background/install.js",
+            "background/kar.js"
+        ]
     },
 
     "browser_action":
@@ -63,7 +86,10 @@
         "default_title": "Katalon Recorder"
     },
 
-    "web_accessible_resources": ["page/prompt.js", "page/runScript.js"],
+    "web_accessible_resources": [
+        "page/prompt.js",
+        "page/runScript.js"
+    ],
 
     "offline_enabled": true
 }
