@@ -13,6 +13,10 @@ Sample implementation:
 panel\js\katalon\newformatters\sample.js
 ```
 
+References:
+* Implement New Relic Synthetics formatter #16
+* Add protractor typescript template #23
+
 ## Resources
 
 https://github.com/katalon-studio/katalon-recorder-helper
