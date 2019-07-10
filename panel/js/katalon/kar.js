@@ -970,7 +970,8 @@ $(function() {
         '#export': 'export-icon-16.svg',
         '#speed': 'speed-icon-16.svg',
         '#settings': 'setting-icon-16.svg',
-        ".sub_btn#help": 'github-icon.png'
+        '.sub_btn#help': 'help-icon-16.svg',
+        '#github-repo': 'github-icon.png'
     }
 
     for (var buttonId in imagesLookup) {
