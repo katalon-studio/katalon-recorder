@@ -1,8 +1,8 @@
 {
-    "description": "Best automation recorder. Exports Selenium WebDriver code. Provides reports, logs, screenshots. Fast & extensible.",
+    "description": "Selenium-based automation scripts recorder & code generator. Provides reports & screenshots. Fast & open-sourced.",
     "manifest_version": 2,
     "name": "addon_name_placeholder",
-    "version": "3.7.0",
+    "version": "3.8.0",
     "homepage_url":"https://www.katalon.com/",
     "icons":
     {
