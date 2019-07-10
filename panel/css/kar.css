@@ -258,6 +258,7 @@ section#main {
 .sub_btn#github-repo img {
     width: 16px;
     height: 16px;
+    margin-right: 0;
 }
 
 /* #playSuites{
