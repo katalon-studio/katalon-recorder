@@ -255,7 +255,7 @@ section#main {
     background-image: url(/katalon/images/SVG/help-icon.svg);
 }
 
-.sub_btn#help img {
+.sub_btn#github-repo img {
     width: 16px;
     height: 16px;
 }
