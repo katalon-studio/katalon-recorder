@@ -242,7 +242,7 @@ section#main {
     font-weight: normal;
 }
 
-.sub_btn#help, #export {
+.sub_btn#github-repo, #export {
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
 }
