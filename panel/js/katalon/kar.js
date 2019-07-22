@@ -624,13 +624,8 @@ function displayOnCodeMirror(language, outputScript) {
     }
     var cm = CodeMirror.fromTextArea(textarea, codeMirrorOptions);
 
-    if (language == 'katalon') {
-        $('.kat').show();
-        $('.CodeMirror').removeClass('kat-90').addClass('kat-75');
-    } else {
-        $('.kat').hide();
-        $('.CodeMirror').removeClass('kat-75').addClass('kat-90');
-    }
+    $('.kat').show();
+    $('.CodeMirror').removeClass('kat-90').addClass('kat-75');
 
     $textarea.data('cm', cm);
 }
