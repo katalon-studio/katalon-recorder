@@ -14,5 +14,5 @@ chrome.runtime.onInstalled.addListener(function (details) {
     // }
 });
 
-chrome.runtime.setUninstallURL('https://www.katalon.com/sign-up?utm_source=browser%20store&utm_campaign=uninstalled%20plugin');
+chrome.runtime.setUninstallURL('https://store.katalon.com/?utm_source=chrome%20store&utm_campaign=uninstalled%20plugin');
 // KAT-END
