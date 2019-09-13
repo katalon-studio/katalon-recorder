@@ -900,6 +900,9 @@ function doDomWait() {
 function doCommand() {
     let commands = getRecordsArray();
     let commandName = getCommandName(commands[currentPlayingCommandIndex]);
+	if(commandName.indexOf("${") !== -1){
+		commandName = convertVariableToString(commandName);
+	}
     var formalCommandName = formalCommands[commandName.trim().toLowerCase()];
     if (formalCommandName) {
         commandName = formalCommandName;
