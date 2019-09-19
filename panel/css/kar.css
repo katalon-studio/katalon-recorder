@@ -1118,7 +1118,7 @@ p.test-case-title {
 #tab4 .module_content {
     /* margin: 0 10px 1px; */
     margin: 0;
-    height: calc(100% - 1px);
+    /*height: calc(100% - 1px);*/
     color: #5a5a5a;
 }
 
