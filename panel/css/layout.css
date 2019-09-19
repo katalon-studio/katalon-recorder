@@ -462,7 +462,7 @@ section#main {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    background: #ffffff;
+    background: var(--white-bg);
 }
 
 .module_all {

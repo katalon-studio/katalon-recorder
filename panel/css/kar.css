@@ -4,6 +4,9 @@
 	--sub-btn-txt-color: #54585D;
 	--sub-btn-bg-start-color: #FFF;
 	--sub-btn-bg-end-color: #e0e1df;
+	--white-bg: #FFF;
+	--header-bg: #F7F7F7;
+	--border-color: #d4d4d4;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -13,6 +16,9 @@
 		--sub-btn-txt-color: #fafafa;
 		--sub-btn-bg-start-color: #222;
 		--sub-btn-bg-end-color: #333;
+		--white-bg: #252525;
+		--header-bg: #181818;
+		--border-color: #151515;
 	}
 }
 
@@ -307,13 +313,12 @@ section#main {
     height: calc(70% - 20px);
     flex-grow: 1;
     flex-shrink: 1;
-    /* border-top: 1px solid #D4D4D4;
-    border-bottom: 1px solid #D4D4D4;
-    border-left: 1px solid #D4D4D4; */
-    border-radius: 5px 0 0 5px;
-    width: calc(30% - 2px);
+    border-radius: 5px;
+    width: calc(30% - 12px);
     float: none;
     box-shadow: 0 1px 1px 0 rgba(0,0,0,0.2);
+	margin-right: 10px;
+	overflow: hidden;
 }
 
 .module {
@@ -569,14 +574,11 @@ div.test-suite-title {
     flex-direction: column;
     flex-grow: 1;
     flex-shrink: 1;
-    border-radius: 0 5px 5px 0;
+    border-radius: 5px;
     height: calc(70% - 20px);
     width: 70%;
     float: none;
-    border-left: 1px solid #D4D4D4;
-    border-top: none;
-    border-bottom: none;
-    border-right: none;
+    border: none;
     box-shadow: 0 1px 1px 0 rgba(0,0,0,0.2);
 }
 
@@ -642,7 +644,7 @@ div.test-suite-title {
 }
 
 .tablesorter td {
-    border-bottom: 1px solid #eaecef;
+    border-bottom: 1px solid var(--border-color);
     text-indent: 0;
 }
 
@@ -684,8 +686,8 @@ div.test-suite-title {
     flex-grow: 0;
     flex-shrink: 0;
     /* padding-bottom: 5px; */
-    background-color: #F7F7F7;
-    border-bottom: 1px solid #d4d4d4;
+    background-color: var(--header-bg);
+    border-bottom: 1px solid var(--border-color);
     padding-left: 15px;
 }
 
