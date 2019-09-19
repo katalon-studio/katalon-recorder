@@ -730,7 +730,7 @@ ul.tabs2 li {
 ul.tabs2 li a {
     cursor: pointer;
     text-decoration: none;
-    color: #333333;
+    color: var(--main-txt-color);
     display: block;
     padding: 0 10px;
     height: 24px;
@@ -747,7 +747,7 @@ ul.tabs li {
 ul.tabs li a {
     cursor: pointer;
     text-decoration: none;
-    color: #333333;
+    color: var(--main-txt-color);
     display: block;
     padding: 0 10px;
     height: 24px;
