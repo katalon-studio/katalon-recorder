@@ -491,7 +491,7 @@ section#main {
 .module_right {}
 
 #main .module header h3 {
-    width: 90%;
+    width: calc(100% - 20px);
     float: left;
 }
 
