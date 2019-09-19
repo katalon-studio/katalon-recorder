@@ -50,7 +50,7 @@ We would like to take this opportunity to express our warmest thanks to Katalon 
 
 * Formatter for C# with MSTest is provided by [Mark Gibson](https://forum.katalon.com/discussion/4209/export-to-c-with-webdriver-and-mstest).
 
-* [Patrick Groot](https://github.com/pgroot91), @Piotr, @Mark_Gibson and other active members who have provided a lot of valuable suggestions and bug reports. Please forgive us if your name is missing here.
+* @[Patrick Groot](https://github.com/pgroot91), @Piotr, @Mark_Gibson and other active members who have provided a lot of valuable suggestions and bug reports. Please forgive us if your name is missing here.
 
 * Plugin developers:
 
