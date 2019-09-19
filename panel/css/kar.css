@@ -1,10 +1,26 @@
+:root {
+	--main-bg-color: #D7DBDB;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--main-bg-color: #111;
+	}
+}
+
+@media (prefers-color-scheme: light) {
+	:root {
+		--main-bg-color: #D7DBDB;
+	}
+}
+
 * {
     float: none;
     clear: none;
 }
 
 html, body {
-    background: #D7DBDB;
+    background: var(--main-bg-color);
     font-family: 'Roboto', sans-serif;
     font-size: 12px;
     color: #333333;
