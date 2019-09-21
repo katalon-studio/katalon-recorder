@@ -19,6 +19,8 @@
 		--white-bg: #202020;
 		--header-bg: #181818;
 		--border-color: #151515;
+		text-shadow: none!important;
+		font-weight: none;
 	}
 }
 
@@ -595,7 +597,7 @@ div.test-suite-title {
     position: sticky;
     position: -webkit-sticky;
     top: 0;
-    background: linear-gradient(180deg, #F9F9F9 0%, #F0F1F1 100%);
+    background: var(--header-bg);
     padding-left: 12px !important;
     text-indent: 0;
 }
@@ -1005,14 +1007,6 @@ html ul.tabs li:active {
     box-shadow: none;
 }
 
-/* ul.tabs li:focus {
-    background: none;
-} */
-
-ul.tabs li:hover a {
-    font-weight: 500;
-}
-
 html ul.tabs2 li:active {
     border-radius: 0;
     box-shadow: none;
@@ -1068,7 +1062,6 @@ ul.tabs2 li:hover {
 
 ul.tabs2 li.active {
     border-bottom: 2px solid #329D00;
-    font-weight: 500;
 }
 
 h3.suite-container-title {

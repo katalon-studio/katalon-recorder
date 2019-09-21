@@ -630,7 +630,7 @@ section#main {
 
 .tablesorter thead tr {
     height: 39px;
-    background: #F1F1F4 url(../images/secondary_bar.png) repeat-x;
+    background: var(--header-bg);
     table-layout: fixed;
     text-align: left;
     text-indent: 6px;
