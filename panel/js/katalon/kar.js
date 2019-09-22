@@ -756,6 +756,10 @@ $(function() {
     var clearLog = $('#clear-log');
     var saveLog = $('#save-log');
     var upload = $('#ka-upload');
+	
+	var csvAdd = $('#data-files-add-csv');
+	var jsonAdd = $('#data-files-add-json');
+	var extensionAdd = $('#extension-add');
 
     setActiveTab(logLi, logContainer);
 
@@ -793,14 +797,37 @@ $(function() {
             upload.show();
             saveLog.show();
             clearLog.show();
+			csvAdd.hide();
+			jsonAdd.hide();
+			extensionAdd.hide();
         } else if (li == screenshotLi) {
             upload.show();
             saveLog.show();
             clearLog.hide();
-        } else {
+			csvAdd.hide();
+			jsonAdd.hide();
+			extensionAdd.hide();
+        } else if (li == dataLi) { 
+			upload.hide();
+            saveLog.hide();
+            clearLog.hide();
+			csvAdd.show();
+			jsonAdd.show();
+			extensionAdd.hide();
+		} else if (li == extensionsLi) { 
+			upload.hide();
+            saveLog.hide();
+            clearLog.hide();
+			csvAdd.hide();
+			jsonAdd.hide();
+			extensionAdd.show();
+		} else {
             upload.hide();
             saveLog.hide();
             clearLog.hide();
+			csvAdd.hide();
+			jsonAdd.hide();
+			extensionAdd.hide();
         }
         // if (li !== logLi) {
         //     clearLog.parent().hide();

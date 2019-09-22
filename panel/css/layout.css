@@ -447,9 +447,9 @@ section#main {
 }
 
 #main h3 {
-    color: #1F1F20;
+    color: var(--main-txt-color);
     text-transform: uppercase;
-    text-shadow: 0 1px 0 #fff;
+    /*text-shadow: 0 1px 0 #fff;*/
     font-size: 13px;
     margin: 8px 20px;
 }
@@ -796,7 +796,7 @@ html ul.tabs2 li:active {
 }
 
 ul.tabs2 li:hover a {
-    color: #000000;
+    color: var(--main-txt-color);
 }
 html ul.tabs li:active {
     background: #F1F2F4;
@@ -806,7 +806,7 @@ html ul.tabs li:active {
 }
 
 ul.tabs li:hover a {
-    color: #000000;
+    color: var(--main-txt-color);
 }
 
 #main .module header h3.tabs_involved {

@@ -7,6 +7,7 @@
 	--white-bg: #FFF;
 	--header-bg: #F7F7F7;
 	--border-color: #d4d4d4;
+	--border-color-kat: #329D00;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,6 +22,9 @@
 		--border-color: #151515;
 		text-shadow: none!important;
 		font-weight: none;
+		--border-color-kat: #7c4789; /*Proposal*/
+		--purple-light: #bca3ca;
+		--purple-dark: #4a0e5c;
 	}
 }
 
@@ -209,7 +213,9 @@ section#main {
     z-index: 1;
     background: #F7F7F7;
     border: none;
-    right: 0;
+    right: -4px;
+	top: 40px;
+	border-radius: 3px;
     width: 44px;
     height: 158px;
     box-shadow: 0 0 3px 0 rgba(56,54,54,0.2);
@@ -324,7 +330,7 @@ section#main {
 }
 
 .module {
-    border: 1px solid #D4D4D4;
+    border: 1px solid var(--border-color);
 }
 
 .module header {
@@ -480,8 +486,8 @@ div.suite-plus i:before {
 .message p.selectedCase {
     text-decoration: none;
     background-color: #EFF2EE;
-    color: #329D00;
-    border-left: 1px solid #329D00;
+    color: var(--border-color-kat);
+    border-left: 1px solid var(--border-color-kat);
 }
 
 .message p:before {
@@ -541,7 +547,7 @@ div.test-suite-title {
     flex-grow: 0;
     flex-shrink: 0;
     border-radius: 0 0 0 3px;
-    border-top: 1px solid #D4D4D4;
+    border-top: 1px solid var(--border-color);
     border-left: none;
     border-right: none;
     border-bottom: none;
@@ -624,13 +630,13 @@ div.test-suite-title {
 }
 
 .tablesorter thead tr th {
-    border-bottom: 1px solid #D4D4D4;
+    border-bottom: 1px solid var(--border-color);
     font-weight: 500;
     border-right: 1px solid transparent;
 }
 
 .tablesorter thead tr:hover th {
-    border-right: 1px solid #D4D4D4;
+    border-right: 1px solid var(--border-color);
 }
 
 .tablesorter .border {
@@ -823,7 +829,7 @@ div.test-suite-title {
 
 .fieldset input[type=text] {
     border-radius: 3px;
-    border: 0.5px solid #D4D4D4;
+    border: 0.5px solid var(--border-color);
     outline: none;
     box-shadow: none;
     background: #fafbfc;
@@ -1056,12 +1062,12 @@ ul.tabs2 {
 }
 
 ul.tabs2 li:hover {
-    border-bottom: 2px solid #d1d5da;
+    border-bottom: 2px solid var(--purple-dark);
     cursor: pointer;
 }
 
 ul.tabs2 li.active {
-    border-bottom: 2px solid #329D00;
+    border-bottom: 2px solid var(--purple-dark);
 }
 
 h3.suite-container-title {
@@ -1144,7 +1150,7 @@ p.test-case-title {
 
 #variablecontainer {
     /* background: linear-gradient(to bottom, #D4D4D4, #D4D4D4) 30% 0/1px 100% no-repeat,
-                repeating-linear-gradient(to bottom, #fff, #fff 30px, #f7f7f7 30px, #f7f7f7 60px); */
+       repeating-linear-gradient(to bottom, #fff, #fff 30px, #f7f7f7 30px, #f7f7f7 60px); */
     height: 100%;
 }
 
@@ -1226,7 +1232,7 @@ img.thumbnail {
 }
 
 #variable-grid tbody tr td:first-child {
-    border-right: 0.5px solid #D4D4D4;
+    border-right: 0.5px solid var(--border-color);
     width: 30%;
 }
 
@@ -1273,7 +1279,7 @@ img.thumbnail {
 .CodeMirror {
     font-family: 'Roboto Mono', monospace;
     font-size: 11px;
-    border: 1px solid #D4D4D4;
+    border: 1px solid var(--border-color);
     width: 99%;
 }
 
@@ -1295,7 +1301,7 @@ img.thumbnail {
 }
 
 .ui-button {
-    border: 1px solid #D4D4D4;
+    border: 1px solid var(--border-color);
     background: linear-gradient(180deg, #FFFFFF 0%, #E0E1DF 100%);
 }
 
@@ -1365,7 +1371,7 @@ button[disabled] {
 }
 
 a.katalon-link {
-    color: #329D00;
+    color: var(--border-color-kat);
 }
 
 .help-dialog .ui-dialog-titlebar {
@@ -1547,7 +1553,7 @@ a.katalon-link {
 }
 
 #refercontainer a, #refercontainer a:visited {
-    color: #329D00;
+    color: var(--purple-light);
 }
 
 #command-grid-menu {
