@@ -818,6 +818,7 @@ div.test-suite-title {
     text-transform: capitalize;
     font-weight: normal;
     float: none;
+	text-shadow: none;
 }
 
 #command-toolbar.command-row input {
