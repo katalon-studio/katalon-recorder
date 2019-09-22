@@ -484,12 +484,12 @@ div.suite-plus i:before {
 }
 
 .message p:hover {
-    background-color: #EFF2EE;
+    background-color: var(--selected-bg-color);
 }
 
 .message p.selectedCase {
     text-decoration: none;
-    background-color: #EFF2EE;
+    background-color: var(--selected-bg-color);
     color: var(--border-color-kat);
     border-left: 1px solid var(--border-color-kat);
 }
