@@ -215,7 +215,7 @@ section#main {
 #slider-container {
     position: absolute;
     z-index: 1;
-    background: #F7F7F7;
+    background: var(--main-bg-color);
     border: none;
     right: -4px;
 	top: 40px;
