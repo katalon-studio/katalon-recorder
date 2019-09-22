@@ -521,11 +521,8 @@ section#main {
 }
 
 #testCase-container .module_content {
-    margin-top: 0px;
-    margin-bottom: 1px;
-    margin-left: 3px;
-    margin-right: 3px;
-    color: #666;
+    margin: 5px;
+    color: var(--main-txt-color);
 }
 
 #tab4 .module_content {
@@ -533,7 +530,7 @@ section#main {
     margin-bottom: 1px;
     margin-left: 15px;
     margin-right: 15px;
-    color: #666;
+    color: var(--main-txt-color);
 }
 
 .module_content #logcontainer {
@@ -654,7 +651,7 @@ section#main {
 }
 
 .tablesorter tbody tr.selectedRecord {
-    background-color: #f8f8f8;
+    background-color: var(--selected-bg-color);
 }
 
 .tablesorter tbody tr.selectedRecord td {
@@ -696,8 +693,8 @@ section#main {
 }
 
 .record-bottom.active {
-    border-top: 1px solid #ccc;;
-    background-color: #f8f8f8;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--selected-bg-color);
 }
 ul.tabs2 {
     margin: 3px 0 0 5px;
@@ -881,7 +878,7 @@ div.suite-plus {
     border-radius: 5px;
     width: inherit;
     cursor: pointer;
-    margin-top: 5px;
+    /*margin-top: 5px;*/
     line-height: 20px;
     min-height: 30px;
 }

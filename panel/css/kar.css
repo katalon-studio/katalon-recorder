@@ -6,8 +6,10 @@
 	--sub-btn-bg-end-color: #e0e1df;
 	--white-bg: #FFF;
 	--header-bg: #F7F7F7;
+	--test-suite-title: #FFF;
 	--border-color: #d4d4d4;
 	--border-color-kat: #329D00;
+	--selected-bg-color: #EFF2EE;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,12 +21,14 @@
 		--sub-btn-bg-end-color: #333;
 		--white-bg: #202020;
 		--header-bg: #181818;
+		--test-suite-title: #191919;
 		--border-color: #151515;
 		text-shadow: none!important;
 		font-weight: none;
 		--border-color-kat: #7c4789; /*Proposal*/
 		--purple-light: #bca3ca;
 		--purple-dark: #4a0e5c;
+		--selected-bg-color: rgba(0,0,0,0.1);
 	}
 }
 
@@ -514,7 +518,7 @@ div.message:hover {
 }
 
 div.test-suite-title {
-    background-color: #fff;
+    background-color: var(--test-suite-title);
     border-bottom: none;
 }
 
@@ -646,7 +650,7 @@ div.test-suite-title {
 }
 
 .tablesorter tbody tr:hover, .tablesorter tbody tr.selectedRecord {
-    background-color: #EFF2EE;
+    background-color: var(--selected-bg-color);
 }
 
 .tablesorter tbody tr.selectedRecord td {
@@ -1117,7 +1121,7 @@ div.suite-container-title {
 
 p.test-case-title {
     padding-right: initial;
-    color: #5a5a5a;
+    color: var(--main-txt-color);
 }
 
 .test-case-title span {
