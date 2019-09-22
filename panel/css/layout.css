@@ -521,7 +521,7 @@ section#main {
 }
 
 #testCase-container .module_content {
-    margin: 5px 15px;
+    margin: 5px;
     color: var(--main-txt-color);
 }
 
