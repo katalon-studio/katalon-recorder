@@ -1538,8 +1538,7 @@ a.katalon-link {
 }
 
 .file-container th, .file-container td {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 10px;
 }
 
 .file-container th {
