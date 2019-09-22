@@ -551,6 +551,7 @@ div.test-suite-title {
     border-left: none;
     border-right: none;
     border-bottom: none;
+	background: var(--header-bg);
     height: 37px;
 }
 
@@ -575,6 +576,7 @@ div.test-suite-title {
  #result-container label {
     font-weight: 500;
     text-transform: none;
+	text-shadow: none;
 }
 
 .width_3_quarter {
@@ -792,6 +794,11 @@ div.test-suite-title {
     padding-right: 10px;
     width: calc(100% - 20px);
     height: 108px;
+	background: var(--header-bg);
+	border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+	border-top-left-radius: 0px;
+	border-top-right-radius: 0px;	
 }
 
 .command-row {
