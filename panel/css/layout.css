@@ -540,6 +540,10 @@ section#main {
     
 }
 
+.module_content table {
+	width: 100%;
+}
+
 /* Module Widths */
 
 .width_full {

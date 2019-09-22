@@ -801,8 +801,8 @@ $(function() {
 			jsonAdd.hide();
 			extensionAdd.hide();
         } else if (li == screenshotLi) {
-            upload.show();
-            saveLog.show();
+            upload.hide();
+            saveLog.hide();
             clearLog.hide();
 			csvAdd.hide();
 			jsonAdd.hide();
