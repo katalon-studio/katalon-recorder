@@ -1388,9 +1388,23 @@ function resetDataList() {
 }
 
 function renderDataListItem(name) {
-    var tr = $('<tr></tr>');
-    var tdType = $('<td></td>').text('CSV');
-    var tdName = $('<td></td>').text(name);
+	var tr = $('<tr></tr>');
+	var dataFile = dataFiles[name];
+    var tdType = $('<td></td>').text( function() {
+		var dataFile = dataFiles[name];
+		if (!dataFile.data) {
+			var type = dataFile.type;
+			if (!type) {
+				type = 'csv';
+			}
+			if (type === 'csv') {
+				return "CSV";
+			} else {
+				return "JSON";
+			}
+		}
+	});
+	var tdName = $('<td></td>').text(name);
     var tdActions = $('<td></td>');
     var renameButton = $('<button class="rename-button"></button>');
     renameButton.on('click', function() {
