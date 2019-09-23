@@ -1249,12 +1249,12 @@ img.thumbnail {
 }
 
 #variable-grid tbody tr:nth-child(even) {
-    background-color:  #f7f7f7;
+    background-color:  none;
     /* background-color: transparent; */
 }
 
 #variable-grid tbody tr:nth-child(odd) {
-    background-color:#fff;
+    background-color: rgba(0,0,0,0.05);
     /* background-color: transparent; */
 }
 
