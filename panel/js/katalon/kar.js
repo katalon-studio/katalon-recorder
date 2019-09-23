@@ -1389,7 +1389,6 @@ function resetDataList() {
 
 function renderDataListItem(name) {
 	var tr = $('<tr></tr>');
-	var dataFile = dataFiles[name];
     var tdType = $('<td></td>').text( function() {
 		var dataFile = dataFiles[name];
 		if (!dataFile.data) {
