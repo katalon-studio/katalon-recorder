@@ -1227,35 +1227,7 @@ img.thumbnail {
 } */
 
 #variable-grid {
-    border-collapse: collapse;
     width: 100%;
-    table-layout: fixed;
-}
-
-#variable-grid td {
-    line-height: 30px;
-    padding-left: 17px;
-    padding-right: 17px;
-    word-break: break-all;
-    box-sizing: border-box;
-    padding-top: 0;
-    padding-bottom: 0;
-    /* overflow: hidden; */
-}
-
-#variable-grid tbody tr td:first-child {
-    border-right: 0.5px solid var(--border-color);
-    width: 30%;
-}
-
-#variable-grid tbody tr:nth-child(even) {
-    background-color:  none;
-    /* background-color: transparent; */
-}
-
-#variable-grid tbody tr:nth-child(odd) {
-    background-color: rgba(0,0,0,0.05);
-    /* background-color: transparent; */
 }
 
 .ui-dialog {
@@ -1549,18 +1521,21 @@ a.katalon-link {
     background-image: url(/katalon/images/SVG/delete-icon-hover.svg);
 }
 
-.file-container th {
+.file-container th,
+#variablecontainer th {
 	padding: 10px;
+	text-align: left;
 } 
 .file-container td {
     padding: 0px 10px;
 }
 
-.file-container th {
-    text-align: left;
+#variablecontainer td {
+    padding: 10px;
 }
 #data-files-list tr:nth-child(odd),
-#extensions-list tr:nth-child(odd) {
+#extensions-list tr:nth-child(odd),
+#variablecontainer tbody tr:nth-child(odd) {
 	background: rgba(0,0,0,0.05);
 }
 
