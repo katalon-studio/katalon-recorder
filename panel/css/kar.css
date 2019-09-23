@@ -1168,6 +1168,7 @@ p.test-case-title {
 
 #screenshotcontainer {
     margin: 0;
+	padding: 10px;
 }
 
 #screenshotcontainer ul {
@@ -1179,12 +1180,21 @@ p.test-case-title {
 
 #screenshotcontainer ul li {
     display: inline-block;
-    margin: 0;
+    margin: 0 5px 10px 5px;
+	max-width: calc(20% - 10px);
 }
-
-img.thumbnail {
+#screenshotcontainer ul li a {
+	display: block;
+}
+#logcontainer img.thumbnail {
     max-width: 320px;
     max-height: 200px;
+	border-radius: 3px;
+}
+#screenshotcontainer img.thumbnail {
+    max-width: 100%;
+    max-height: auto;
+	border-radius: 3px;
 }
 /* #variablecontainer {
     background: transparent;
