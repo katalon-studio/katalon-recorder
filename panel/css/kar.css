@@ -1559,8 +1559,9 @@ a.katalon-link {
 .file-container th {
     text-align: left;
 }
-#data-files-list tr:nth-child(odd) {
-	background: rgba(0,0,0,0.2);
+#data-files-list tr:nth-child(odd),
+#extensions-list tr:nth-child(odd) {
+	background: rgba(0,0,0,0.05);
 }
 
 #katalon-introduction {
