@@ -624,7 +624,7 @@ div.test-suite-title {
     height: initial !important;
     min-height: 15px;
     padding-left: 12px;
-    color: #5a5a5a;
+    color: var(--main-txt-color);
 }
 
 #command-grid tr td:first-child div {
