@@ -975,15 +975,11 @@ ul.tabs {
     flex-shrink: 0;
     display: flex;
     font-weight: 400;
-    margin-top: 0;
 }
 
 ul.tabs li {
-    height: 36px;
-    line-height: 36px;
     flex-grow: 0;
     flex-shrink: 0;
-    padding-left: 5px;
 }
 
 html ul.tabs #clear-log,
