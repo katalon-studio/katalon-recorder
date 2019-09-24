@@ -29,11 +29,7 @@
 		--header-bg: #181818;
 		--test-suite-title: #191919;
 		--border-color: #151515;
-		text-shadow: none!important;
-		font-weight: none;
-		--border-color-kat: #7c4789; /*Proposal*/
-		--purple-light: #bca3ca;
-		--purple-dark: #4a0e5c;
+		--border-color-kat: #329D00;
 		--selected-bg-color: rgba(0,0,0,0.1);
 		--success-bg-color: none;
 		--executing-bg-color: none;
@@ -41,6 +37,8 @@
 		--success-txt-color: green;
 		--executing-txt-color: yellow;
 		--fail-txt-color: #EA4335;
+		text-shadow: none!important;
+		font-weight: none;
 	}
 }
 
@@ -507,6 +505,10 @@ div.suite-plus i:before {
     color: var(--border-color-kat);
     border-left: 1px solid var(--border-color-kat);
 }
+.message p.selectedCase.fail {
+	color: red;
+    border-left: 1px solid red;
+}
 
 .message p:before {
     vertical-align: middle;
@@ -971,38 +973,39 @@ header.tabs_involved {
 }
 
 ul.tabs {
-    flex-grow: 0;
-    flex-shrink: 0;
-    display: flex;
     font-weight: 400;
+	margin: 5px;
+	border-radius: 0;
+	height: 26px;
 }
 
 ul.tabs li {
-    flex-grow: 0;
-    flex-shrink: 0;
+	margin-left: 5px;
 }
 
 html ul.tabs #clear-log,
-html ul.tabs #clear-log a {
-    border-radius: 0;
-    box-shadow: none;
-    color: var(--main-txt-color);
-    display: flex;
-    align-items: center;
-}
-
 html ul.tabs #save-log,
-html ul.tabs #save-log a {
-    border-radius: 0;
-    box-shadow: none;
-    color: var(--main-txt-color);
-    display: flex;
-    align-items: center;
+html ul.tabs #collapse-console {
+	width: 26px;
+	height: 26px;
+	border-radius: 3px;
+	background: rgba(0,0,0,0.05);
 }
 
 html ul.tabs #ka-upload,
 html ul.tabs #ka-upload a {
-    display: flex;
+	width: auto;
+	display: flex;
+}
+html ul.tabs #ka-upload a img { margin-right: 5px; }	
+
+html ul.tabs #clear-log a,
+html ul.tabs #save-log a {
+	width: 26px;
+	height: 26px;
+    box-shadow: none;
+    color: var(--main-txt-color);
+    display: block;
     align-items: center;
 }
 
@@ -1081,7 +1084,6 @@ html ul.tabs2 li:active {
 }
 
 #show-hide-bottom-panel {
-    margin-right: 10px;
     flex-grow: 0;
     flex-shrink: 0;
     cursor: pointer;
@@ -1094,12 +1096,12 @@ ul.tabs2 {
 }
 
 ul.tabs2 li:hover {
-    border-bottom: 2px solid var(--purple-dark);
+    border-bottom: 2px solid var(--border-color-kat);
     cursor: pointer;
 }
 
 ul.tabs2 li.active {
-    border-bottom: 2px solid var(--purple-dark);
+    border-bottom: 2px solid var(--border-color-kat);
 }
 
 h3.suite-container-title {
@@ -1556,6 +1558,7 @@ a.katalon-link {
 	padding: 10px;
 	text-align: left;
 } 
+
 .file-container td {
     padding: 0px 10px;
 }
@@ -1576,11 +1579,16 @@ a.katalon-link {
 }
 
 #refercontainer a, #refercontainer a:visited {
-    color: var(--purple-light);
+    color: var(--border-color-kat);
 }
 
 #command-grid-menu {
     z-index: 99999;
+}
+
+.ui-widget-overlay {
+	background: #000;
+	opacity: 0.75;
 }
 
 .submit_link .sub_btn {

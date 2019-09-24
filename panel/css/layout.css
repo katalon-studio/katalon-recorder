@@ -753,7 +753,7 @@ ul.tabs li a {
     text-decoration: none;
     color: var(--main-txt-color);
     display: block;
-    padding: 0 10px;
+	padding:0;
     height: 24px;
 }
 
