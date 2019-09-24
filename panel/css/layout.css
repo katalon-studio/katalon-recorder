@@ -521,7 +521,7 @@ section#main {
 }
 
 #testCase-container .module_content {
-    margin: 5px;
+    margin: 5px 12px 5px 5px;
     color: var(--main-txt-color);
 }
 
@@ -656,23 +656,26 @@ section#main {
 
 .tablesorter tbody tr.selectedRecord td {
     padding-top: 6px;
-    border-top: 1px solid #ccc;;
+    border-top: 1px solid #ccc;
 }
 
 .tablesorter tbody tr.executing {
-    background-color: #ffffe6;
+    background-color: var(--executing-bg-color);
+	color: var(--executing-txt-color);
 }
 
 .tablesorter tbody tr.success {
-    background-color: #e5ffe5;
+    background-color: var(--success-bg-color);
+	color: var(--success-txt-color);
 }
 
 .tablesorter tbody tr.fail {
-    background-color: #ffe5e5;
+    background-color: var(--fail-bg-color);
+	color: var(--fail-txt-color);
 }
 
 .tablesorter tbody tr td.break {
-    background-color:  #5CB9FF;
+    background-color: #5CB9FF;
 }
 
 .tablesorter td {

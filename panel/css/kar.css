@@ -10,6 +10,12 @@
 	--border-color: #d4d4d4;
 	--border-color-kat: #329D00;
 	--selected-bg-color: #EFF2EE;
+	--success-bg-color: #e5ffe5;
+	--executing-bg-color: #ffffe6;
+	--fail-bg-color: #ffe5e5;
+	--success-txt-color: initial;
+	--executing-txt-color: initial;
+	--fail-txt-color: initial;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -29,6 +35,12 @@
 		--purple-light: #bca3ca;
 		--purple-dark: #4a0e5c;
 		--selected-bg-color: rgba(0,0,0,0.1);
+		--success-bg-color: none;
+		--executing-bg-color: none;
+		--fail-bg-color: none;
+		--success-txt-color: green;
+		--executing-txt-color: yellow;
+		--fail-txt-color: #EA4335;
 	}
 }
 
@@ -52,6 +64,8 @@ html, body {
     min-height: initial;
     overflow: initial;
 }
+
+.simplebar-scrollbar:before { background: rgba(0,0,0,0.3); }
 
 button {
     font-family: 'Roboto', sans-serif;
@@ -625,6 +639,16 @@ div.test-suite-title {
     min-height: 15px;
     padding-left: 12px;
     color: var(--main-txt-color);
+}
+
+#command-grid tr.success td div {
+	color: var(--success-txt-color);
+}
+#command-grid tr.fail td div {
+	color: var(--fail-txt-color);
+}
+#command-grid tr.executing td div {
+	color: var(--executing-txt-color);
 }
 
 #command-grid tr td:first-child div {
