@@ -824,7 +824,6 @@ div.test-suite-title {
     padding-right: 10px;
     width: calc(100% - 20px);
     height: 108px;
-	background: var(--header-bg);
 	border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
 	border-top-left-radius: 0px;
@@ -992,12 +991,23 @@ html ul.tabs #collapse-console {
 	background: rgba(0,0,0,0.05);
 }
 
-html ul.tabs #ka-upload,
+html ul.tabs #ka-upload {
+	background: rgba(0,0,0,0.1);
+    padding: 0 10px;
+    border-radius: 3px;
+    height: 26px;
+    line-height: 26px;
+}
 html ul.tabs #ka-upload a {
 	width: auto;
 	display: flex;
 }
-html ul.tabs #ka-upload a img { margin-right: 5px; }	
+html ul.tabs #ka-upload a img { 
+	margin: 4px 5px 4px 0; 
+	max-height: 18px;
+    vertical-align: middle;
+    position: relative;
+}	
 
 html ul.tabs #clear-log a,
 html ul.tabs #save-log a {
