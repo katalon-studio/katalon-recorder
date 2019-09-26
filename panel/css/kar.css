@@ -1001,6 +1001,8 @@ html ul.tabs #ka-upload {
 html ul.tabs #ka-upload a {
 	width: auto;
 	display: flex;
+	height: 26px;
+    line-height: 26px;
 }
 html ul.tabs #ka-upload a img { 
 	margin: 4px 5px 4px 0; 
