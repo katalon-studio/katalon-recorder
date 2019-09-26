@@ -995,14 +995,14 @@ html ul.tabs #ka-upload {
 	background: rgba(0,0,0,0.1);
     padding: 0 10px;
     border-radius: 3px;
-    height: 26px;
-    line-height: 26px;
+    height: 27px;
+    line-height: 27px;
 }
 html ul.tabs #ka-upload a {
 	width: auto;
 	display: flex;
-	height: 26px;
-    line-height: 26px;
+	height: 27px;
+    line-height: 27px;
 }
 html ul.tabs #ka-upload a img { 
 	margin: 4px 5px 4px 0; 
@@ -1013,8 +1013,8 @@ html ul.tabs #ka-upload a img {
 
 html ul.tabs #clear-log a,
 html ul.tabs #save-log a {
-	width: 26px;
-	height: 26px;
+	width: 27px;
+	height: 27px;
     box-shadow: none;
     color: var(--main-txt-color);
     display: block;
