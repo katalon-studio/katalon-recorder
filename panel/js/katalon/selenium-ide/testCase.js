@@ -200,7 +200,7 @@ CommandDefinition.prototype.getReferenceFor = function(command) {
     }
   }
 
-  var sample = '<p>Please see samples at <a href="https://github.com/katalon-studio/katalon-recorder-samples" target="_blank">https://github.com/katalon-studio/katalon-recorder-samples</a>.</p><p>Try <a href="https://katalon.com" target="_blank">Katalon Studio</a> - the smartest Record and Playback tool - it\'s free.</p>';
+  var sample = '<p>Please see samples at <a href="https://github.com/katalon-studio/katalon-recorder-samples" target="_blank">https://github.com/katalon-studio/katalon-recorder-samples</a>.</p><p><strong><i class="fa fa-diamond" aria-hidden="true"></i> Try <a href="https://katalon.com" target="_blank">Katalon Studio</a> - the smartest Record and Playback tool - it\'s free.</strong></p>';
   
     return "<dl><dt><strong>" + (command.command || this.name) + "(" +
       paramNames.join(", ") + ")</strong></dt>" +
