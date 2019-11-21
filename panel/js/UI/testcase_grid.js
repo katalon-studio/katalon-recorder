@@ -15,6 +15,8 @@
  *
  */
 
+var isClosingAll = true;
+
 function cleanSelected() {
     // use jquery's API to add and remove class property
     $('#testCase-grid .selectedCase').removeClass('selectedCase');
@@ -197,6 +199,17 @@ function appendContextMenu(node, isCase) {
             document.getElementById('close-testSuite').click();
         }, false);
         ul.appendChild(close_suite);
+
+        var close_all_suite = document.createElement("li");
+        a = document.createElement("a");
+        a.setAttribute("href", "#");
+        a.textContent = "Close All Test Suites";
+        close_all_suite.appendChild(a);
+        close_all_suite.addEventListener("click", function(event) {
+            event.stopPropagation();
+            document.getElementById('close-all-testSuites').click();
+        }, false);
+        ul.appendChild(close_all_suite);
 
         var add_case = document.createElement("li");
         a = document.createElement("a");
@@ -492,37 +505,57 @@ var remove_testSuite = function() {
     s_suite.parentNode.removeChild(s_suite);
     clean_panel();
     saveData();
+    
+    // disable play button when there is no suite
+    if (getSuiteNum() == 0) {
+        disableButton("playback");
+        disableButton("playSuite");
+        disableButton("playSuites");
+    }
+    
+    if(isClosingAll) close_testSuite(0);
 };
 
 document.getElementById("close-testSuite").addEventListener('click', function(event) {
     event.stopPropagation();
+    isClosingAll = false;
+    var suites = document.getElementById("testCase-grid").getElementsByClassName("message");
     var s_suite = getSelectedSuite();
-    if (s_suite) {
-        if ($(s_suite).find(".modified").length) {
-            confirmCloseSuite("Would you like to save this test suite?").then(function(answer) {
-                if (answer === "true")
-                    downloadSuite(s_suite, remove_testSuite);
-                else
-                    remove_testSuite(s_suite);
+    var i = 0;
+    while (i < suites.length) {
+        if (suites[i].id === s_suite.id) {
+            break;
+        }
+        i++;
+    }
+    close_testSuite(i);
+}, false);
 
-                // disable play button when there is no suite
-                if (getSuiteNum() == 0) {
-                    disableButton("playback");
-                    disableButton("playSuite");
-                    disableButton("playSuites");
+document.getElementById("close-all-testSuites").addEventListener('click', function(event) {
+    event.stopPropagation();
+    isClosingAll = true;
+    close_testSuite(0);
+}, false);
+
+
+function close_testSuite(suite_index) {
+    var suites = document.getElementById("testCase-grid").getElementsByClassName("message");
+    if (suites[suite_index] && suites[suite_index].id.includes("suite")) {
+        var c_suite = suites[suite_index];
+        setSelectedSuite(c_suite.id);
+        if ($(c_suite).find(".modified").length) {
+            confirmCloseSuite("Would you like to save the " + sideex_testSuite[c_suite.id].title + " test suite?").then(function(answer) {
+                if (answer === "true"){
+                    downloadSuite(c_suite, remove_testSuite);
+            	} else {
+                    remove_testSuite();
                 }
             });
         } else {
-            remove_testSuite(s_suite);
-            // disable play button when there is no suite
-            if (getSuiteNum() == 0) {
-                disableButton("playback");
-                disableButton("playSuite");
-                disableButton("playSuites");
-            }
+            remove_testSuite();
         }
     }
-}, false);
+};
 
 document.getElementById("add-testCase").addEventListener("click", function(event) {
     var title = prompt("Please enter the Test Case's name", "Untitled Test Case");
