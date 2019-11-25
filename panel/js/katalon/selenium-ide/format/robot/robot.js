@@ -64,9 +64,9 @@ function filterForRemoteControl(originalCommands) {
             c1 = c1.replace("//","xpath=//");
         }
 
-        if (c1.indexOf("/html") != -1)
+        if (c1.indexOf("/html") == 0)
         {
-            c1 = c1.replace("/html","xpath=/html");
+            c1 = "xpath=" + c1;
         }
         var key_str_start = c1.search(/\${KEY_.*}/)
         if (key_str_start != -1)
