@@ -8,7 +8,7 @@
 	--header-bg: #F7F7F7;
 	--test-suite-title: #FFF;
 	--border-color: #d4d4d4;
-	--border-color-kat: #329D00;
+	--border-color-kat: #f54966; /*#329D00*/
 	--selected-bg-color: #EFF2EE;
 	--success-bg-color: #e5ffe5;
 	--executing-bg-color: #ffffe6;
@@ -29,7 +29,7 @@
 		--header-bg: #181818;
 		--test-suite-title: #191919;
 		--border-color: #151515;
-		--border-color-kat: #329D00;
+		--border-color-kat: #f54966; /*#329D00*/
 		--selected-bg-color: rgba(0,0,0,0.1);
 		--success-bg-color: none;
 		--executing-bg-color: none;
