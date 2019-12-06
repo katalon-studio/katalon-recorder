@@ -63,6 +63,13 @@ html, body {
     overflow: initial;
 }
 
+sup {
+	position: relative;
+    line-height: initial;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
 .simplebar-scrollbar:before { background: rgba(0,0,0,0.3); }
 
 button {
