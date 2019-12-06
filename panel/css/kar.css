@@ -71,6 +71,7 @@ sup {
 }
 
 .simplebar-scrollbar:before { background: rgba(0,0,0,0.3); }
+.simplebar-track.simplebar-vertical { right: -11px; }
 
 button {
     font-family: 'Roboto', sans-serif;
