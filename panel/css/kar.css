@@ -6,7 +6,7 @@
 	#logo_kr_icon {
 		margin-right: 10px; 
 		width: 36px; 
-		height: 36px; 
+		height: auto; 
 		border-radius: 3px; 
 		padding: 5px;
 		background: none;
@@ -24,19 +24,27 @@
 	#logo_kr_icon { display: none; }
 	#logo_kr_full {
 		margin-right: 10px; 
-		width: 36px; 
-		height: 36px; 
+		width: auto; 
+		height: auto; 
 		border-radius: 3px; 
 		padding: 5px;
 		background: none;
 		box-shadow: none;
 		border: 0;
 	}
-	#logo_kr_full img {
+	#logo_kr_full img.dark {
 		height: 26px; 
 		margin: 0;
 		max-height: 100%;
 		max-width: 100%;
+		display: block;
+	}
+	#logo_kr_full img.light {
+		height: 26px; 
+		margin: 0;
+		max-height: 100%;
+		max-width: 100%;
+		display: none;
 	}
 }
 
@@ -81,6 +89,20 @@
 		--fail-txt-color: #EA4335;
 		text-shadow: none!important;
 		font-weight: none;
+	}
+	#logo_kr_full img.light {
+		display: block;
+		height: 26px; 
+		margin: 0;
+		max-height: 100%;
+		max-width: 100%;
+	}
+	#logo_kr_full img.dark {
+		display: none;
+		height: 26px; 
+		margin: 0;
+		max-height: 100%;
+		max-width: 100%;
 	}
 }
 
