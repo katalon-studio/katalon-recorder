@@ -1,3 +1,45 @@
+@media (max-width: 767px) {
+	#logo_kr_full, #logo_kr_icon { display: none; }
+}
+@media (max-width: 1023px) {
+	#logo_kr_full { display: none; }
+	#logo_kr_icon {
+		margin-right: 10px; 
+		width: 36px; 
+		height: 36px; 
+		border-radius: 3px; 
+		padding: 5px;
+		background: none;
+		box-shadow: none;
+		border: 0;
+	}
+	#logo_kr_icon img {
+		height: 26px; 
+		margin: 0;
+		max-height: 100%;
+		max-width: 100%;
+	}
+}
+@media (min-width: 1024px) {
+	#logo_kr_icon { display: none; }
+	#logo_kr_full {
+		margin-right: 10px; 
+		width: 36px; 
+		height: 36px; 
+		border-radius: 3px; 
+		padding: 5px;
+		background: none;
+		box-shadow: none;
+		border: 0;
+	}
+	#logo_kr_full img {
+		height: 26px; 
+		margin: 0;
+		max-height: 100%;
+		max-width: 100%;
+	}
+}
+
 :root {
 	--main-bg-color: #D7DBDB;
 	--main-txt-color: #333333;
