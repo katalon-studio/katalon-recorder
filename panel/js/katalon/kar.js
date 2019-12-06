@@ -869,9 +869,9 @@ $(function() {
     $('#selectElementButton').attr('title', "Select a target element for the current command");
     $('#showElementButton').attr('title', "Find and highlight the curent target element of the current command");
     $('#speed').attr('title', "Adjust play speed");
-    $('#new').attr('title', "Create new test case. See samples at https://github.com/katalon-studio/katalon-recorder-samples.");
+    $('#new').attr('title', "Create new test case");
     $('#export').attr('title', "Export the current test case to script in C#, Java, Ruby, Python, (Katalon Studio) Groovy, or Robot Framework");
-    $('#suite-open').attr('title', "Open test suites. See samples at https://github.com/katalon-studio/katalon-recorder-samples.");
+    $('#suite-open').attr('title', "Open test suite");
     $('#suite-plus').attr('title', "Create new test suite");
 })
 // KAT-END
@@ -1178,7 +1178,7 @@ $(function() {
             },
             error: function(response) {
                 console.log(response);
-                showDialog('<p>Please log in to <a target="_blank" href="https://analytics.katalon.com" class="katalon-link">Katalon Analytics (Beta)</a> first and try again.</p><p>You can register a completely free account at <a target="_blank" href="https://www.katalon.com" class="katalon-link">https://www.katalon.com</a>.</p><p>Katalon Analytics helps you manage automation results as you test it manually and generate quality, performance and flakiness reports to improve your confidence in evaluating the test results. Katalon Analytics supports both <a target="_blank" href="https://www.katalon.com" class="katalon-link">Katalon Studio</a> (one of the top 10 test automation solutions) and Katalon Recorder.</p><p><a target="_blank" href="https://www.katalon.com/katalon-analytics" class="katalon-link">Learn more</a> about Katalon Analytics (Beta).</p>', true);
+                showDialog('<p>Please log in to <a target="_blank" href="https://analytics.katalon.com" class="katalon-link">Katalon TestOps (beta)</a> first and try again.</p><p>You can register a completely free account at <a target="_blank" href="https://www.katalon.com" class="katalon-link">https://www.katalon.com</a>.</p><p>Katalon Analytics helps you manage automation results as you test it manually and generate quality, performance and flakiness reports to improve your confidence in evaluating the test results. Katalon TestOps supports both <a target="_blank" href="https://www.katalon.com" class="katalon-link">Katalon Studio</a> (one of the top 10 test automation solutions) and Katalon Recorder.</p><p><a target="_blank" href="https://www.katalon.com/katalon-analytics" class="katalon-link">Learn more</a> about Katalon TestOps (Beta).</p>', true);
             }
         });
     });
