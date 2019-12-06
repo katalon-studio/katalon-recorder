@@ -303,7 +303,7 @@ section#main {
     font-weight: normal;
 }
 
-.sub_btn#diamond, #export {
+.sub_btn#github-repo, #export {
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
 }
@@ -320,10 +320,6 @@ section#main {
     width: 16px;
     height: 16px;
     margin-right: 0;
-}
-
-.sub_btn#diamond i:first-child {
-    display: block;
 }
 
 /* #playSuites{
