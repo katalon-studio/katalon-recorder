@@ -1054,6 +1054,14 @@ ul.tabs li {
 	margin-left: 5px;
 }
 
+ul.tabs li#collapse-console a {
+	height: 26px;
+}
+ul.tabs li#collapse-console a img {
+	position: relative;
+	margin: 0 auto;
+}	
+
 html ul.tabs #clear-log,
 html ul.tabs #save-log,
 html ul.tabs #collapse-console {
