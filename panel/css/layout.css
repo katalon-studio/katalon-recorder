@@ -523,6 +523,11 @@ section#main {
 #testCase-container .module_content {
     margin: 5px /*12*/5px 5px 5px;
     color: var(--main-txt-color);
+	transition: all 100ms;
+}
+#testCase-container:hover .module_content {
+    margin: 5px 12px 5px 5px;
+    color: var(--main-txt-color);
 }
 
 #tab4 .module_content {

@@ -135,7 +135,10 @@ sup {
 }
 
 .simplebar-scrollbar:before { background: rgba(0,0,0,0.3); }
-.simplebar-track.simplebar-vertical { right: -11px; }
+#middle-container .simplebar-track.simplebar-vertical { z-index: -99; }
+.module .width_full .simplebar-track.simplebar-vertical { z-index: 99; }
+
+.ui-widget.ui-widget-content { z-index: 9999!important; }
 
 button {
     font-family: 'Roboto', sans-serif;
@@ -505,6 +508,7 @@ div.suite-plus i:before {
     height: calc(100% - 37px);
     flex-grow: 1;
     flex-shrink: 1;
+	z-index: 999;
 }
 
 .module_content {
@@ -1445,6 +1449,7 @@ p.test-case-title {
     border: 1px solid #B2B2B2;
     background: #F9F9F9;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+	z-index: 99999999;
 }
 
 .menu a {
