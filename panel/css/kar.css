@@ -1060,12 +1060,14 @@ html ul.tabs #collapse-console {
 	width: 26px;
 	height: 26px;
 	border-radius: 3px;
-	background: rgba(0,0,0,0.05);
+	background: var(--main-bg-color);
 }
-
+html ul.tabs #data-files-add-csv,
+html ul.tabs #data-files-add-json,
+html ul.tabs #extension-add,
 html ul.tabs #ka-upload {
-	background: rgba(0,0,0,0.1);
-    padding: 0 10px;
+	background: var(--main-bg-color);
+    padding: 0 6px;
     border-radius: 3px;
     height: 27px;
     line-height: 27px;
