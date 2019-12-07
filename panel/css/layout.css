@@ -1378,7 +1378,7 @@ input[type=submit].btn_post_message:hover {
     border-radius: 20px;
     background: #D0D1D4;
     cursor: pointer;
-    text-shadow: 0 1px 0 #fff;
+    /*text-shadow: 0 1px 0 #fff;*/
     border: 1px solid #9c9c9c;
     font-size: 14px;
     margin-right: 0.5%;

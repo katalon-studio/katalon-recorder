@@ -66,6 +66,7 @@
 	--success-txt-color: initial;
 	--executing-txt-color: initial;
 	--fail-txt-color: initial;
+	--dialog-bg-header: linear-gradient(180deg, #F9F9F9 0%, #F0F1F1 100%);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -87,6 +88,7 @@
 		--success-txt-color: green;
 		--executing-txt-color: yellow;
 		--fail-txt-color: #EA4335;
+		--dialog-bg-header: linear-gradient(180deg, #151515 0%, #181818 100%);
 		text-shadow: none!important;
 		font-weight: none;
 	}
@@ -174,7 +176,7 @@ section#main {
 
 .sub_btn {
     padding: 10px;
-    background: linear-gradient(180deg, var(--sub-btn-bg-start-color) 0%, var(--sub-btn-bg-end-color) 100%);
+    background: /*linear-gradient(180deg, var(--sub-btn-bg-start-color) 0%, var(--sub-btn-bg-end-color) 100%)*/ var(--dialog-bg-header);
     /* border-top: 1px solid #d4d4d4; */
     border-top: none;
     border-left: 0.5px solid #b7b7b742;
@@ -550,11 +552,13 @@ div.suite-plus i:before {
     content: " ";
     width: 6px;
     height: 16px;
-    margin-left: 3px;
-    margin-right: 3px;
+    margin-left: 10px;
+    margin-right: 10px;
     background: transparent;
     flex-grow: 0;
     flex-shrink: 0;
+	margin-top: 1.5px;
+	position: relative;
 }
 
 .message strong:hover:before {
@@ -594,11 +598,13 @@ div.suite-plus i:before {
     content: " ";
     width: 6px;
     height: 16px;
-    margin-left: 3px;
-    margin-right: 3px;
+    margin-left: 0px;
+    margin-right: 10px;
     background: transparent;
     flex-grow: 0;
     flex-shrink: 0;
+	margin-top: 1.5px;
+	position: relative;
 }
 
 .message p:hover:before {
@@ -1362,8 +1368,15 @@ p.test-case-title {
 
 .ui-dialog {
     padding: 0;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
+    border-radius: 3px;
+	border: 1px solid var(--border-color)!important;
+}
+.ui-widget-content{
+	border: 1px solid var(--border-color)!important;
+	background: var(--white-bg)!important;
+}
+ .ui-widget-header {
+	border: 1px solid var(--border-color)!important;
 }
 
 .ui-widget, .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
@@ -1379,7 +1392,14 @@ p.test-case-title {
     border-right: none;
     border-top: none;
     font-weight: 500;
-    background: linear-gradient(180deg, #F9F9F9 0%, #F0F1F1 100%);
+    background: var(--dialog-bg-header);
+	color: var(--main-txt-color);
+}
+
+.ui-dialog .ui-dialog-content {
+	background: var(--white-bg);
+	color: var(--main-txt-color);
+	padding: 1em!important;
 }
 
 .select-script-language {
@@ -1388,13 +1408,19 @@ p.test-case-title {
 
 .kat {
     margin: 10px 0;
+	display: block!important;
 }
 
 .CodeMirror {
     font-family: 'Roboto Mono', monospace;
     font-size: 11px;
     border: 1px solid var(--border-color);
-    width: 99%;
+    width: 100%;
+}
+.CodeMirror-scroll {
+	margin-bottom: 0;
+    margin-right: 0;
+    padding-bottom: 0;
 }
 
 .kat-90 {
@@ -1406,7 +1432,8 @@ p.test-case-title {
 }
 
 .ui-dialog .ui-dialog-buttonpane {
-    background-color: #D7DBDB;
+    background: var(--dialog-bg-header)!important;
+	margin-top: 0!important;
 }
 
 .ui-dialog .ui-dialog-buttonpane button {
