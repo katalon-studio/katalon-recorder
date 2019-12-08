@@ -778,8 +778,8 @@ div.test-suite-title {
     content: " ";
     width: 6px;
     height: 16px;
-    margin-left: -6px;
-    margin-right: 3px;
+    margin-left: -10px;
+    margin-right: 8px;
     display: inline-block;
     background: transparent;
     flex-grow: 0;
