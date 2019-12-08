@@ -2,6 +2,7 @@
 
 ::-webkit-scrollbar {
     width: 6px;
+	z-index: 99;
 }
  
 ::-webkit-scrollbar-track {
