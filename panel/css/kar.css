@@ -8,7 +8,7 @@
 		width: 36px; 
 		height: auto; 
 		border-radius: 3px; 
-		padding: 5px;
+		padding: 5px 0;
 		background: none;
 		box-shadow: none;
 		border: 0;
@@ -27,7 +27,7 @@
 		width: auto; 
 		height: auto; 
 		border-radius: 3px; 
-		padding: 5px;
+		padding: 5px 0;
 		background: none;
 		box-shadow: none;
 		border: 0;
