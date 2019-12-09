@@ -79,9 +79,9 @@ img.kto-dark {
 	--success-bg-color: #e5ffe5;
 	--executing-bg-color: #ffffe6;
 	--fail-bg-color: #ffe5e5; /*#E60000*/
-	--success-txt-color: green;
-	--executing-txt-color: #ffeaa7;
-	--fail-txt-color: #d63031;
+	--success-txt-color: initial;
+	--executing-txt-color: initial;
+	--fail-txt-color: initial;
 	--inset-box-shadow: rgba(228,228,228,0.5);
 	--dialog-bg-header: linear-gradient(180deg, #F9F9F9 0%, #F0F1F1 100%);
 	--dialog-bg-hover-header: linear-gradient(180deg, #F0F1F1 0%, #F9F9F9 100%);
@@ -385,15 +385,15 @@ section#main {
     height: 16.5px;
     border-radius: 8.25px;
     left: -6px;
-    border: 0.5px solid #979797;
+    border: 0; /*0.5px solid #979797;*/
     box-shadow: 0 0 4px 0 rgba(113,113,113,0.16);
-    background: linear-gradient(180deg, #FEFEFE 0%, #ECECEC 100%);
+    background: linear-gradient(180deg, #f54966 0%, #cc1433 100%);
     box-sizing: border-box;
     cursor: pointer;
 }
 
 #slider .ui-state-hover, #slider .ui-slider-handle:active {
-    border: 0.5px solid #2B8500;
+    border: 0; /*0.5px solid #2B8500;*/
 }
 
 #slider .ui-slider-pip {
