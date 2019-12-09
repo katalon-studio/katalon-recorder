@@ -77,6 +77,9 @@ $(document).on("contextmenu", function(event) {
     if (inCommandGrid) {
         event.preventDefault();
         $("#command-grid-menu").show();
+		$("#command-grid-menu").mouseleave(function(){
+			$("#command-grid-menu").hide();
+		});
     };
 });
 

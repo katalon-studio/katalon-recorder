@@ -300,6 +300,11 @@ function addContextMenuButton(id, node, menu, isCase) {
         $(".menu").css("left", event.pageX);
         $(".menu").css("top", event.pageY);
         $(mid).show();
+
+		$(".menu").mouseleave(function(){
+			$(".menu").hide();
+		});
+
     }, false);
 }
 //KAT-END
