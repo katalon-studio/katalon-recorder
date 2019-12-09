@@ -81,7 +81,7 @@ img.kto-dark {
 	--fail-bg-color: #ffe5e5; /*#E60000*/
 	--success-txt-color: initial;
 	--executing-txt-color: initial;
-	--fail-txt-color: initial;
+	--fail-txt-color: #d63031;
 	--inset-box-shadow: rgba(228,228,228,0.5);
 	--dialog-bg-header: linear-gradient(180deg, #F9F9F9 0%, #F0F1F1 100%);
 	--dialog-bg-hover-header: linear-gradient(180deg, #F0F1F1 0%, #F9F9F9 100%);
