@@ -432,16 +432,7 @@ function addTestSuite(title, id) {
         $(".menu").css("left", event.pageX);
         $(".menu").css("top", event.pageY);
         $(mid).show();
-		
-		$(mid).mouseleave(function(){
-			$(mid).hide();
-		});
-		
     }, false);
-	
-	$(".menu").mouseleave(function(){
-		$(".menu").hide();
-	});
 
     makeCaseSortable(div);
 
