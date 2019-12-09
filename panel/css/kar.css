@@ -85,6 +85,7 @@ img.kto-dark {
 	--inset-box-shadow: rgba(228,228,228,0.5);
 	--dialog-bg-header: linear-gradient(180deg, #F9F9F9 0%, #F0F1F1 100%);
 	--dialog-bg-hover-header: linear-gradient(180deg, #F0F1F1 0%, #F9F9F9 100%);
+	--menu-item-hover: #f1f1f1;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -110,6 +111,7 @@ img.kto-dark {
 		--dialog-bg-header: linear-gradient(180deg, #151515 0%, #181818 100%);
 		--dialog-bg-hover-header: linear-gradient(180deg, #181818 0%, #151515 100%);
 		--inset-box-shadow: rgba(228,228,228,0.1);
+		--menu-item-hover: rgba(0,0,0,0.1);
 		text-shadow: none!important;
 		font-weight: none;
 	}
@@ -702,8 +704,10 @@ div.test-suite-title {
 
 .btn-more:focus, .btn-more:hover {
     border-radius: 3px;
-    background-color: #e8e8e8;
     outline: none;
+}
+.btn-more:focus img, .btn-more:hover img {
+	fill: red;
 }
 
 #result-container {
@@ -1480,7 +1484,7 @@ p.test-case-title {
     font-family: 'Roboto Mono', monospace;
     font-size: 11px;
     border: 1px solid var(--border-color);
-	background: var(--dialog-bg-header);
+	background: var(--white-bg);
 	color: var(--main-txt-color);
     width: 100%;
 }
@@ -1491,7 +1495,8 @@ p.test-case-title {
 }
 .CodeMirror-gutters {
 	border-right: none;
-	background: #111;
+	background: var(--header-bg);
+	border-right: 1px solid var(--border-color);
 }
 
 .kat-90 {
@@ -1534,7 +1539,7 @@ p.test-case-title {
 }
 
 .menu li:hover {
-    background-color: #f1f1f1;
+    background: var(--menu-item-hover);
 }
 
 .menu a:hover {
@@ -1544,14 +1549,14 @@ p.test-case-title {
 .menu {
     display: none;
     position: fixed;
-    border: 1px solid #B2B2B2;
-    background: #F9F9F9;
+    border: 1px solid var(--white-bg);
+    background: var(--white-bg);
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 	z-index: 99999999;
 }
 
 .menu a {
-    color: #3d3d5c;
+    color: var(--main-txt-color);
     font-family: 'Roboto', sans-serif;
     text-decoration: none;
 }
@@ -1790,4 +1795,15 @@ a.katalon-link {
 
 .submit_link .sub_btn {
     display: inline-flex;
+}
+
+.testops-link {
+	color: #4d94ff;
+	text-decoration: none;
+	outline: none;
+}
+.testops-link:hover {
+	color: #5cceff;
+	text-decoration: underline;
+	outline: none;
 }
