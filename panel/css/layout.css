@@ -1104,7 +1104,7 @@ input[type=submit].btn_post_message:hover {
 }
 
 .failures {
-    color: red;
+    color: var(--fail-txt-color);
     font-weight: 600;
 }
 

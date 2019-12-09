@@ -1137,13 +1137,17 @@ html ul.tabs #collapse-console {
 	width: 26px;
 	height: 26px;
 	border-radius: 3px;
-	background: var(--main-bg-color);
+	background: var(--dialog-bg-header);
+	border: 0.5px solid var(--border-color);
+	box-shadow: inset 0 0 3px 0 rgba(228,228,228,0.5);
 }
 html ul.tabs #data-files-add-csv,
 html ul.tabs #data-files-add-json,
 html ul.tabs #extension-add,
 html ul.tabs #ka-upload {
-	background: var(--main-bg-color);
+	background: var(--dialog-bg-header);
+	border: 0.5px solid var(--border-color);
+	box-shadow: inset 0 0 3px 0 rgba(228,228,228,0.5);
     padding: 0 6px;
     border-radius: 3px;
     height: 27px;
