@@ -299,13 +299,14 @@ function addContextMenuButton(id, node, menu, isCase) {
         var mid = "#" + "menu" + id;
         $(".menu").css("left", event.pageX);
         $(".menu").css("top", event.pageY);
-        $(mid).show();
+        $(mid).show()
 
-		$(".menu").mouseleave(function(){
-			$(".menu").hide();
+		$(mid).mouseleave(function(){
+			$(mid).hide();
 		});
+		
+   }, false);
 
-    }, false);
 }
 //KAT-END
 
