@@ -132,8 +132,8 @@
             </div>
             <button id="settings" class="sub_btn"><i class="fa"></i></button>
             <a id="help" class="sub_btn"><i class="fa"></i></a>
-            <a id="github-repo" class="sub_btn" target="_blank" href="https://github.com/katalon-studio/katalon-recorder"><i class="fa"></i></a>
-            <!--a id="diamond" class="sub_btn" target="_blank" href="https://katalon.com"><i class="fa fa-diamond"></i></a-->
+            <a id="github" class="sub_btn" target="_blank" href="https://github.com/katalon-studio/katalon-recorder"><i class="fa fa-github"></i></a>
+			<!--a id="adjust" class="sub_btn"><i class="fa fa-adjust" aria-hidden="true"></i></a-->
             <!-- TODO: Add a stop button -->
         </div>
         <!-- load Suite of older version -->
@@ -396,27 +396,27 @@
         </div>
         <!--<div class="spacer"></div>-->
         <div id="generateToScriptsDialog" title="Export Test Case as Script" style="display: none">
-            <label for="select-script-language-id">Format </label>
-            <select id="select-script-language-id" class="select-script-language">
-                <option value="cs-wd-mstest">C# (WebDriver + MSTest)</option>
-                <option value="cs-wd-nunit">C# (WebDriver + NUnit)</option>
-                <option value="java-wd-testng">Java (WebDriver + TestNG)</option>
-                <option value="java-wd-junit">Java (WebDriver + JUnit)</option>
-                <option value="java-rc-junit">Java (WebDriver-backed Remote Control + JUnit)</option>
-                <option value="katalon" selected>Katalon Studio</option>
-                <option value="new-formatter-nrsynthetics">Node (New Relic Synthetics)</option>
-                <option value="new-formatter-protractorts">Protractor (Typescript)</option>
-                <option value="python2-wd-unittest">Python 2 (WebDriver + unittest)</option>
-                <option value="python-appdynamics">Python (AppDynamics)</option>
-                <option value="robot">Robot Framework</option>
-                <option value="ruby-wd-rspec">Ruby (WebDriver + RSpec)</option>
-                <option value="xml">XML</option>
-                <!-- must start with new-formatter- -->
-                <option value="new-formatter-sample">Sample for new formatters</option>
-            </select>
-            <div>You can add your own formatter. Read more <a target="_blank" href="https://github.com/katalon-studio/katalon-recorder" class="katalon-link">here</a>.</div>
-            <div class="kat clear"><a target="_blank" href="https://www.katalon.com" class="katalon-link">Katalon Studio</a> is one of the top 10 test automation solutions which includes all required features to makes Selenium and Appium automation easy for teams with limited coding capability to apply GUI, Mobile and API testings.</div>
-            <textarea id="txt-script-id" class="txt-script">scripts</textarea>
+            <div class="" style="height: 30px; line-height: 30px;"><label for="select-script-language-id">Format </label>
+				<select style="margin:0 5px;" id="select-script-language-id" class="select-script-language">
+					<option value="cs-wd-mstest">C# (WebDriver + MSTest)</option>
+					<option value="cs-wd-nunit">C# (WebDriver + NUnit)</option>
+					<option value="java-wd-testng">Java (WebDriver + TestNG)</option>
+					<option value="java-wd-junit">Java (WebDriver + JUnit)</option>
+					<option value="java-rc-junit">Java (WebDriver-backed Remote Control + JUnit)</option>
+					<option value="katalon" selected>Katalon Studio</option>
+					<option value="new-formatter-nrsynthetics">Node (New Relic Synthetics)</option>
+					<option value="new-formatter-protractorts">Protractor (Typescript)</option>
+					<option value="python2-wd-unittest">Python 2 (WebDriver + unittest)</option>
+					<option value="python-appdynamics">Python (AppDynamics)</option>
+					<option value="robot">Robot Framework</option>
+					<option value="ruby-wd-rspec">Ruby (WebDriver + RSpec)</option>
+					<option value="xml">XML</option>
+					<!-- must start with new-formatter- -->
+					<option value="new-formatter-sample">Sample for new formatters</option>
+				</select>
+				<div style="display: inline-block;">You can add your own formatter. Read more <a target="_blank" href="https://github.com/katalon-studio/katalon-recorder" class="katalon-link">here</a>.</div>
+            </div>
+			<textarea id="txt-script-id" class="txt-script">scripts</textarea>
         </div>
         <div id="ka-select-project-dialog" title="Select Katalon TestOps Project" style="display: none">
             <label for="select-ka-project">Select a project to upload your logs. You can create new projects at <a target="_blank" href="https://analytics.katalon.com" class="katalon-link">Katalon TestOps</a>.</label>

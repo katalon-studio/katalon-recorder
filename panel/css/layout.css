@@ -1,17 +1,22 @@
 /* Essentials */
 
 ::-webkit-scrollbar {
-    width: 6px;
-	z-index: 99;
+    width: 4px;
+	z-index: -99;
+	position: relative;
 }
  
 ::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+	z-index: -99;
+	position: relative;
 }
  
 ::-webkit-scrollbar-thumb {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
 	background: var(--border-color-kat);
+	z-index: -99;
+	position: relative;
 }
 
 html,

@@ -48,10 +48,26 @@
 	}
 }
 
+img.kto-light {
+	display: none;
+}
+img.kto-dark {
+	display: block;
+}
+
+#adjust {
+	text-decoration: none;
+	font-size: 18px;
+}
+#adjust i {
+	display: block;
+}
+
 :root {
 	--main-bg-color: #D7DBDB;
 	--main-txt-color: #333333;
 	--sub-btn-txt-color: #54585D;
+	--sub-btn-txt-hover-color: #54585D;
 	--sub-btn-bg-start-color: #FFF;
 	--sub-btn-bg-end-color: #e0e1df;
 	--white-bg: #FFF;
@@ -62,18 +78,20 @@
 	--selected-bg-color: #EFF2EE;
 	--success-bg-color: #e5ffe5;
 	--executing-bg-color: #ffffe6;
-	--fail-bg-color: #ffe5e5;
-	--success-txt-color: initial;
-	--executing-txt-color: initial;
-	--fail-txt-color: initial;
+	--fail-bg-color: #ffe5e5; /*#E60000*/
+	--success-txt-color: green;
+	--executing-txt-color: #ffeaa7;
+	--fail-txt-color: #d63031;
 	--dialog-bg-header: linear-gradient(180deg, #F9F9F9 0%, #F0F1F1 100%);
+	--dialog-bg-hover-header: linear-gradient(180deg, #F0F1F1 0%, #F9F9F9 100%);
 }
 
 @media (prefers-color-scheme: dark) {
 	:root {
 		--main-bg-color: #111;
 		--main-txt-color: #fafafa;
-		--sub-btn-txt-color: #fafafa;
+		--sub-btn-txt-color: #54585D;
+		--sub-btn-txt-hover-color: #fafafa;
 		--sub-btn-bg-start-color: #222;
 		--sub-btn-bg-end-color: #333;
 		--white-bg: #202020;
@@ -86,9 +104,10 @@
 		--executing-bg-color: none;
 		--fail-bg-color: none;
 		--success-txt-color: green;
-		--executing-txt-color: yellow;
-		--fail-txt-color: #EA4335;
+		--executing-txt-color: #ffeaa7;
+		--fail-txt-color: #d63031;
 		--dialog-bg-header: linear-gradient(180deg, #151515 0%, #181818 100%);
+		--dialog-bg-hover-header: linear-gradient(180deg, #181818 0%, #151515 100%);
 		text-shadow: none!important;
 		font-weight: none;
 	}
@@ -105,6 +124,12 @@
 		margin: 0;
 		max-height: 100%;
 		max-width: 100%;
+	}
+	img.kto-light {
+		display: block;
+	}
+	img.kto-dark {
+		display: none;
 	}
 }
 
@@ -135,10 +160,6 @@ sup {
     margin-top: 5px;
     margin-left: 5px;
 }
-
-.simplebar-scrollbar:before { background: rgba(0,0,0,0.3); }
-#middle-container .simplebar-track.simplebar-vertical { z-index: -99; }
-.module .width_full .simplebar-track.simplebar-vertical { z-index: 99; }
 
 .ui-widget.ui-widget-content { z-index: 9999!important; }
 
@@ -202,16 +223,20 @@ section#main {
     margin-right: 6px;
 }
 
+.sub_btn:disabled {
+	color: var(--sub-btn-txt-color);
+}
+
 .sub_btn:not([disabled]):hover {
-    background: rgba(0,0,0,0.1);
+    background: var(--dialog-bg-hover-header);
     /* border-top: 1px solid #d4d4d4;
     border-left: 1px solid #d4d4d4;
     border-bottom: 1px solid #d4d4d4; */
+	border-left: 0.5px solid var(--main-bg-color);
     border-top: none;
-    border-left: 0.5px solid #b7b7b742;
     border-bottom: none;
     border-right: none;
-    color: #54585D;
+    color: var(--sub-btn-txt-hover-color);
     outline: none;
 }
 
@@ -221,10 +246,10 @@ section#main {
     border-left: 1px solid #d4d4d4;
     border-bottom: 1px solid #d4d4d4; */
     border-top: none;
-    border-left: 0.5px solid #b7b7b742;
+    border-left: 0.5px solid var(--main-bg-color);
     border-bottom: none;
     border-right: none;
-    color: #54585D;
+    color: var(--sub-btn-txt-hover-color);
     outline: none;
 }
 
@@ -236,7 +261,7 @@ section#main {
     display: none;
 }
 #record.record--stop img {
-    animation: pulse 2s infinite;
+    animation: pulse-err 2s infinite;
     border-radius: 50%;
 }
 
@@ -280,6 +305,33 @@ section#main {
     100% {
         -moz-box-shadow: 0 0 0 0 rgba(111, 206, 82, 0);
         box-shadow: 0 0 0 0 rgba(111, 206, 82, 0);
+    }
+}
+
+@-webkit-keyframes pulse-err {
+    0% {
+        -webkit-box-shadow: 0 0 0 0 rgba(230, 0, 0, 0.4);
+    }
+    70% {
+        -webkit-box-shadow: 0 0 0 10px rgba(230, 0, 0, 0);
+    }
+    100% {
+        -webkit-box-shadow: 0 0 0 0 rgba(230, 0, 0, 0);
+    }
+}
+
+@keyframes pulse-err {
+    0% {
+        -moz-box-shadow: 0 0 0 0 rgba(230, 0, 0, 0.4);
+        box-shadow: 0 0 0 0 rgba(230, 0, 0, 0.4);
+    }
+    70% {
+        -moz-box-shadow: 0 0 0 10px rgba(230, 0, 0, 0);
+        box-shadow: 0 0 0 10px rgba(230, 0, 0, 0);
+    }
+    100% {
+        -moz-box-shadow: 0 0 0 0 rgba(230, 0, 0, 0);
+        box-shadow: 0 0 0 0 rgba(230, 0, 0, 0);
     }
 }
 
@@ -373,10 +425,11 @@ section#main {
     font-weight: normal;
 }
 
-.sub_btn#github-repo, #export {
+.sub_btn#github, #export {
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
 }
+
 
 .sub_btn#settings i::before {
     background-image: url(/katalon/images/SVG/setting-icon.svg);
@@ -386,10 +439,13 @@ section#main {
     background-image: url(/katalon/images/SVG/help-icon.svg);
 }
 
-.sub_btn#github-repo img {
-    width: 16px;
-    height: 16px;
-    margin-right: 0;
+.sub_btn#github i {
+    font-size: 20px;
+	color: var(--main-txt-color);
+	display: block;
+}
+.sub_btn#github {
+	text-decoration: none;
 }
 
 /* #playSuites{
@@ -510,7 +566,6 @@ div.suite-plus i:before {
     height: calc(100% - 37px);
     flex-grow: 1;
     flex-shrink: 1;
-	z-index: 999;
 }
 
 .module_content {
@@ -586,8 +641,12 @@ div.suite-plus i:before {
     border-left: 1px solid var(--border-color-kat);
 }
 .message p.selectedCase.fail {
-	color: red;
-    border-left: 1px solid red;
+	color: var(--fail-txt-color);
+    border-left: 1px solid var(--fail-txt-color);
+}
+.message p.selectedCase.success {
+	color: green;
+	border-left: 1px solid green;
 }
 
 .message p:before {
@@ -598,7 +657,7 @@ div.suite-plus i:before {
     content: " ";
     width: 6px;
     height: 16px;
-    margin-left: 0px;
+    margin-left: 5px;
     margin-right: 10px;
     background: transparent;
     flex-grow: 0;
@@ -1415,12 +1474,18 @@ p.test-case-title {
     font-family: 'Roboto Mono', monospace;
     font-size: 11px;
     border: 1px solid var(--border-color);
+	background: var(--dialog-bg-header);
+	color: var(--main-txt-color);
     width: 100%;
 }
 .CodeMirror-scroll {
 	margin-bottom: 0;
     margin-right: 0;
-    padding-bottom: 0;
+    /*padding-bottom: 0;*/
+}
+.CodeMirror-gutters {
+	border-right: none;
+	background: #111;
 }
 
 .kat-90 {
@@ -1428,7 +1493,7 @@ p.test-case-title {
 }
 
 .kat-75 {
-    height: 75%;
+    height: calc(100% - 32px);
 }
 
 .ui-dialog .ui-dialog-buttonpane {
