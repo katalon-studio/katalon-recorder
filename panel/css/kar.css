@@ -358,16 +358,16 @@ section#main {
 }
 
 #slider-container {
+	border: 1px solid var(--white-bg);
+    background: var(--white-bg);
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
     position: absolute;
     z-index: 1;
-    background: var(--main-bg-color);
-    border: none;
     right: -4px;
 	top: 40px;
 	border-radius: 3px;
     width: 44px;
     height: 158px;
-    box-shadow: 0 0 3px 0 rgba(56,54,54,0.2);
 }
 
 
