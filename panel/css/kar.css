@@ -47,7 +47,13 @@
 		display: none;
 	}
 }
-
+#katalon-logo img {
+	display: block;
+    height: 26px;
+    margin: 0;
+    max-height: 100%;
+    max-width: 100%;
+}
 img.kto-light {
 	display: none;
 }
@@ -86,6 +92,8 @@ img.kto-dark {
 	--dialog-bg-header: linear-gradient(180deg, #F9F9F9 0%, #F0F1F1 100%);
 	--dialog-bg-hover-header: linear-gradient(180deg, #F0F1F1 0%, #F9F9F9 100%);
 	--menu-item-hover: #f1f1f1;
+	--input-bg-color: #fafbfc;
+	--input-inner-shadow-color: rgba(228,228,228,0.5);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -112,8 +120,8 @@ img.kto-dark {
 		--dialog-bg-hover-header: linear-gradient(180deg, #181818 0%, #151515 100%);
 		--inset-box-shadow: rgba(228,228,228,0.1);
 		--menu-item-hover: rgba(0,0,0,0.1);
-		text-shadow: none!important;
-		font-weight: none;
+		--input-bg-color: #252525;
+		--input-inner-shadow-color: rgba(0,0,0,0.2);
 	}
 	#logo_kr_full img.light {
 		display: block;
@@ -429,7 +437,7 @@ section#main {
     font-weight: normal;
 }
 
-.sub_btn#github, #export {
+.sub_btn#katalon-logo, #export {
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
 }
@@ -1016,21 +1024,21 @@ div.test-suite-title {
     border: 0.5px solid var(--border-color);
     outline: none;
     box-shadow: none;
-    background: #fafbfc;
+    background: var(--input-bg-color);
     font-family: 'Roboto', sans-serif;
     font-size: 12px;
-    padding: 5px;
+    padding: 5px 20px 5px 10px;
     height: auto;
-    width: calc(100% - 87px);
-    box-shadow: inset 0 0 3px 0 rgba(228,228,228,0.5);
-    color: #5a5a5a;
+    width: calc(100% - 106px);
+    box-shadow: inset 0 0 3px 0 var(--input-inner-shadow-color);
+    color: var(--main-txt-color);
 }
 
 .fieldset input[type=text]:focus {
     outline: none;
-    border: 0.5px solid #2B8500;
-    box-shadow: inset 0 0 3px 0 rgba(228,228,228,0.5);
-    background-color: #fff;
+    border: 0.5px solid var(--border-color);
+    box-shadow: inset 0 0 3px 0 var(--input-inner-shadow-color);
+    background: var(--input-bg-color);
 }
 
 .w3-dropdown-content#command-dropdown {
@@ -1038,7 +1046,7 @@ div.test-suite-title {
 }
 
 .fieldset input[type=text]#command-target {
-    width: calc(100% - 173px);
+    width: calc(100% - 178px);
     padding-right: 20px;
 }
 
@@ -1053,10 +1061,10 @@ div.test-suite-title {
     background-position: center center;
     background-repeat: no-repeat;
     border-radius: 3px;
-    background-color: #fbfbfb;
-    border: 0.5px solid #D1D1D1;
+	background: var(--dialog-bg-header);
+    border: 0.5px solid var(--border-color);
+    box-shadow: inset 0 0 3px 0 var(--inset-box-shadow);
     margin-left: 8px;
-    box-shadow: inset 0 0 3px 0 rgba(228,228,228,0.5);
     cursor: pointer;
     padding: 0;
     box-sizing: border-box;
@@ -1069,7 +1077,6 @@ div.test-suite-title {
 
 #selectElementButton.active, #selectElementButton:hover {
     background-image: url(/katalon/images/SVG/select-icon-hover.svg);
-    background-color: #fbfbfb;
 }
 
 #selectElementButton:focus {
@@ -1094,7 +1101,6 @@ div.test-suite-title {
 
 #showElementButton:hover {
     background-image: url(/katalon/images/SVG/find-icon-hover.svg);
-    background-color: #fbfbfb;
 }
 
 #showElementButton:focus {
@@ -1806,4 +1812,17 @@ a.katalon-link {
 	color: #5cceff;
 	text-decoration: underline;
 	outline: none;
+}
+select.select-script-language {
+	outline: 0;
+    padding: 5px 10px;
+    border-radius: 3px;
+	background: var(--input-bg-color);
+	color: var(--main-txt-color);
+	border: 1px solid var(--border-color);
+}
+select.select-script-language option { outline: 0; border:0; }
+select.select-script-language option:checked {
+	background: var(--border-color-kat);
+	color: #fff;
 }
