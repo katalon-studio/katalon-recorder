@@ -94,6 +94,8 @@ img.kto-dark {
 	--menu-item-hover: #f1f1f1;
 	--input-bg-color: #fafbfc;
 	--input-inner-shadow-color: rgba(228,228,228,0.5);
+	--ui-button-bg-color: linear-gradient(180deg, #FFFFFF 0%, #E0E1DF 100%);
+	--ui-button-border-color: #d4d4d4;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -122,6 +124,8 @@ img.kto-dark {
 		--menu-item-hover: rgba(0,0,0,0.1);
 		--input-bg-color: #252525;
 		--input-inner-shadow-color: rgba(0,0,0,0.2);
+		--ui-button-bg-color: linear-gradient(180deg, #111 0%, #121212 100%);
+		--ui-button-border-color: #151515;
 	}
 	#logo_kr_full img.light {
 		display: block;
@@ -1516,16 +1520,25 @@ p.test-case-title {
 .ui-dialog .ui-dialog-buttonpane {
     background: var(--dialog-bg-header)!important;
 	margin-top: 0!important;
+	padding: 10px!important;
 }
 
 .ui-dialog .ui-dialog-buttonpane button {
-    margin: 5px;
+    margin: 0 0 0 10px;
     font-weight: 500;
 }
 
 .ui-button {
-    border: 1px solid var(--border-color);
-    background: linear-gradient(180deg, #FFFFFF 0%, #E0E1DF 100%);
+    border: 1px solid var(--ui-button-border-color);
+    background: var(--ui-button-bg-color);
+}
+.ui-button:hover,
+.ui-button:active,
+.ui-button:focus {
+	background: linear-gradient(45deg, #f54966 0%, #cc1433 100%);
+	border: 1px solid #cc1433;
+	outline: 0;
+	color: #fff;
 }
 
 .menu ul {
