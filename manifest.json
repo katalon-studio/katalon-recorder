@@ -6,9 +6,9 @@
     "homepage_url":"https://www.katalon.com/",
     "icons":
     {
-        "16": "katalon/images/branding_16.png",
-        "48": "katalon/images/branding_48.png",
-       "128": "katalon/images/branding_128.png"
+        "16": "katalon/images/branding/branding_16.png",
+        "48": "katalon/images/branding/branding_48.png",
+       "128": "katalon/images/branding/branding_128.png"
     },
     "permissions": [
         "tabs",
