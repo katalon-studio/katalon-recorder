@@ -82,7 +82,7 @@
 
     "browser_action":
     {
-        "default_icon": "katalon/images/branding_16.png",
+        "default_icon": "katalon/images/branding/branding_16.png",
         "default_title": "Katalon Recorder"
     },
 
