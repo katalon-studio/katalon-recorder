@@ -735,8 +735,7 @@ BrowserBot.prototype.openLocation = function(target) {
 BrowserBot.prototype.openWindow = function(url, windowID) {
     if (url != "") {
         // KAT-BEGIN change to katalon url
-        // url = "https://www.google.com";
-        url = "https://www.katalon.com";
+        url = "https://www.google.com";
     }
     if (browserVersion.isHTA) {
         // in HTA mode, calling .open on the window interprets the url relative to that window

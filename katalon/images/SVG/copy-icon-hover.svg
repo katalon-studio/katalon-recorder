@@ -9,13 +9,13 @@
     <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="copy-icon-hover">
             <g id="Group" transform="translate(1.500000, 0.500000)">
-                <rect id="Rectangle-3" stroke="#2B8500" stroke-width="1.1" x="3.55" y="3.55" width="7.9" height="9.9" rx="1"></rect>
+                <rect id="Rectangle-3" stroke="#f54966" stroke-width="1.1" x="3.55" y="3.55" width="7.9" height="9.9" rx="1"></rect>
                 <g id="Rectangle-3-Copy">
                     <mask id="mask-2" fill="white">
                         <use xlink:href="#path-1"></use>
                     </mask>
                     <g id="Mask"></g>
-                    <rect stroke="#2B8500" stroke-width="1.1" mask="url(#mask-2)" x="1.55" y="1.55" width="8.9" height="8.9" rx="1"></rect>
+                    <rect stroke="#f54966" stroke-width="1.1" mask="url(#mask-2)" x="1.55" y="1.55" width="8.9" height="8.9" rx="1"></rect>
                 </g>
             </g>
         </g>

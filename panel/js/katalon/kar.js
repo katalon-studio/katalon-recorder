@@ -300,7 +300,9 @@ function addContextMenuButton(id, node, menu, isCase) {
         $(".menu").css("left", event.pageX);
         $(".menu").css("top", event.pageY);
         $(mid).show();
+
     }, false);
+
 }
 //KAT-END
 
@@ -756,6 +758,10 @@ $(function() {
     var clearLog = $('#clear-log');
     var saveLog = $('#save-log');
     var upload = $('#ka-upload');
+    
+    var csvAdd = $('#data-files-add-csv');
+    var jsonAdd = $('#data-files-add-json');
+    var extensionAdd = $('#extension-add');
 
     setActiveTab(logLi, logContainer);
 
@@ -793,14 +799,37 @@ $(function() {
             upload.show();
             saveLog.show();
             clearLog.show();
+            csvAdd.hide();
+            jsonAdd.hide();
+            extensionAdd.hide();
         } else if (li == screenshotLi) {
-            upload.show();
-            saveLog.show();
+            upload.hide();
+            saveLog.hide();
             clearLog.hide();
+            csvAdd.hide();
+            jsonAdd.hide();
+            extensionAdd.hide();
+        } else if (li == dataLi) { 
+            upload.hide();
+            saveLog.hide();
+            clearLog.hide();
+            csvAdd.show();
+            jsonAdd.show();
+            extensionAdd.hide();
+        } else if (li == extensionsLi) { 
+            upload.hide();
+            saveLog.hide();
+            clearLog.hide();
+            csvAdd.hide();
+            jsonAdd.hide();
+            extensionAdd.show();
         } else {
             upload.hide();
             saveLog.hide();
             clearLog.hide();
+            csvAdd.hide();
+            jsonAdd.hide();
+            extensionAdd.hide();
         }
         // if (li !== logLi) {
         //     clearLog.parent().hide();
@@ -842,9 +871,9 @@ $(function() {
     $('#selectElementButton').attr('title', "Select a target element for the current command");
     $('#showElementButton').attr('title', "Find and highlight the curent target element of the current command");
     $('#speed').attr('title', "Adjust play speed");
-    $('#new').attr('title', "Create new test case. See samples at https://github.com/katalon-studio/katalon-recorder-samples.");
+    $('#new').attr('title', "Create new test case");
     $('#export').attr('title', "Export the current test case to script in C#, Java, Ruby, Python, (Katalon Studio) Groovy, or Robot Framework");
-    $('#suite-open').attr('title', "Open test suites. See samples at https://github.com/katalon-studio/katalon-recorder-samples.");
+    $('#suite-open').attr('title', "Open test suite");
     $('#suite-plus').attr('title', "Create new test suite");
 })
 // KAT-END
@@ -1002,7 +1031,7 @@ function switchRecordButton(stop) {
         record.find('img').attr('src', '/katalon/images/SVG/record-icon-16.svg');
         record.removeClass("record--stop");
     } else {
-        record.find('img').attr('src', '/katalon/images/SVG/stop-icon-16.svg');
+        record.find('img').attr('src', '/katalon/images/SVG/record-stop-icon-16.svg');
         record.addClass("record--stop");
     }
 }
@@ -1151,7 +1180,7 @@ $(function() {
             },
             error: function(response) {
                 console.log(response);
-                showDialog('<p>Please log in to <a target="_blank" href="https://analytics.katalon.com" class="katalon-link">Katalon Analytics (Beta)</a> first and try again.</p><p>You can register a completely free account at <a target="_blank" href="https://www.katalon.com" class="katalon-link">https://www.katalon.com</a>.</p><p>Katalon Analytics helps you manage automation results as you test it manually and generate quality, performance and flakiness reports to improve your confidence in evaluating the test results. Katalon Analytics supports both <a target="_blank" href="https://www.katalon.com" class="katalon-link">Katalon Studio</a> (one of the top 10 test automation solutions) and Katalon Recorder.</p><p><a target="_blank" href="https://www.katalon.com/katalon-analytics" class="katalon-link">Learn more</a> about Katalon Analytics (Beta).</p>', true);
+                showDialog('<img class="kto-light" style="max-width: 50%;" src="../../../katalon/images/branding/Katalon-TestOps-full-color-large-w.png" alt="Katalon TestOps" /><img class="kto-dark" style="max-width: 50%;" src="../../../katalon/images/branding/Katalon-TestOps-full-color-large.png" alt="Katalon TestOps" /><p>Please log in to <a target="_blank" href="https://analytics.katalon.com" class="testops-link">Katalon TestOps (beta)</a> first and try again.</p><p>You can register a completely free account at <a target="_blank" href="https://www.katalon.com" class="testops-link">katalon.com</a>.</p><p>Katalon TestOps helps you manage automation results as you test it manually and generate quality, performance and flakiness reports to improve your confidence in evaluating the test results. Katalon TestOps supports both <a target="_blank" href="https://www.katalon.com" class="testops-link">Katalon Studio</a> (one of the top 10 test automation solutions) and Katalon Recorder.</p><p style="margin-bottom: 0;"><a target="_blank" href="https://www.katalon.com/testops/" class="testops-link">Learn more</a> about Katalon TestOps (Beta).</p>', true);
             }
         });
     });
@@ -1185,7 +1214,7 @@ function addToScreenshot(imgSrc, title) {
     var li = $('<li></li>');
     var a = $('<a></a>').attr('target', '_blank').attr('href', imgSrc).attr('title', title).attr('download', title).addClass('downloadable-screenshot');
     var img = $('<img>').attr('src', imgSrc).addClass('thumbnail');
-    var screenshotTitle = $('<p></p>').text(title);
+    var screenshotTitle = $('<p></p>').text(title).hide();
     li.append(a.append(img)).append(screenshotTitle);
     screenshotUl.append(li);
     sideex_log.logScreenshot(imgSrc, title);
@@ -1362,7 +1391,20 @@ function resetDataList() {
 
 function renderDataListItem(name) {
     var tr = $('<tr></tr>');
-    var tdType = $('<td></td>').text('CSV');
+    var tdType = $('<td></td>').text( function() {
+        var dataFile = dataFiles[name];
+        if (!dataFile.data) {
+            var type = dataFile.type;
+            if (!type) {
+                type = 'csv';
+            }
+            if (type === 'csv') {
+                return "CSV";
+            } else {
+                return "JSON";
+            }
+        }
+    });
     var tdName = $('<td></td>').text(name);
     var tdActions = $('<td></td>');
     var renameButton = $('<button class="rename-button"></button>');

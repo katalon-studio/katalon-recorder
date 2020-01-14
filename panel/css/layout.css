@@ -1,5 +1,24 @@
 /* Essentials */
 
+::-webkit-scrollbar {
+    width: 4px;
+	z-index: -99;
+	position: relative;
+}
+ 
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+	z-index: -99;
+	position: relative;
+}
+ 
+::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+	background: var(--border-color-kat); /*background: linear-gradient(180deg, #f54966 0%, #cc1433 100%);*/
+	z-index: -99;
+	position: relative;
+}
+
 html,
 div,
 map,
@@ -447,9 +466,9 @@ section#main {
 }
 
 #main h3 {
-    color: #1F1F20;
+    color: var(--main-txt-color);
     text-transform: uppercase;
-    text-shadow: 0 1px 0 #fff;
+    /*text-shadow: 0 1px 0 #fff;*/
     font-size: 13px;
     margin: 8px 20px;
 }
@@ -462,7 +481,7 @@ section#main {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    background: #ffffff;
+    background: var(--white-bg);
 }
 
 .module_all {
@@ -491,7 +510,7 @@ section#main {
 .module_right {}
 
 #main .module header h3 {
-    width: 90%;
+    width: calc(100% - 20px);
     float: left;
 }
 
@@ -521,11 +540,8 @@ section#main {
 }
 
 #testCase-container .module_content {
-    margin-top: 0px;
-    margin-bottom: 1px;
-    margin-left: 3px;
-    margin-right: 3px;
-    color: #666;
+    margin: 5px /*12*/5px 5px 5px;
+    color: var(--main-txt-color);
 }
 
 #tab4 .module_content {
@@ -533,11 +549,15 @@ section#main {
     margin-bottom: 1px;
     margin-left: 15px;
     margin-right: 15px;
-    color: #666;
+    color: var(--main-txt-color);
 }
 
 .module_content #logcontainer {
     
+}
+
+.module_content table {
+	width: 100%;
 }
 
 /* Module Widths */
@@ -630,7 +650,7 @@ section#main {
 
 .tablesorter thead tr {
     height: 39px;
-    background: #F1F1F4 url(../images/secondary_bar.png) repeat-x;
+    background: var(--header-bg);
     table-layout: fixed;
     text-align: left;
     text-indent: 6px;
@@ -650,28 +670,31 @@ section#main {
 }
 
 .tablesorter tbody tr.selectedRecord {
-    background-color: #f8f8f8;
+    background-color: var(--selected-bg-color);
 }
 
 .tablesorter tbody tr.selectedRecord td {
     padding-top: 6px;
-    border-top: 1px solid #ccc;;
+    border-top: 1px solid #ccc;
 }
 
 .tablesorter tbody tr.executing {
-    background-color: #ffffe6;
+    background-color: var(--executing-bg-color);
+	color: var(--executing-txt-color);
 }
 
 .tablesorter tbody tr.success {
-    background-color: #e5ffe5;
+    background-color: var(--success-bg-color);
+	color: var(--success-txt-color);
 }
 
 .tablesorter tbody tr.fail {
-    background-color: #ffe5e5;
+    background-color: var(--fail-bg-color);
+	color: var(--fail-txt-color);
 }
 
 .tablesorter tbody tr td.break {
-    background-color:  #5CB9FF;
+    background-color: #5CB9FF;
 }
 
 .tablesorter td {
@@ -692,8 +715,8 @@ section#main {
 }
 
 .record-bottom.active {
-    border-top: 1px solid #ccc;;
-    background-color: #f8f8f8;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--selected-bg-color);
 }
 ul.tabs2 {
     margin: 3px 0 0 5px;
@@ -730,7 +753,7 @@ ul.tabs2 li {
 ul.tabs2 li a {
     cursor: pointer;
     text-decoration: none;
-    color: #333333;
+    color: var(--main-txt-color);
     display: block;
     padding: 0 10px;
     height: 24px;
@@ -747,9 +770,9 @@ ul.tabs li {
 ul.tabs li a {
     cursor: pointer;
     text-decoration: none;
-    color: #333333;
+    color: var(--main-txt-color);
     display: block;
-    padding: 0 10px;
+	padding:0;
     height: 24px;
 }
 
@@ -796,7 +819,7 @@ html ul.tabs2 li:active {
 }
 
 ul.tabs2 li:hover a {
-    color: #000000;
+    color: var(--main-txt-color);
 }
 html ul.tabs li:active {
     background: #F1F2F4;
@@ -806,7 +829,7 @@ html ul.tabs li:active {
 }
 
 ul.tabs li:hover a {
-    color: #000000;
+    color: var(--main-txt-color);
 }
 
 #main .module header h3.tabs_involved {
@@ -877,7 +900,7 @@ div.suite-plus {
     border-radius: 5px;
     width: inherit;
     cursor: pointer;
-    margin-top: 5px;
+    /*margin-top: 5px;*/
     line-height: 20px;
     min-height: 30px;
 }
@@ -1081,7 +1104,7 @@ input[type=submit].btn_post_message:hover {
 }
 
 .failures {
-    color: red;
+    color: var(--fail-txt-color);
     font-weight: 600;
 }
 
@@ -1369,7 +1392,7 @@ input[type=submit].btn_post_message:hover {
     border-radius: 20px;
     background: #D0D1D4;
     cursor: pointer;
-    text-shadow: 0 1px 0 #fff;
+    /*text-shadow: 0 1px 0 #fff;*/
     border: 1px solid #9c9c9c;
     font-size: 14px;
     margin-right: 0.5%;

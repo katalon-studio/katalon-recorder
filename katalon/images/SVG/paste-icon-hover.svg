@@ -12,14 +12,14 @@
             <g id="Group" transform="translate(1.500000, 0.500000)">
                 <g id="Rectangle-3">
                     <use fill="#99CD81" fill-rule="evenodd" xlink:href="#path-1"></use>
-                    <rect stroke="#2B8500" stroke-width="1.1" x="3.55" y="3.55" width="7.9" height="9.9" rx="1"></rect>
+                    <rect stroke="#f54966" stroke-width="1.1" x="3.55" y="3.55" width="7.9" height="9.9" rx="1"></rect>
                 </g>
                 <g id="Rectangle-3-Copy">
                     <mask id="mask-3" fill="white">
                         <use xlink:href="#path-2"></use>
                     </mask>
                     <g id="Mask"></g>
-                    <rect stroke="#2B8500" stroke-width="1.1" mask="url(#mask-3)" x="1.55" y="1.55" width="8.9" height="8.9" rx="1"></rect>
+                    <rect stroke="#f54966" stroke-width="1.1" mask="url(#mask-3)" x="1.55" y="1.55" width="8.9" height="8.9" rx="1"></rect>
                 </g>
             </g>
         </g>

@@ -309,8 +309,7 @@ class ExtCommand {
                    if (tabs.length === 0) {
                        return browser.windows.create({
                           // KAT-BEGIN change to Katalon url
-                          // url: "https://google.com"
-                          url: "https://www.katalon.com"
+                          url: "https://www.google.com"
                           // KAT-END
                        }).then(function (window) {
                            self.setFirstTab(window.tabs[0]);
@@ -325,8 +324,7 @@ class ExtCommand {
                        let tabInfo = null;
                        return browser.tabs.update(tabs[0].id, {
                                 // KAT-BEGIN change to Katalon url
-                                // url: "https://google.com"
-                                url: "https://www.katalon.com"
+                                url: "https://www.google.com"
                                 // KAT-END
                               }).then(function(tab) {
                                   tabInfo = tab;
@@ -335,8 +333,7 @@ class ExtCommand {
                                   // Firefox did not update url information when tab is updated
                                   // We assign url manually and go to set first tab
                                   // KAT-BEGIN change to Katalon url
-                                  // tabInfo.url = "https://google.com";
-                                  tabInfo.url = "https://www.katalon.com";
+                                  tabInfo.url = "https://www.google.com";
                                   // KAT-END
                                   self.setFirstTab(tabInfo);
                               })
