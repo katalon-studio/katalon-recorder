@@ -1,8 +1,8 @@
 // KAT-BEGIN save last window size
 function getWindowSize(callback) {
     chrome.storage.local.get('window', function(result) {
-        var height = 730;
-        var width = 750;
+        var height = 740;
+        var width = 760;
         if (result) {
             try {
                 result = result.window;
