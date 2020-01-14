@@ -516,7 +516,7 @@ TestCase.prototype.setBaseURL = function(baseURL) {
 TestCase.prototype.getBaseURL = function() {
     if (!this.baseURL || this.baseURL == "") {
         // return "http://change-this-to-the-site-you-are-testing/";
-        return 'https://www.katalon.com/';
+        return 'https://www.google.com/';
     } else {
         return this.baseURL;
     }
