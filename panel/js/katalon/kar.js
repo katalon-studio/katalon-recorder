@@ -758,10 +758,10 @@ $(function() {
     var clearLog = $('#clear-log');
     var saveLog = $('#save-log');
     var upload = $('#ka-upload');
-	
-	var csvAdd = $('#data-files-add-csv');
-	var jsonAdd = $('#data-files-add-json');
-	var extensionAdd = $('#extension-add');
+    
+    var csvAdd = $('#data-files-add-csv');
+    var jsonAdd = $('#data-files-add-json');
+    var extensionAdd = $('#extension-add');
 
     setActiveTab(logLi, logContainer);
 
@@ -799,37 +799,37 @@ $(function() {
             upload.show();
             saveLog.show();
             clearLog.show();
-			csvAdd.hide();
-			jsonAdd.hide();
-			extensionAdd.hide();
+            csvAdd.hide();
+            jsonAdd.hide();
+            extensionAdd.hide();
         } else if (li == screenshotLi) {
             upload.hide();
             saveLog.hide();
             clearLog.hide();
-			csvAdd.hide();
-			jsonAdd.hide();
-			extensionAdd.hide();
+            csvAdd.hide();
+            jsonAdd.hide();
+            extensionAdd.hide();
         } else if (li == dataLi) { 
-			upload.hide();
-            saveLog.hide();
-            clearLog.hide();
-			csvAdd.show();
-			jsonAdd.show();
-			extensionAdd.hide();
-		} else if (li == extensionsLi) { 
-			upload.hide();
-            saveLog.hide();
-            clearLog.hide();
-			csvAdd.hide();
-			jsonAdd.hide();
-			extensionAdd.show();
-		} else {
             upload.hide();
             saveLog.hide();
             clearLog.hide();
-			csvAdd.hide();
-			jsonAdd.hide();
-			extensionAdd.hide();
+            csvAdd.show();
+            jsonAdd.show();
+            extensionAdd.hide();
+        } else if (li == extensionsLi) { 
+            upload.hide();
+            saveLog.hide();
+            clearLog.hide();
+            csvAdd.hide();
+            jsonAdd.hide();
+            extensionAdd.show();
+        } else {
+            upload.hide();
+            saveLog.hide();
+            clearLog.hide();
+            csvAdd.hide();
+            jsonAdd.hide();
+            extensionAdd.hide();
         }
         // if (li !== logLi) {
         //     clearLog.parent().hide();
@@ -1390,22 +1390,22 @@ function resetDataList() {
 }
 
 function renderDataListItem(name) {
-	var tr = $('<tr></tr>');
+    var tr = $('<tr></tr>');
     var tdType = $('<td></td>').text( function() {
-		var dataFile = dataFiles[name];
-		if (!dataFile.data) {
-			var type = dataFile.type;
-			if (!type) {
-				type = 'csv';
-			}
-			if (type === 'csv') {
-				return "CSV";
-			} else {
-				return "JSON";
-			}
-		}
-	});
-	var tdName = $('<td></td>').text(name);
+        var dataFile = dataFiles[name];
+        if (!dataFile.data) {
+            var type = dataFile.type;
+            if (!type) {
+                type = 'csv';
+            }
+            if (type === 'csv') {
+                return "CSV";
+            } else {
+                return "JSON";
+            }
+        }
+    });
+    var tdName = $('<td></td>').text(name);
     var tdActions = $('<td></td>');
     var renameButton = $('<button class="rename-button"></button>');
     renameButton.on('click', function() {
