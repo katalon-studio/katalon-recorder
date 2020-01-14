@@ -24,7 +24,7 @@
 <head>
     <meta charset="utf-8" />
     <!-- TODO: Change the title bar text -->
-    <title>Katalon Automation Recorder</title>
+    <title>Katalon Recorder</title>
 
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700|Roboto:400,500,700" rel="stylesheet">
 
@@ -108,7 +108,14 @@
             <button id="add-testCase" style="display: none">+Case</button>
             <button id="delete-testCase" style="display: none">-Case</button>
             <a download="info.html" id="downloadlink" style="display: none">Download</a>
-            <button id="new" class="sub_btn"><i class="fa"></i> New</button>
+			
+			<a name="" target="_blank" id="logo_kr_icon" class="sub_btn"><img src="../katalon/images/branding/branding_128.png" alt="Katalon Recorder" /></button>
+            <a name="" target="_blank" id="logo_kr_full" class="sub_btn">
+				<img class="dark" src="../katalon/images/branding/Katalon-Recorder-full-color-large.png" alt="Katalon Recorder" />
+				<img class="light" src="../katalon/images/branding/Katalon-Recorder-full-color-large-w.png" alt="Katalon Recorder" />
+			</a>
+			
+			<button id="new" class="sub_btn"><i class="fa"></i> New</button>
             <button id="record" class="sub_btn" style="width: 15%"><i class="fa fa-video-camera" aria-hidden="true"></i> Record</button>
             <button id="playback" class="sub_btn" style="width: 20%" disabled><i class="fa fa-play" aria-hidden="true"></i> Play</button>
             <button id="stop" class="sub_btn" style="display: none; width: 20%"><i class="fa fa-stop" aria-hidden="true"></i> Stop</button>
@@ -123,8 +130,9 @@
             </div>
             <button id="settings" class="sub_btn"><i class="fa"></i></button>
             <a id="help" class="sub_btn"><i class="fa"></i></a>
-            <a id="github-repo" class="sub_btn" target="_blank" href="https://github.com/katalon-studio/katalon-recorder"><i class="fa"></i></a>
-            <a id="diamond" class="sub_btn" target="_blank" href="https://katalon.com"><i class="fa fa-diamond"></i></a>
+            <a id="github" class="sub_btn" target="_blank" href="https://github.com/katalon-studio/katalon-recorder"><i class="fa fa-github"></i></a>
+			<!--a id="adjust" class="sub_btn"><i class="fa fa-adjust" aria-hidden="true"></i></a-->
+			<a href="https://www.katalon.com/" target="_blank" id="katalon-logo" class="sub_btn" title="Visit katalon.com"><img src="../katalon/images/SVG/katalon-logo-vector.svg" alt="Katalon Logo Icon" /></a>
             <!-- TODO: Add a stop button -->
         </div>
         <!-- load Suite of older version -->
@@ -294,13 +302,16 @@
                     <li id="reference-log"><a>Reference</a></li>
                     </ul>
                     <ul class="tabs">
-                        <li id="ka-upload"><a title="Upload logs to Katalon Analytics to keep track of execution history, access to automation dashboard and reports."><i></i> Reports</a></li>
+                        <li id="ka-upload"><a title="Upload logs to Katalon TestOps to keep track of execution history, access to automation dashboard and reports."><img src="../katalon/images/branding/ka_32x24px.png" alt="Katalon TestOps"/> Katalon TestOps<sup>beta</sup></a></li>
                         <li id="save-log"><a title="Save logs as...">Save</a></li>
                         <li id="clear-log"><a title="Clear logs">Clear</a></li>
+						<li id="data-files-add-csv"><a title="Add CSV File">Add CSV File</a></li>
+						<li id="data-files-add-json"><a title="Add JSON File">Add JSON File</a></li>
+						<li id="extension-add"><a title="Add JS File">Add Extension Script</a></li>
+						<li id="collapse-console"><a href="javascript:void(0);" title="Toggle panel" id="show-hide-bottom-panel">
+							<img src="/katalon/images/SVG/ic_keyboard_arrow_down_black_18px.svg" data-show="/katalon/images/SVG/ic_keyboard_arrow_up_black_18px.svg" data-hide="/katalon/images/SVG/ic_keyboard_arrow_down_black_18px.svg" alt="Show/Hide">
+						</a></li>
                     </ul>
-                    <a href="javascript:void(0);" title="Toggle panel" id="show-hide-bottom-panel">
-                        <img src="/katalon/images/SVG/ic_keyboard_arrow_down_black_18px.svg" data-show="/katalon/images/SVG/ic_keyboard_arrow_up_black_18px.svg" data-hide="/katalon/images/SVG/ic_keyboard_arrow_down_black_18px.svg" alt="Show/Hide">
-                    </a>
                 </header>
                 <div id="tab4" class="tab_content case_roll">
                     <div class="module_content">
@@ -311,19 +322,36 @@
                         </div>
                         <div id="variablecontainer">
                             <table id="variable-grid">
+								<colgroup>
+									<col width="33.3333%">
+									<col width="33.3333%">
+									<col width="33.3333%">
+								</colgroup>
+								<thead>
+                                    <tr>
+                                        <th>Variable</th>
+                                        <th>Format</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
                                 <tbody>
                                 </tbody>
                             </table>
                             <div id="variable-grid-border"></div>
                         </div>
                         <div id="datacontainer" class="file-container">
-                            <input id="load-csv-hidden" type="file" multiple style="display: none"></input>
-                            <input id="load-json-hidden" type="file" multiple style="display: none"></input>
-                            <div class="submit_link">
+                            <input id="load-csv-hidden" type="file" accept=".csv" multiple style="display: none"></input>
+                            <input id="load-json-hidden" type="file" accept=".json" multiple style="display: none"></input>
+                            <!--div class="submit_link">
                                 <button id="data-files-add-csv" class="sub_btn"><img src="/katalon/images/SVG/add-icon.svg"> Add CSV File</button>
                                 <button id="data-files-add-json" class="sub_btn"><img src="/katalon/images/SVG/add-icon.svg"> Add JSON File</button>
-                            </div>
+                            </div-->
                             <table>
+								<colgroup>
+									<col width="33.3333%">
+									<col width="33.3333%">
+									<col width="33.3333%">
+								</colgroup>
                                 <thead>
                                     <tr>
                                         <th>Type</th>
@@ -336,11 +364,16 @@
                             </table>
                         </div>
                         <div id="extensionscontainer" class="file-container">
-                            <input id="load-extension-hidden" type="file" multiple style="display: none"></input>
-                            <div class="submit_link">
+                            <input id="load-extension-hidden" type="file" accept=".js" multiple style="display: none"></input>
+                            <!--div class="submit_link">
                                 <button id="extension-add" class="sub_btn"><img src="/katalon/images/SVG/add-icon.svg"> Add Extension Script</button>
-                            </div>
+                            </div-->
                             <table>
+								<colgroup>
+									<col width="33.3333%">
+									<col width="33.3333%">
+									<col width="33.3333%">
+								</colgroup>
                                 <thead>
                                     <tr>
                                         <th>Type</th>
@@ -362,30 +395,30 @@
         </div>
         <!--<div class="spacer"></div>-->
         <div id="generateToScriptsDialog" title="Export Test Case as Script" style="display: none">
-            <label for="select-script-language-id">Format </label>
-            <select id="select-script-language-id" class="select-script-language">
-                <option value="cs-wd-mstest">C# (WebDriver + MSTest)</option>
-                <option value="cs-wd-nunit">C# (WebDriver + NUnit)</option>
-                <option value="java-wd-testng">Java (WebDriver + TestNG)</option>
-                <option value="java-wd-junit">Java (WebDriver + JUnit)</option>
-                <option value="java-rc-junit">Java (WebDriver-backed Remote Control + JUnit)</option>
-                <option value="katalon" selected>Katalon Studio</option>
-                <option value="new-formatter-nrsynthetics">Node (New Relic Synthetics)</option>
-                <option value="new-formatter-protractorts">Protractor (Typescript)</option>
-                <option value="python2-wd-unittest">Python 2 (WebDriver + unittest)</option>
-                <option value="python-appdynamics">Python (AppDynamics)</option>
-                <option value="robot">Robot Framework</option>
-                <option value="ruby-wd-rspec">Ruby (WebDriver + RSpec)</option>
-                <option value="xml">XML</option>
-                <!-- must start with new-formatter- -->
-                <option value="new-formatter-sample">Sample for new formatters</option>
-            </select>
-            <div>You can add your own formatter. Read more <a target="_blank" href="https://github.com/katalon-studio/katalon-recorder" class="katalon-link">here</a>.</div>
-            <div class="kat clear"><a target="_blank" href="https://www.katalon.com" class="katalon-link">Katalon Studio</a> is one of the top 10 test automation solutions which includes all required features to makes Selenium and Appium automation easy for teams with limited coding capability to apply GUI, Mobile and API testings.</div>
-            <textarea id="txt-script-id" class="txt-script">scripts</textarea>
+            <div class="" style="height: 30px; line-height: 30px; margin-bottom: 12px;"><label for="select-script-language-id">Format </label>
+				<select style="margin:0 5px;" id="select-script-language-id" class="select-script-language">
+					<option value="cs-wd-mstest">C# (WebDriver + MSTest)</option>
+					<option value="cs-wd-nunit">C# (WebDriver + NUnit)</option>
+					<option value="java-wd-testng">Java (WebDriver + TestNG)</option>
+					<option value="java-wd-junit">Java (WebDriver + JUnit)</option>
+					<option value="java-rc-junit">Java (WebDriver-backed Remote Control + JUnit)</option>
+					<option value="katalon" selected>Katalon Studio</option>
+					<option value="new-formatter-nrsynthetics">Node (New Relic Synthetics)</option>
+					<option value="new-formatter-protractorts">Protractor (Typescript)</option>
+					<option value="python2-wd-unittest">Python 2 (WebDriver + unittest)</option>
+					<option value="python-appdynamics">Python (AppDynamics)</option>
+					<option value="robot">Robot Framework</option>
+					<option value="ruby-wd-rspec">Ruby (WebDriver + RSpec)</option>
+					<option value="xml">XML</option>
+					<!-- must start with new-formatter- -->
+					<option value="new-formatter-sample">Sample for new formatters</option>
+				</select>
+				<div style="display: inline-block;">You can add your own formatter. Read more <a target="_blank" href="https://github.com/katalon-studio/katalon-recorder" class="katalon-link">here</a>.</div>
+            </div>
+			<textarea id="txt-script-id" class="txt-script">scripts</textarea>
         </div>
-        <div id="ka-select-project-dialog" title="Select Katalon Analytics Project" style="display: none">
-            <label for="select-ka-project">Select a project to upload your logs. You can create new projects at <a target="_blank" href="https://analytics.katalon.com" class="katalon-link">https://analytics.katalon.com</a>.</label>
+        <div id="ka-select-project-dialog" title="Select Katalon TestOps Project" style="display: none">
+            <label for="select-ka-project">Select a project to upload your logs. You can create new projects at <a target="_blank" href="https://analytics.katalon.com" class="katalon-link">Katalon TestOps</a>.</label>
             <select id="select-ka-project"></select>
         </div>
         <div id="helpDialog" style="display: none">
@@ -437,7 +470,5 @@
     <script type="text/javascript" src="js/katalon/newformatters/sample.js"></script>
     <script type="text/javascript" src="js/katalon/newformatters/nrsynthetics.js"></script>
     <script type="text/javascript" src="js/katalon/newformatters/protractorts.js"></script>
-
 </body>
-
 </html>

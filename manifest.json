@@ -2,13 +2,13 @@
     "description": "Selenium IDE alternative to record and export Selenium scripts. With reports & screenshots. Fast & open-source.",
     "manifest_version": 2,
     "name": "addon_name_placeholder",
-    "version": "3.9.5",
+    "version": "4.0.0",
     "homepage_url":"https://www.katalon.com/",
     "icons":
     {
-        "16": "katalon/images/branding_16.png",
-        "48": "katalon/images/branding_48.png",
-       "128": "katalon/images/branding_128.png"
+        "16": "katalon/images/branding/branding_16.png",
+        "48": "katalon/images/branding/branding_48.png",
+       "128": "katalon/images/branding/branding_128.png"
     },
     "permissions": [
         "tabs",
@@ -82,7 +82,7 @@
 
     "browser_action":
     {
-        "default_icon": "katalon/images/branding_16.png",
+        "default_icon": "katalon/images/branding/branding_16.png",
         "default_title": "Katalon Recorder"
     },
 
