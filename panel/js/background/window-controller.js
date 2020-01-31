@@ -205,7 +205,7 @@ class ExtCommand {
         let result = frameLocation.match(/(index|relative) *= *([\d]+|parent|up|top)/i);
         if (result && result[2]) {
             let position = result[2];
-            if (position == "parent" | position == "up") {
+            if (position == "parent" || position == "up") {
                 this.currentPlayingFrameLocation = this.currentPlayingFrameLocation.slice(0, this.currentPlayingFrameLocation.lastIndexOf(':'));
             } else if(position == "top") {
                 this.currentPlayingFrameLocation = "root";
