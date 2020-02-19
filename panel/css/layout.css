@@ -1163,6 +1163,7 @@ input[type=submit].btn_post_message:hover {
 
 .w3-dropdown-content#target-dropdown {
     margin-top: 24px;
+    z-index: 9999;
 }
 
 .w3-dropdown-content option {
