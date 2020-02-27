@@ -146,7 +146,7 @@ img.kto-dark {
 	}
 	img.kto-dark {
 		display: none;
-	}
+    }
 }
 
 @media (prefers-color-scheme: light) {
@@ -1042,6 +1042,11 @@ div.test-suite-title {
     border: 0.5px solid var(--border-color);
     box-shadow: inset 0 0 3px 0 var(--input-inner-shadow-color);
     background: var(--input-bg-color);
+}
+
+.w3-dropdown-content {
+    color: var(--main-txt-color);
+    background: var(--white-bg);
 }
 
 .w3-dropdown-content#command-dropdown {
