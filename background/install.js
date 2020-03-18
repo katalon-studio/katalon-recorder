@@ -2,7 +2,7 @@
 chrome.runtime.onInstalled.addListener(function (details) {
     if (details.reason === 'install') {
         chrome.tabs.create({
-            url: 'https://www.katalon.com/katalon-recorder-ide'
+            url: 'https://www.katalon.com/sign-up'
         });
     }
     // else if (details.reason === 'update') {
