@@ -48,7 +48,7 @@
     <script type="text/javascript" src="js/lib/jquery.tablesorter.min.js"></script>
     <script type="text/javascript" src="js/lib/jquery.equalHeight.js"></script>
     <script type="text/javascript" src="js/lib/jquery.tabletab.js"></script>
-    <script type="text/javascript" src="js/lib/colResizable-1.5.min.js"></script>
+    <script type="text/javascript" src="js/lib/colResizable-1.6.min.js"></script>
     <script type="text/javascript" src="js/UI/panelSetting.js"></script>
     <script type="text/javascript" src="js/UI/sortable-ui.js"></script>
     <script type="text/javascript" src="js/background/doc.js"></script>
@@ -139,8 +139,8 @@
             Please open test case!
             <input id="testSuiteOpener" type="file" multiple accept="text/*">
         </div>-->
-        <div class="module_all">
-            <article class="width_quarter module_right">
+        <div id="main-section">
+            <article id="tree-section">
                 <div id="slider" style="display:none"></div>
                 <div id="middle-container" class="module">
                     <header>
@@ -172,7 +172,7 @@
                     </div>
                 </article>
             </article>
-            <article class="module width_3_quarter">
+            <article id="steps-section" class="module">
                 <div id="command-container" class="tab_content case_hight">
                     <div class="smallSection">
                         <table id="command-grid" class="tablesorter" cellspacing="0">
@@ -290,7 +290,9 @@
             </article>
             <!-- end of content manager article -->
             <div class="clear"></div>
-            <article class="module width_full">
+        </div>
+        <div id="log-section">
+            <article class="module">
                 <header class="tabs_involved">
                     <ul class="tabs2">
                     <li id="history-log"><a>Log</a></li>
@@ -391,6 +393,9 @@
                 <!-- end of #tab4 -->
             </article>
             <!-- end of styles article -->
+        </div>
+        <div id="backup-section">
+            <p>Backup <a href="#" id="backup-settings" class="katalon-link">settings</a>.</p>
         </div>
         <!--<div class="spacer"></div>-->
         <div id="generateToScriptsDialog" title="Export Test Case as Script" style="display: none">

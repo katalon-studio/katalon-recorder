@@ -277,7 +277,6 @@ $(function() {
     // selectElementButton.removeClass('btn_sf');
     // showElementButton.removeClass('btn_sf');
     // pasteButton.after(showElementButton).after(selectElementButton);
-    // $('#command-target').css('width', 'calc(100% - 90px)');
     var selectElementButton = $('#selectElementButton');
     var showElementButton = $('#showElementButton');
     selectElementButton.text("");
@@ -721,15 +720,11 @@ $(function() {
         var $icon = $("#show-hide-bottom-panel img");
         // total height = 100% - 20px (toolbar)
         if ($bottomContent.is(":hidden")) {
-            $('.width_quarter').css("height", "calc(100% - 62px)");
-            $('.width_3_quarter').css("height", "calc(100% - 62px)");
-            $('.width_full').css("height", "38px");
+            $('#log-section').css("height", "38px");
             // $(this).parent().get(0).title = "Show";
             $icon.attr("src", $icon.data("show"));
         } else {
-            $('.width_quarter').css("height", "calc(70% - 24px)");
-            $('.width_3_quarter').css("height", "calc(70% - 24px)");
-            $('.width_full').css("height", "30%");
+            $('#log-section').css("height", "30%");
             // $(this).parent().get(0).title = "Hide";
             $icon.attr("src", $icon.data("hide"));
         }
@@ -850,6 +845,21 @@ $(function() {
         );
         chrome.tabs.create({
             url: chrome.extension.getURL('katalon/options.html'),
+            windowId: contentWindowId
+        }, function(tab){});
+    });
+});
+// KAT-END
+
+// KAT-BEGIN handle click event for settings button
+$(function() {
+    $('#backup-settings').on('click', function() {
+        browser.windows.update(
+            contentWindowId,
+            { focused: true }
+        );
+        chrome.tabs.create({
+            url: chrome.extension.getURL('backup/index.html'),
             windowId: contentWindowId
         }, function(tab){});
     });
