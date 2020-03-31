@@ -27,24 +27,24 @@ var commandFactory;
 var extensionsLoaded = false;
 
 if (!extensionsLoaded) {
-	extensionsLoaded = true;
-	chrome.storage.local.get('extensions', function(result) {
+    extensionsLoaded = true;
+    chrome.storage.local.get('extensions', function(result) {
 
-		extensions = result.extensions;
-		if (extensions) {
-			var extensionScripts = Object.values(extensions);
-			for (var i = 0; i < extensionScripts.length; i++) {
-				var extensionScript = extensionScripts[i];
-				var f = new Function(extensionScript.content);
-				f();
-			}
+        extensions = result.extensions;
+        if (extensions) {
+            var extensionScripts = Object.values(extensions);
+            for (var i = 0; i < extensionScripts.length; i++) {
+                var extensionScript = extensionScripts[i];
+                var f = new Function(extensionScript.content);
+                f();
+            }
         }
 
         // KAT-BEGIN register Selenium IDE commands
         commandFactory = new CommandHandlerFactory();
         commandFactory.registerAll(selenium);
         // KAT-END
-	});
+    });
 }
 
 function doCommands(request, sender, sendResponse, type) {

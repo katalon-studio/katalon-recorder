@@ -851,21 +851,6 @@ $(function() {
 });
 // KAT-END
 
-// KAT-BEGIN handle click event for settings button
-$(function() {
-    $('#backup-settings').on('click', function() {
-        browser.windows.update(
-            contentWindowId,
-            { focused: true }
-        );
-        chrome.tabs.create({
-            url: chrome.extension.getURL('backup/index.html'),
-            windowId: contentWindowId
-        }, function(tab){});
-    });
-});
-// KAT-END
-
 // KAT-BEGIN add tooltip for button
 $(function() {
     $('#record').attr('title', "Click and navigate to the desired browser tab and record your tests. NOTE: If the tab has been opened before Katalon Recorder was installed, please refresh it.");
