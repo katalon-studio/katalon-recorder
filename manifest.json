@@ -91,7 +91,5 @@
         "page/runScript.js"
     ],
 
-    "offline_enabled": true,
-
-    "testops_url": "https://analytics.katalon.com/"
+    "offline_enabled": true
 }

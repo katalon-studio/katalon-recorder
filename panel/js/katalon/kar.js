@@ -6,7 +6,7 @@ var extensions;
 var manifestData = chrome.runtime.getManifest();
 
 var katalonEndpoint = manifestData.homepage_url;
-var testOpsEndpoint = manifestData.testops_url;
+var testOpsEndpoint = 'https://analytics.katalon.com/';
 var testOpsUrls = {
     getProjects: `${testOpsEndpoint}/api/v1/projects`,
     getUploadUrl: `${testOpsEndpoint}/api/v1/files/upload-url`,
