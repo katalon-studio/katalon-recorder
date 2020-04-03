@@ -395,7 +395,9 @@
             <!-- end of styles article -->
         </div>
         <div id="backup-section">
-            <p><a href="sign-in" class="katalon-link">Sign in</a> to enable automatic backup.</p>
+            <input id="backup-restore-hidden" type="file" accept=".json" style="display: none" />
+            <span id="backup-status"></span>
+            <button id="backup-restore-btn" style="display: none">Restore</button>
         </div>
         <!--<div class="spacer"></div>-->
         <div id="generateToScriptsDialog" title="Export Test Case as Script" style="display: none">

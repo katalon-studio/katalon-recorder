@@ -3,6 +3,19 @@ var newFormatters = {};
 var dataFiles;
 var extensions;
 
+var manifestData = chrome.runtime.getManifest();
+
+var katalonEndpoint = manifestData.homepage_url;
+var testOpsEndpoint = manifestData.testops_url;
+var testOpsUrls = {
+    getProjects: `${testOpsEndpoint}/api/v1/projects`,
+    getUploadUrl: `${testOpsEndpoint}/api/v1/files/upload-url`,
+    getUploadUrlAvatar: `${testOpsEndpoint}/api/v1/files/upload-url-avatar`,
+    getUserInfo: `${testOpsEndpoint}/api/v1/users/me`,
+    uploadBackup: `${testOpsEndpoint}/api/v1/katalon-recorder/backup`,
+    uploadTestReports: `${testOpsEndpoint}/api/v1/katalon-recorder/test-reports`,
+}
+
 // for Selenium IDE
 // function Log() {
 // }
@@ -133,6 +146,48 @@ function saveSetting() {
     }
 }
 
+function backupData() {
+    return chrome.storage.local.get(null, function(result) {
+        $.ajax({
+            url: testOpsUrls.getUploadUrlAvatar,
+            type: 'GET',
+            success: function(response) {
+                var path = response.path;
+                var uploadUrl = response.uploadUrl;
+                var data = JSON.stringify(result, null, 2);
+
+                $.ajax({
+                    url: uploadUrl,
+                    type: 'PUT',
+                    contentType: 'text/plain',
+                    data: data,
+                    success: function() {
+                        $.ajax({
+                            url: testOpsUrls.uploadBackup,
+                            type: 'POST',
+                            data: {
+                                uploadedPath: path
+                            },
+                            success: function() {
+                                updateBackupStatus(`Synchronized with Katalon TestOps at ${new Date()}.`);
+                            },
+                            error: function() {
+                                console.log(arguments);
+                            }
+                        });
+                    },
+                    error: function() {
+                        console.log(arguments);
+                    }
+                });
+            },
+            error: function() {
+                console.log(arguments);
+            }
+        });
+    });
+}
+
 // save test suite to storage
 function saveData() {
     try {
@@ -151,10 +206,11 @@ function saveData() {
     } catch (e) {
         console.log(e);
     }
+    backupData();
 }
 
 // save test suite before exiting
-window.addEventListener('beforeunload', function(e) {
+$(window).on('beforeunload', function(e) {
     saveData();
 });
 
@@ -1006,7 +1062,6 @@ $(function() {
 // KAT-END
 
 $(function() {
-    var manifestData = chrome.runtime.getManifest();
     $(document).attr('title', 'Katalon Recorder ' + manifestData.version)
 });
 
@@ -1077,10 +1132,19 @@ function showErrorDialog() {
     return showDialog('Something went wrong. Please try again later.', true);
 }
 
+function updateBackupStatus(html) {
+    $('#backup-status').html(html);
+}
+
+function showBackupRestoreButton() {
+    $('#backup-restore-btn').show();
+}
+
+function hideBackupRestoreButton() {
+    $('#backup-restore-btn').hide();
+}
+
 $(function() {
-
-    var kaEndpoint = 'https://analytics.katalon.com';
-
     var dialog = $( '#ka-select-project-dialog');
     dialog.dialog({
         autoOpen: false,
@@ -1098,7 +1162,7 @@ $(function() {
                 var select = $('#select-ka-project');
                 var projectId = select.val();
                 $.ajax({
-                    url: `${kaEndpoint}/api/v1/files/upload-url`,
+                    url: testOpsUrls.getUploadUrl,
                     type: 'GET',
                     data: {
                         projectId: projectId
@@ -1121,7 +1185,7 @@ $(function() {
                             data: logcontext,
                             success: function() {
                                 $.ajax({
-                                    url: `${kaEndpoint}/api/v1/katalon-recorder/test-reports`,
+                                    url: testOpsUrls.uploadTestReports,
                                     type: 'POST',
                                     data: {
                                         projectId: projectId,
@@ -1159,7 +1223,7 @@ $(function() {
 
     $('#ka-upload').on('click', function() {
         $.ajax({
-            url: `${kaEndpoint}/api/v1/projects`,
+            url: testOpsUrls.getProjects,
             type: 'GET',
             data: {
                 sort: 'name'
@@ -1175,10 +1239,37 @@ $(function() {
             },
             error: function(response) {
                 console.log(response);
-                showDialog('<img class="kto-light" style="max-width: 50%;" src="../../../katalon/images/branding/Katalon-TestOps-full-color-large-w.png" alt="Katalon TestOps" /><img class="kto-dark" style="max-width: 50%;" src="../../../katalon/images/branding/Katalon-TestOps-full-color-large.png" alt="Katalon TestOps" /><p>Please log in to <a target="_blank" href="https://analytics.katalon.com" class="testops-link">Katalon TestOps (beta)</a> first and try again.</p><p>You can register a completely free account at <a target="_blank" href="https://www.katalon.com" class="testops-link">katalon.com</a>.</p><p>Katalon TestOps helps you manage automation results as you test it manually and generate quality, performance and flakiness reports to improve your confidence in evaluating the test results. Katalon TestOps supports both <a target="_blank" href="https://www.katalon.com" class="testops-link">Katalon Studio</a> (one of the top 10 test automation solutions) and Katalon Recorder.</p><p style="margin-bottom: 0;"><a target="_blank" href="https://www.katalon.com/testops/" class="testops-link">Learn more</a> about Katalon TestOps (Beta).</p>', true);
+                var dialogHtml = `
+                    <img class="kto-light" style="max-width: 50%;" src="../../../katalon/images/branding/Katalon-TestOps-full-color-large-w.png" alt="Katalon TestOps" />
+                    <img class="kto-dark" style="max-width: 50%;" src="../../../katalon/images/branding/Katalon-TestOps-full-color-large.png" alt="Katalon TestOps" />
+                    <p>Please log in to <a target="_blank" href="${testOpsEndpoint}" class="testops-link">Katalon TestOps (beta)</a> first and try again.</p>
+                    <p>You can register a completely free account at <a target="_blank" href="${katalonEndpoint}" class="testops-link">katalon.com</a>.</p>
+                    <p>Katalon TestOps helps you manage automation results as you test it manually and generate quality, performance and flakiness reports to improve your confidence in evaluating the test results. 
+                    Katalon TestOps supports both <a target="_blank" href="${katalonEndpoint}" class="testops-link">Katalon Studio</a> (one of the top 10 test automation solutions) and Katalon Recorder.</p>
+                    <p style="margin-bottom: 0;"><a target="_blank" href="${katalonEndpoint}/testops/" class="testops-link">Learn more</a> about Katalon TestOps (Beta).</p>'
+                `;
+                showDialog(dialogHtml, true);
             }
         });
     });
+
+    $.ajax({
+        url: testOpsUrls.getUserInfo,
+        type: 'GET',
+        success: function(data) {
+            if (data.businessUser && data.email) {
+                updateBackupStatus(`Automatic backup to <a href="${testOpsEndpoint}" class="katalon-link" target="_blank">Katalon TestOps</a> is available.`);
+                showBackupRestoreButton();
+            } else {
+                updateBackupStatus(`<a href="${testOpsEndpoint}" class="katalon-link">Sign in</a> to enable automatic backup.`);
+                hideBackupRestoreButton();
+            }
+        },
+        error: function() {
+            updateBackupStatus(`<a href="${testOpsEndpoint}" class="katalon-link">Sign in</a> to enable automatic backup.`);
+            hideBackupRestoreButton();
+        },
+    })
 });
 
 function logTime() {
@@ -1518,4 +1609,34 @@ function renderExtensionsListItem(name) {
     tdActions.append(renameButton, deleteButton);
     tr.append(tdType, tdName, tdActions);
     return tr;
+}
+
+$(function() {
+    var backupRestoreInput = $('#backup-restore-hidden');
+    $('#backup-restore-btn').click(function() {
+        backupRestoreInput.click();
+    });
+    backupRestoreInput.change(function(event) {
+        if (this.files.length === 1) {
+            readBackupData(this.files[0]);
+        }
+        this.value = null;
+    });
+});
+
+function readBackupData(f) {
+    var reader = new FileReader();
+    reader.readAsText(f);
+    reader.onload = function() {
+        var backupData = JSON.parse(reader.result);
+        restoreBackupData(backupData);
+    }
+}
+
+function restoreBackupData(backupData) {
+    chrome.storage.local.clear(function() {
+        chrome.storage.local.set(backupData, function() {
+            location.reload();
+        });
+    });
 }
