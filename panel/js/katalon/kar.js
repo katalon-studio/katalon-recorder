@@ -24,19 +24,6 @@ var testOpsUrls = {
 
 this.log = console; // remove Selenium IDE Log
 
-// reload KR on TestOps login or logout
-$(function() {
-    chrome.cookies.onChanged.addListener(function (changeInfo) {
-        var changedCookie = changeInfo.cookie;
-        var cookieName = changedCookie.name;
-        var cookieDomain = changedCookie.domain;
-        if (cookieName === 'kan_access_token' && testOpsEndpoint.includes(cookieDomain)) {
-            // signed in, signed out, expired
-            reload();
-        }
-    });
-})
-
 // read test suite from an HTML string
 function readSuiteFromString(test_suite) {
     // append on test grid
@@ -182,7 +169,7 @@ function backupData() {
                                 uploadedPath: path
                             },
                             success: function() {
-                                updateBackupStatus(`Synchronized with Katalon TestOps at ${new Date()}.`);
+                                updateBackupStatus(`Backed up to Katalon TestOps at ${new Date()}.`);
                             },
                             error: function() {
                                 console.log(arguments);
@@ -191,10 +178,12 @@ function backupData() {
                     },
                     error: function() {
                         console.log(arguments);
+                        updateBackupStatus(`<a href="${testOpsEndpoint}" class="katalon-link">Sign in</a> to enable automatic backup.`);
                     }
                 });
             },
             error: function() {
+
                 console.log(arguments);
             }
         });
@@ -1270,8 +1259,8 @@ $(function() {
         url: testOpsUrls.getUserInfo,
         type: 'GET',
         success: function(data) {
-            if (data.businessUser && data.email) {
-                updateBackupStatus(`Automatic backup to <a href="${testOpsEndpoint}" class="katalon-link" target="_blank">Katalon TestOps</a> is available.`);
+            if (data.email) {
+                updateBackupStatus(`Automatic backup to <a href="${testOpsEndpoint}" class="katalon-link" target="_blank">Katalon TestOps</a> is enabled.`);
                 showBackupRestoreButton();
             } else {
                 updateBackupStatus(`<a href="${testOpsEndpoint}" class="katalon-link">Sign in</a> to enable automatic backup.`);
