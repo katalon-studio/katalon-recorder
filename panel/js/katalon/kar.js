@@ -1636,7 +1636,12 @@ function readBackupData(f) {
 function restoreBackupData(backupData) {
     chrome.storage.local.clear(function() {
         chrome.storage.local.set(backupData, function() {
-            location.reload();
+            reload();
         });
     });
+}
+
+function reload() {
+    $(window).off('beforeunload');
+    location.reload();
 }
