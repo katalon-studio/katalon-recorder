@@ -24,6 +24,19 @@ var testOpsUrls = {
 
 this.log = console; // remove Selenium IDE Log
 
+// reload KR on TestOps login or logout
+$(function() {
+    chrome.cookies.onChanged.addListener(function (changeInfo) {
+        var changedCookie = changeInfo.cookie;
+        var cookieName = changedCookie.name;
+        var cookieDomain = changedCookie.domain;
+        if (cookieName === 'kan_access_token' && testOpsEndpoint.includes(cookieDomain)) {
+            // signed in, signed out, expired
+            reload();
+        }
+    });
+})
+
 // read test suite from an HTML string
 function readSuiteFromString(test_suite) {
     // append on test grid
