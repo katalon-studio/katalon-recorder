@@ -6,7 +6,8 @@ var extensions;
 var manifestData = chrome.runtime.getManifest();
 
 var katalonEndpoint = manifestData.homepage_url;
-var testOpsEndpoint = 'https://analytics.katalon.com/';
+var testOpsEndpoint = 'https://analytics.katalon.com';
+// var testOpsEndpoint = 'http://localhost:8444';
 var testOpsUrls = {
     getProjects: `${testOpsEndpoint}/api/v1/projects`,
     getUploadUrl: `${testOpsEndpoint}/api/v1/files/upload-url`,
@@ -164,7 +165,7 @@ function backupData() {
             success: function(response) {
                 var path = response.path;
                 var uploadUrl = response.uploadUrl;
-                var data = JSON.stringify(result, null, 2);
+                var data = JSON.stringify(result);
 
                 $.ajax({
                     url: uploadUrl,
@@ -183,6 +184,7 @@ function backupData() {
                             },
                             error: function() {
                                 console.log(arguments);
+                                showBackupDisabledStatus();
                             }
                         });
                     },
@@ -1652,5 +1654,5 @@ function restoreBackupData(backupData) {
 
 function reload() {
     $(window).off('beforeunload');
-    location.reload();
+    window.close()
 }
