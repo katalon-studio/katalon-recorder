@@ -146,6 +146,16 @@ function saveSetting() {
     }
 }
 
+function showBackupDisabledStatus() {
+    updateBackupStatus(`<a href="${testOpsEndpoint}" class="katalon-link">Sign in</a> to enable automatic backup.`);
+    hideBackupRestoreButton();
+}
+
+function showBackupEnabledStatus() {
+    updateBackupStatus(`Automatic backup to <a href="${testOpsEndpoint}" class="katalon-link" target="_blank">Katalon TestOps</a> is enabled.`);
+    showBackupRestoreButton();
+}
+
 function backupData() {
     return chrome.storage.local.get(null, function(result) {
         $.ajax({
@@ -169,7 +179,7 @@ function backupData() {
                                 uploadedPath: path
                             },
                             success: function() {
-                                updateBackupStatus(`Backed up to Katalon TestOps at ${new Date()}.`);
+                                showBackupEnabledStatus();
                             },
                             error: function() {
                                 console.log(arguments);
@@ -178,7 +188,7 @@ function backupData() {
                     },
                     error: function() {
                         console.log(arguments);
-                        updateBackupStatus(`<a href="${testOpsEndpoint}" class="katalon-link">Sign in</a> to enable automatic backup.`);
+                        showBackupDisabledStatus();
                     }
                 });
             },
@@ -1260,16 +1270,13 @@ $(function() {
         type: 'GET',
         success: function(data) {
             if (data.email) {
-                updateBackupStatus(`Automatic backup to <a href="${testOpsEndpoint}" class="katalon-link" target="_blank">Katalon TestOps</a> is enabled.`);
-                showBackupRestoreButton();
+                showBackupEnabledStatus();
             } else {
-                updateBackupStatus(`<a href="${testOpsEndpoint}" class="katalon-link">Sign in</a> to enable automatic backup.`);
-                hideBackupRestoreButton();
+                showBackupDisabledStatus();
             }
         },
         error: function() {
-            updateBackupStatus(`<a href="${testOpsEndpoint}" class="katalon-link">Sign in</a> to enable automatic backup.`);
-            hideBackupRestoreButton();
+            showBackupDisabledStatus();
         },
     })
 });
