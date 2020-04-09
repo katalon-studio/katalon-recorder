@@ -148,12 +148,12 @@ function saveSetting() {
 }
 
 function showBackupDisabledStatus() {
-    updateBackupStatus(`<a href="${testOpsEndpoint}" class="katalon-link">Sign in</a> to enable automatic backup.`);
+    updateBackupStatus(`<a href="${testOpsEndpoint}" target="_blank" class="katalon-link">Sign in</a> to enable automatic backup.`);
     hideBackupRestoreButton();
 }
 
 function showBackupEnabledStatus() {
-    updateBackupStatus(`Automatic backup to <a href="${testOpsEndpoint}" class="katalon-link" target="_blank">Katalon TestOps</a> is enabled.`);
+    updateBackupStatus(`Automatic backup to <a href="${testOpsEndpoint}" target="_blank" class="katalon-link" target="_blank">Katalon TestOps</a> is enabled.`);
     showBackupRestoreButton();
 }
 
@@ -195,7 +195,7 @@ function backupData() {
                 });
             },
             error: function() {
-
+                showBackupDisabledStatus();
                 console.log(arguments);
             }
         });
@@ -1152,10 +1152,12 @@ function updateBackupStatus(html) {
 
 function showBackupRestoreButton() {
     $('#backup-restore-btn').show();
+    $('#backup-refresh-btn').hide();
 }
 
 function hideBackupRestoreButton() {
     $('#backup-restore-btn').hide();
+    $('#backup-refresh-btn').show();
 }
 
 $(function() {
@@ -1266,7 +1268,9 @@ $(function() {
             }
         });
     });
+});
 
+function refreshStatusBar() {
     $.ajax({
         url: testOpsUrls.getUserInfo,
         type: 'GET',
@@ -1280,8 +1284,10 @@ $(function() {
         error: function() {
             showBackupDisabledStatus();
         },
-    })
-});
+    });
+}
+
+$(refreshStatusBar);
 
 function logTime() {
     var now = new Date();
@@ -1626,6 +1632,9 @@ $(function() {
     var backupRestoreInput = $('#backup-restore-hidden');
     $('#backup-restore-btn').click(function() {
         backupRestoreInput.click();
+    });
+    $('#backup-refresh-btn').click(function() {
+        refreshStatusBar();
     });
     backupRestoreInput.change(function(event) {
         if (this.files.length === 1) {
