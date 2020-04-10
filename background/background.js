@@ -158,13 +158,63 @@ function createMenus() {
         documentUrlPatterns: ["<all_urls>"],
         contexts: ["all"]
     });
+    browser.contextMenus.create({
+        id: "waitForElementPresent",
+        title: "waitForElementPresent",
+        documentUrlPatterns: ["<all_urls>"],
+        contexts: ["all"]
+    });
+    browser.contextMenus.create({
+        id: "waitForElementNotPresent",
+        title: "waitForElementNotPresent",
+        documentUrlPatterns: ["<all_urls>"],
+        contexts: ["all"]
+    });
+    browser.contextMenus.create({
+        id: "waitForTextPresent",
+        title: "waitForTextPresent",
+        documentUrlPatterns: ["<all_urls>"],
+        contexts: ["all"]
+    });
+    browser.contextMenus.create({
+        id: "waitForTextNotPresent",
+        title: "waitForTextNotPresent",
+        documentUrlPatterns: ["<all_urls>"],
+        contexts: ["all"]
+    });
+    browser.contextMenus.create({
+        id: "waitForValue",
+        title: "waitForValue",
+        documentUrlPatterns: ["<all_urls>"],
+        contexts: ["all"]
+    });
+    browser.contextMenus.create({
+        id: "waitForNotValue",
+        title: "waitForNotValue",
+        documentUrlPatterns: ["<all_urls>"],
+        contexts: ["all"]
+    });
+    browser.contextMenus.create({
+        id: "waitForVisible",
+        title: "waitForVisible",
+        documentUrlPatterns: ["<all_urls>"],
+        contexts: ["all"]
+    });
+    browser.contextMenus.create({
+        id: "waitForNotVisible",
+        title: "waitForNotVisible",
+        documentUrlPatterns: ["<all_urls>"],
+        contexts: ["all"]
+    });
 }
 
 var port;
 browser.contextMenus.onClicked.addListener(function(info, tab) {
+    console.log(info);
     port.postMessage({ cmd: info.menuItemId });
 });
 
 browser.runtime.onConnect.addListener(function(m) {
+    console.log(m);
     port = m;
 });
