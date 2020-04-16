@@ -214,6 +214,5 @@ browser.contextMenus.onClicked.addListener(function(info, tab) {
 });
 
 browser.runtime.onConnect.addListener(function(m) {
-    console.log(m);
     port = m;
 });
