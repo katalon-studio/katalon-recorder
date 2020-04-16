@@ -210,7 +210,6 @@ function createMenus() {
 
 var port;
 browser.contextMenus.onClicked.addListener(function(info, tab) {
-    console.log(info);
     port.postMessage({ cmd: info.menuItemId });
 });
 
