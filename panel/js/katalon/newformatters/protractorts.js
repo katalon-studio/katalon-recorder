@@ -19,19 +19,19 @@ newFormatters.protractorts = function(name, commands) {
         css: (target) => {
             return `by.css("${target.replace(/\"/g, "\'")}")`
         },
-    
+
         id: (target) => {
             return `by.id("${target.replace(/\"/g, "\'")}")`
         },
-    
+
         link: (target) => {
             return `by.linkText("${target.replace(/\"/g, "\'")}")`
         },
-    
+
         name: (target) => {
             return `by.name("${target.replace(/\"/g, "\'")}")`
         },
-    
+
         tag_name: (target) => {
             return `by.tagName("${target.replace(/\"/g, "\'")}")`
         }
@@ -52,7 +52,7 @@ newFormatters.protractorts = function(name, commands) {
         '\${KEY_TAB}': 'Key.TAB',
         '\${KEY_HOME}': 'Key.HOME'
     }
-    
+
     // protracto api
     // https://www.protractortest.org/#/api
     // katalon
@@ -60,29 +60,76 @@ newFormatters.protractorts = function(name, commands) {
     const seleneseCommands = {
         "open": "await browser.get('_TARGET_');",
         "click": "await element(_BY_LOCATOR_).click();",
-        "clickAndWait": 
+        "clickAndWait":
             "const el__STEP_ = element(_BY_LOCATOR_);\n" +
-            "\t\tawait browser.wait(EC.elementToBeClickable(el__STEP_));\n" + 
+            "\t\tawait browser.wait(EC.elementToBeClickable(el__STEP_));\n" +
             "\t\tawait el__STEP_.click();",
         "doubleClick": "await browser.actions().doubleClick(element(_BY_LOCATOR_)).perform();",
+        "doubleClickAndWait":
+            "const el__STEP_ = element(_BY_LOCATOR_);\n" +
+            "\t\tawait browser.wait(EC.elementToBeClickable(el__STEP_));\n" +
+            "\t\tawait browser.actions().doubleClick(el__STEP_).perform();",
         "type": "await element(_BY_LOCATOR_).sendKeys('_VALUE_');",
+        "typeAndWait":
+            "const el__STEP_ = element(_BY_LOCATOR_);\n" +
+            "\t\tawait browser.wait(EC.elementToBeClickable(el__STEP_));\n" +
+            "\t\tawait element(_BY_LOCATOR_).sendKeys('_VALUE_');",
         "pause": "await browser.sleep(_VALUE_);",
         "refresh": "await browser.refresh();",
         "selectWindow":
             "const handles__STEP_ = await browser.getAllWindowHandles();\n" +
             "\t\tawait browser.switchTo().window(handles__STEP_[handles__STEP_.length - 1]);",
         "sendKeys": "await element(_BY_LOCATOR_).sendKeys(_SEND_KEY_);",
+        "sendKeysAndWait":
+            "const el__STEP_ = element(_BY_LOCATOR_);\n" +
+            "\t\tawait browser.wait(EC.presenceOf(el__STEP_));\n" +
+            "\t\tawait element(_BY_LOCATOR_).sendKeys(_SEND_KEY_);",
         "submit": "await element(_BY_LOCATOR_).submit();",
+        "submitAndWait":
+            "const el__STEP_ = element(_BY_LOCATOR_);\n" +
+            "\t\tawait browser.wait(EC.presenceOf(el__STEP_));\n" +
+            "\t\tawait element(_BY_LOCATOR_).submit();",
         "selectFrame":"await browser.switchTo().frame(element(_BY_LOCATOR_).getWebElement());",
         "select": "await element(_BY_LOCATOR_).element(by.cssContainingText('option', '_SELECT_OPTION_')).click();",
+        "selectAndWait":
+            "const el__STEP_ = element(_BY_LOCATOR_);\n" +
+            "\t\tawait browser.wait(EC.presenceOf(el__STEP_));\n" +
+            "\t\tawait browser.wait(EC.presenceOf(el__STEP_.element(by.cssContainingText('option', '_SELECT_OPTION_'))));\n" +
+            "await element(_BY_LOCATOR_).element(by.cssContainingText('option', '_SELECT_OPTION_')).click();",
         "goBack": "await browser.navigate().back();",
         "assertConfirmation": "await browser.switchTo().alert().accept();",
-        "verifyText": "expect(await element(_BY_LOCATOR_).getText()).toContain('_VALUE_STR_');",
-        "verifyTitle": "expect(await browser.getTitle()).toContain('_VALUE_STR_');",
-        "verifyValue": "expect(await element(_BY_LOCATOR_).getAttribute('value')).toContain('_VALUE_STR_')",
-        "assertText": "expect(await element(_BY_LOCATOR_).getText()).toContain('_VALUE_STR_');",
-        "assertTitle": "expect(await browser.getTitle()).toContain('_VALUE_STR_');",
-        "assertValue": "expect(await element(_BY_LOCATOR_).getAttribute('value')).toContain('_VALUE_STR_')"
+        "verifyText": "expect(await element(_BY_LOCATOR_).getText()).toContain(`_VALUE_STR_`);",
+        "verifyTitle": "expect(await browser.getTitle()).toContain(`_VALUE_STR_`);",
+        "verifyValue": "expect(await element(_BY_LOCATOR_).getAttribute('value')).toContain(`_VALUE_STR_`)",
+        "assertText": "expect(await element(_BY_LOCATOR_).getText()).toContain(`_VALUE_STR_`);",
+        "assertTitle": "expect(await browser.getTitle()).toContain(`_VALUE_STR_`);",
+        "assertValue": "expect(await element(_BY_LOCATOR_).getAttribute('value')).toContain(`_VALUE_STR_`)",
+        "waitForAlertNotPresent": "await browser.wait(EC.not(EC.alertIsPresent()))",
+        "waitForAlertPresent": "await browser.wait(EC.alertIsPresent())",
+        "waitForElementPresent":
+            "const el__STEP_ = element(_BY_LOCATOR_);\n" +
+            "\t\tawait browser.wait(EC.presenceOf(el__STEP_))",
+        "waitForElementNotPresent":
+            "const el__STEP_ = element(_BY_LOCATOR_);\n" +
+            "\t\tawait browser.wait(EC.stalenessOf(el__STEP_))",
+        "waitForTextPresent":
+            "const el__STEP_ = element(_BY_LOCATOR_);\n" +
+            "\t\tawait browser.wait(EC.textToBePresentInElement(el__STEP_, `_VALUE_STR_`))",
+        "waitForTextNotPresent":
+            "const el__STEP_ = element(_BY_LOCATOR_);\n" +
+            "\t\tawait browser.wait(EC.not(EC.textToBePresentInElement(el__STEP_, `_VALUE_STR_`)))",
+        "waitForValue":
+            "const el__STEP_ = element(_BY_LOCATOR_);\n" +
+            "\t\tawait browser.wait(EC.textToBePresentInValue(el__STEP_, `_VALUE_STR_`))",
+        "waitForNotValue":
+            "const el__STEP_ = element(_BY_LOCATOR_);\n" +
+            "\t\tawait browser.wait(EC.not(EC.textToBePresentInValue(el__STEP_, `_VALUE_STR_`)))",
+        "waitForVisible":
+            "const el__STEP_ = element(_BY_LOCATOR_);\n" +
+            "\t\tawait browser.wait(EC.visibilityOf(el__STEP_))",
+        "waitForNotVisible":
+            "const el__STEP_ = element(_BY_LOCATOR_);\n" +
+            "\t\tawait browser.wait(EC.invisibilityOf(el__STEP_))",
     }
 
     const header =
@@ -111,7 +158,7 @@ newFormatters.protractorts = function(name, commands) {
     }
 
     function commandExports(commands) {
-        
+
         let output = commands.reduce((accObj, commandObj) => {
             let {command, target, value} = commandObj
             let cmd = seleneseCommands[command]
@@ -174,4 +221,4 @@ newFormatters.protractorts = function(name, commands) {
         locator
     };
   }
-  
+

@@ -465,6 +465,8 @@ Recorder.addEventHandler('contextMenu', 'contextmenu', function(event) {
             self.record(m.cmd, [[tmpTitle]], '');
         } else if (m.cmd.includes("Value")) {
             self.record(m.cmd, tmpText, getInputValue(event.target));
+        } else if (m.cmd.includes('waitFor')) {
+            self.record(m.cmd, tmpText, '');
         }
         myPort.onMessage.removeListener(portListener);
     });

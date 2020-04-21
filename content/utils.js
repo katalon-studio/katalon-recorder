@@ -183,6 +183,7 @@ function getText(element) {
     }
 
     text = normalizeNewlines(text);
+
     text = normalizeSpaces(text);
 
     return text.trim();
@@ -427,9 +428,9 @@ function isArray(x) {
 //browserbot
 function absolutify(url, baseUrl) {
     /** returns a relative url in its absolute form, given by baseUrl.
-     * 
+     *
      * This function is a little odd, because it can take baseUrls that
-     * aren't necessarily directories.  It uses the same rules as the HTML 
+     * aren't necessarily directories.  It uses the same rules as the HTML
      * &lt;base&gt; tag; if the baseUrl doesn't end with "/", we'll assume
      * that it points to a file, and strip the filename off to find its
      * base directory.
@@ -437,7 +438,7 @@ function absolutify(url, baseUrl) {
      * So absolutify("foo", "http://x/bar") will return "http://x/foo" (stripping off bar),
      * whereas absolutify("foo", "http://x/bar/") will return "http://x/bar/foo" (preserving bar).
      * Naturally absolutify("foo", "http://x") will return "http://x/foo", appropriately.
-     * 
+     *
      * @param url the url to make absolute; if this url is already absolute, we'll just return that, unchanged
      * @param baseUrl the baseUrl from which we'll absolutify, following the rules above.
      * @return 'url' if it was already absolute, or the absolutized version of url if it was not absolute.
@@ -1990,7 +1991,7 @@ function XPathEvaluator(newDefaultEngineName) {
         return xpath;
     }
 
-    /** 
+    /**
      * Returns the most sensible engine given the settings and the document
      * object.
      */
@@ -2122,7 +2123,7 @@ XPathEvaluator.prototype.init = function() {};
  *                    modify how the xpath is evaluated. Here's a listing of
  *                    the meaningful keys:
  *
- *                     contextNode: 
+ *                     contextNode:
  *                       the context node from which to evaluate the xpath. If
  *                       unspecified, the context will be the root document
  *                       element.
@@ -2203,14 +2204,14 @@ function eval_css(locator, inDocument) {
  * This function duplicates part of BrowserBot.findElement() to open up locator
  * evaluation on arbitrary documents. It returns a plain old array of located
  * elements found by using a Selenium locator.
- * 
+ *
  * Multiple results may be generated for xpath and CSS locators. Even though a
  * list could potentially be generated for other locator types, such as link,
  * we don't try for them, because they aren't very expressive location
  * strategies; if you want a list, use xpath or CSS. Furthermore, strategies
  * for these locators have been optimized to only return the first result. For
  * these types of locators, performance is more important than ideal behavior.
- * 
+ *
  * @param locator          a locator string
  * @param inDocument       the document in which to apply the locator
  * @param opt_contextNode  the context within which to evaluate the locator
@@ -2445,7 +2446,7 @@ function keys(object) {
  *               up from zero to the value of the start parameter. Note that
  *               the array returned will count up to but will not include this
  *               value.
- * @return       an array of consecutive integers. 
+ * @return       an array of consecutive integers.
  */
 function range(start, end) {
     if (arguments.length == 1) {
@@ -6178,7 +6179,7 @@ parseUri.options = {
 
         var isXML = function(elem) {
             // documentElement is verified for cases where it doesn't yet exist
-            // (such as loading iframes in IE - #4833) 
+            // (such as loading iframes in IE - #4833)
             var documentElement = (elem ? elem.ownerDocument || elem : 0).documentElement;
             return documentElement ? documentElement.nodeName !== "HTML" : false;
         };
