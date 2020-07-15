@@ -1237,6 +1237,10 @@ $(function() {
         }
     });
 
+    function createDefaultProject() {
+        console.log('create');
+    }
+
     $('#ka-upload').on('click', function() {
         $.ajax({
             url: testOpsUrls.getProjects,
@@ -1267,6 +1271,11 @@ $(function() {
                 showDialog(dialogHtml, true);
             }
         });
+    });
+
+    $('#ka-open').on('click', function() {
+        console.log('open testops');
+        window.open(testOpsEndpoint);
     });
 });
 
