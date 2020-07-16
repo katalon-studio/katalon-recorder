@@ -236,6 +236,7 @@ section#main {
 
 .sub_btn img {
     margin-right: 6px;
+    max-height: 16px;
 }
 
 .sub_btn:disabled {
@@ -1137,7 +1138,7 @@ html ul.tabs #collapse-console {
 html ul.tabs #data-files-add-csv,
 html ul.tabs #data-files-add-json,
 html ul.tabs #extension-add,
-html ul.tabs #ka-upload {
+html ul.tabs #ka-open {
 	background: var(--dialog-bg-header);
 	border: 0.5px solid var(--border-color);
 	box-shadow: inset 0 0 3px 0 var(--inset-box-shadow);
@@ -1146,13 +1147,13 @@ html ul.tabs #ka-upload {
     height: 27px;
     line-height: 27px;
 }
-html ul.tabs #ka-upload a {
+html ul.tabs #ka-open a {
 	width: auto;
 	display: flex;
 	height: 27px;
     line-height: 27px;
 }
-html ul.tabs #ka-upload a img { 
+html ul.tabs #ka-open a img { 
 	margin: 4px 5px 4px 0; 
 	max-height: 18px;
     vertical-align: middle;
@@ -1189,7 +1190,7 @@ html ul.tabs #save-log a {
     background-image: url(/katalon/images/SVG/delete-icon-hover.svg);
 }
 
-#ka-upload a i {
+#ka-open a i {
     background-image: url(/katalon/images/SVG/upload-icon.svg);
     background-repeat: no-repeat;
     background-position: center;
@@ -1198,7 +1199,7 @@ html ul.tabs #save-log a {
     width: 24px;
 }
 
-#ka-upload a:hover i {
+#ka-open a:hover i {
     background-image: url(/katalon/images/SVG/upload-icon-hover.svg);
 }
 

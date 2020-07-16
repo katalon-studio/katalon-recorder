@@ -9,7 +9,7 @@ var katalonEndpoint = manifestData.homepage_url;
 var testOpsEndpoint = 'https://analytics.katalon.com';
 // var testOpsEndpoint = 'http://localhost:8444';
 var testOpsUrls = {
-    getProjects: `${testOpsEndpoint}/api/v1/projects`,
+    getFirstProject: `${testOpsEndpoint}/api/v1/projects/first`,
     getUploadUrl: `${testOpsEndpoint}/api/v1/files/upload-url`,
     getUploadUrlAvatar: `${testOpsEndpoint}/api/v1/files/upload-url-avatar`,
     getUserInfo: `${testOpsEndpoint}/api/v1/users/me`,
@@ -861,35 +861,35 @@ $(function() {
         container.show();
 
         if (li == logLi) {
-            upload.show();
+            // upload.show();
             saveLog.show();
             clearLog.show();
             csvAdd.hide();
             jsonAdd.hide();
             extensionAdd.hide();
         } else if (li == screenshotLi) {
-            upload.hide();
+            // upload.hide();
             saveLog.hide();
             clearLog.hide();
             csvAdd.hide();
             jsonAdd.hide();
             extensionAdd.hide();
         } else if (li == dataLi) { 
-            upload.hide();
+            // upload.hide();
             saveLog.hide();
             clearLog.hide();
             csvAdd.show();
             jsonAdd.show();
             extensionAdd.hide();
         } else if (li == extensionsLi) { 
-            upload.hide();
+            // upload.hide();
             saveLog.hide();
             clearLog.hide();
             csvAdd.hide();
             jsonAdd.hide();
             extensionAdd.show();
         } else {
-            upload.hide();
+            // upload.hide();
             saveLog.hide();
             clearLog.hide();
             csvAdd.hide();
@@ -1177,6 +1177,8 @@ $(function() {
                 waitDialog = showDialog('Uploading...', false);
                 var select = $('#select-ka-project');
                 var projectId = select.val();
+                var teamId = select.find(':selected').attr('data-teamId');
+                var executionUrl = `${testOpsEndpoint}/team/${teamId}/project/${projectId}/executions`;
                 $.ajax({
                     url: testOpsUrls.getUploadUrl,
                     type: 'GET',
@@ -1211,7 +1213,8 @@ $(function() {
                                         uploadedPath: path
                                     },
                                     success: function() {
-                                        showDialog('Execution logs have been uploaded successfully.', true)
+                                        showDialog('Execution logs have been uploaded successfully. Please give us a few minutes to analyze the data. Thank you!', true)
+                                        window.open(executionUrl);
                                     },
                                     error: function() {
                                         console.log(arguments);
@@ -1237,24 +1240,72 @@ $(function() {
         }
     });
 
-    $('#ka-upload').on('click', function() {
-        $.ajax({
-            url: testOpsUrls.getProjects,
+
+    function createDefaultProject(email) {
+        return $.ajax({
+            url: testOpsUrls.createOrganizationUrl,
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                name: `Organization ${email}`
+            })
+        }).then(org => {
+            console.log(org);
+            return $.ajax({
+                url: testOpsUrls.createTeamUrl,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    name: `Team ${email}`,
+                    organizationId: org.id
+                })
+            });
+        }).then(team => {
+            return $.ajax({
+                url: testOpsUrls.createProjectUrl,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    name: `Project ${email}`,
+                    teamId: team.id
+                })
+            });
+        }).then(project => {
+            return Promise.resolve([project])
+        });
+    }
+
+    function getFirstProject() {
+        return $.ajax({
+            url: testOpsUrls.getUserInfo,
             type: 'GET',
-            data: {
-                sort: 'name'
-            },
-            success: function(data) {
-                var projects = data.content;
+        }).then(data => {
+            if (data.projects.length == 0) {
+                return $.ajax({
+                    url: testOpsUrls.getFirstProject,
+                    type: 'GET',
+                });
+            } else {
+                return data.projects;
+            }
+        });
+    }
+
+    $('#ka-upload').on('click', function() {
+        getFirstProject()
+            .then(projects => {
                 var select = $('#select-ka-project');
                 select.empty();
                 projects.forEach(function(project) {
-                    select.append($('<option/>').attr('value', project.id).text(project.name));
+                    select.append($('<option/>')
+                        .attr('value', project.id)
+                        .attr('data-teamId', project.team.id)
+                        .text(project.name)
+                    );
                 });
                 dialog.dialog('open');
-            },
-            error: function(response) {
-                console.log(response);
+            }).catch(e => {
+                console.log(e);
                 var dialogHtml = `
                     <img class="kto-light" style="max-width: 50%;" src="../../../katalon/images/branding/Katalon-TestOps-full-color-large-w.png" alt="Katalon TestOps" />
                     <img class="kto-dark" style="max-width: 50%;" src="../../../katalon/images/branding/Katalon-TestOps-full-color-large.png" alt="Katalon TestOps" />
@@ -1265,8 +1316,12 @@ $(function() {
                     <p style="margin-bottom: 0;"><a target="_blank" href="${katalonEndpoint}/testops/" class="testops-link">Learn more</a> about Katalon TestOps (Beta).</p>'
                 `;
                 showDialog(dialogHtml, true);
-            }
-        });
+            });
+    });
+
+    $('#ka-open').on('click', function() {
+        console.log('open testops');
+        window.open(testOpsEndpoint);
     });
 });
 

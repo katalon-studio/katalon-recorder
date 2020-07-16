@@ -2,7 +2,7 @@
 function getWindowSize(callback) {
     chrome.storage.local.get('window', function(result) {
         var height = 740;
-        var width = 780;
+        var width = 800;
         if (result) {
             try {
                 result = result.window;
