@@ -9,7 +9,7 @@ var katalonEndpoint = manifestData.homepage_url;
 var testOpsEndpoint = 'https://analytics.katalon.com';
 // var testOpsEndpoint = 'http://localhost:8444';
 var testOpsUrls = {
-    getProjects: `${testOpsEndpoint}/api/v1/get-first-projects`,
+    getFirstProject: `${testOpsEndpoint}/api/v1/projects/first`,
     getUploadUrl: `${testOpsEndpoint}/api/v1/files/upload-url`,
     getUploadUrlAvatar: `${testOpsEndpoint}/api/v1/files/upload-url-avatar`,
     getUserInfo: `${testOpsEndpoint}/api/v1/users/me`,
@@ -861,35 +861,35 @@ $(function() {
         container.show();
 
         if (li == logLi) {
-            upload.show();
+            // upload.show();
             saveLog.show();
             clearLog.show();
             csvAdd.hide();
             jsonAdd.hide();
             extensionAdd.hide();
         } else if (li == screenshotLi) {
-            upload.hide();
+            // upload.hide();
             saveLog.hide();
             clearLog.hide();
             csvAdd.hide();
             jsonAdd.hide();
             extensionAdd.hide();
         } else if (li == dataLi) { 
-            upload.hide();
+            // upload.hide();
             saveLog.hide();
             clearLog.hide();
             csvAdd.show();
             jsonAdd.show();
             extensionAdd.hide();
         } else if (li == extensionsLi) { 
-            upload.hide();
+            // upload.hide();
             saveLog.hide();
             clearLog.hide();
             csvAdd.hide();
             jsonAdd.hide();
             extensionAdd.show();
         } else {
-            upload.hide();
+            // upload.hide();
             saveLog.hide();
             clearLog.hide();
             csvAdd.hide();
@@ -1213,7 +1213,7 @@ $(function() {
                                         uploadedPath: path
                                     },
                                     success: function() {
-                                        showDialog('Execution logs have been uploaded successfully.', true)
+                                        showDialog('Execution logs have been uploaded successfully. Please give us a few minutes to analyze the data. Thank you!', true)
                                         window.open(executionUrl);
                                     },
                                     error: function() {
@@ -1275,15 +1275,24 @@ $(function() {
         });
     }
 
-    function getProjects() {
+    function getFirstProject() {
         return $.ajax({
-            url: testOpsUrls.getProjects,
+            url: testOpsUrls.getUserInfo,
             type: 'GET',
-        })
+        }).then(data => {
+            if (data.projects.length == 0) {
+                return $.ajax({
+                    url: testOpsUrls.getFirstProject,
+                    type: 'GET',
+                });
+            } else {
+                return data.projects;
+            }
+        });
     }
 
     $('#ka-upload').on('click', function() {
-        getProjects()
+        getFirstProject()
             .then(projects => {
                 var select = $('#select-ka-project');
                 select.empty();

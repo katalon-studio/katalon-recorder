@@ -236,7 +236,7 @@ section#main {
 
 .sub_btn img {
     margin-right: 6px;
-    height: 16px;
+    max-height: 16px;
 }
 
 .sub_btn:disabled {
