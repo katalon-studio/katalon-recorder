@@ -1178,61 +1178,7 @@ $(function() {
                 var select = $('#select-ka-project');
                 var projectId = select.val();
                 var teamId = select.find(':selected').attr('data-teamId');
-                var executionUrl = `${testOpsEndpoint}/team/${teamId}/project/${projectId}/executions`;
-                $.ajax({
-                    url: testOpsUrls.getUploadUrl,
-                    type: 'GET',
-                    data: {
-                        projectId: projectId
-                    },
-                    success: function(response) {
-                        var path = response.path;
-                        var uploadUrl = response.uploadUrl;
-
-                        // see save-log button
-                        var logcontext = '';
-                        var logcontainer = document.getElementById('logcontainer');
-                        for (var i = 0; i < logcontainer.childNodes.length; i++) {
-                            logcontext = logcontext + logcontainer.childNodes[i].textContent + '\n' ;
-                        }
-
-                        $.ajax({
-                            url: uploadUrl,
-                            type: 'PUT',
-                            contentType: 'text/plain',
-                            data: logcontext,
-                            success: function() {
-                                $.ajax({
-                                    url: testOpsUrls.uploadTestReports,
-                                    type: 'POST',
-                                    data: {
-                                        projectId: projectId,
-                                        batch: new Date().getTime(),
-                                        isEnd: true,
-                                        fileName: 'KR-' + new Date().getTime() + '.log',
-                                        uploadedPath: path
-                                    },
-                                    success: function() {
-                                        showDialog('Execution logs have been uploaded successfully. Please give us a few minutes to analyze the data. Thank you!', true)
-                                        window.open(executionUrl);
-                                    },
-                                    error: function() {
-                                        console.log(arguments);
-                                        showErrorDialog();
-                                    }
-                                });
-                            },
-                            error: function() {
-                                console.log(arguments);
-                                showErrorDialog();
-                            }
-                        });
-                    },
-                    error: function() {
-                        console.log(arguments);
-                        showErrorDialog();
-                    }
-                })
+                uploadTestReportsToTestOps(teamId, projectId);
             },
             Cancel: function() {
                 $(this).dialog('close');
@@ -1275,7 +1221,7 @@ $(function() {
         });
     }
 
-    function getFirstProject() {
+    function getProjects() {
         return $.ajax({
             url: testOpsUrls.getUserInfo,
             type: 'GET',
@@ -1292,7 +1238,7 @@ $(function() {
     }
 
     $('#ka-upload').on('click', function() {
-        getFirstProject()
+        getProjects()
             .then(projects => {
                 var select = $('#select-ka-project');
                 select.empty();
@@ -1324,6 +1270,66 @@ $(function() {
         window.open(testOpsEndpoint);
     });
 });
+
+function uploadTestReportsToTestOps(teamId, projectId) {
+    var executionUrl = teamId ? `${testOpsEndpoint}/team/${teamId}/project/${projectId}/executions` : null;
+    $.ajax({
+        url: testOpsUrls.getUploadUrl,
+        type: 'GET',
+        data: {
+            projectId: projectId
+        },
+        success: function (response) {
+            var path = response.path;
+            var uploadUrl = response.uploadUrl;
+
+            // see save-log button
+            var logcontext = '';
+            var logcontainer = document.getElementById('logcontainer');
+            for (var i = 0; i < logcontainer.childNodes.length; i++) {
+                logcontext = logcontext + logcontainer.childNodes[i].textContent + '\n';
+            }
+
+            $.ajax({
+                url: uploadUrl,
+                type: 'PUT',
+                contentType: 'text/plain',
+                data: logcontext,
+                success: function () {
+                    $.ajax({
+                        url: testOpsUrls.uploadTestReports,
+                        type: 'POST',
+                        data: {
+                            projectId: projectId,
+                            batch: new Date().getTime(),
+                            isEnd: true,
+                            fileName: 'KR-' + new Date().getTime() + '.log',
+                            uploadedPath: path
+                        },
+                        success: function () {
+                            if (executionUrl) {
+                                showDialog('Execution logs have been uploaded successfully. Please give us a few minutes to analyze the data. Thank you!', true);
+                                window.open(executionUrl);
+                            }
+                        },
+                        error: function () {
+                            console.log(arguments);
+                            showErrorDialog();
+                        }
+                    });
+                },
+                error: function () {
+                    console.log(arguments);
+                    showErrorDialog();
+                }
+            });
+        },
+        error: function () {
+            console.log(arguments);
+            showErrorDialog();
+        }
+    });
+}
 
 function refreshStatusBar() {
     $.ajax({
