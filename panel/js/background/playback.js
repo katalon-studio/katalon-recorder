@@ -732,17 +732,8 @@ function switchPS() {
         document.getElementById("stop").style.display = "none";
 
         $.ajax({
-            url: testOpsUrls.getUserInfo,
+            url: testOpsUrls.getFirstProject,
             type: 'GET',
-        }).then(data => {
-            if (data.projects.length == 0) {
-                return $.ajax({
-                    url: testOpsUrls.getFirstProject,
-                    type: 'GET',
-                });
-            } else {
-                return []
-            }
         }).then(projects => {
             if (projects.length == 1) {
                 var project = projects[0];
