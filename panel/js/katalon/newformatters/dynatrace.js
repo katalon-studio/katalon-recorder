@@ -77,17 +77,16 @@ newFormatters.dynatrace = function(name, commands) {
 
     class DynatraceScript {
 
-        configuration = {
-            device: {
-                orientation: "landscape",
-                deviceName: "Desktop"
-            }
-        };
-        type = "clickpath";
-        version = "1.0";
-        events = [];
-
         constructor(cmds) {
+            this.configuration = {
+                device: {
+                    orientation: "landscape",
+                    deviceName: "Desktop"
+                }
+            };
+            this.type = "clickpath";
+            this.version = "1.0";
+            this.events = [];
             cmds.forEach((command) => this.mapCommand(command));
         }
 
