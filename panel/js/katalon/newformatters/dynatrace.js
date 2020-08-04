@@ -573,8 +573,11 @@ newFormatters.dynatrace = function(name, commands) {
     }
 
     class Locator {
-        type = "css";
-        value = "";
+
+        constructor() {
+            this.type = "css";
+            this.value = "";
+        }
     }
 
     return {
