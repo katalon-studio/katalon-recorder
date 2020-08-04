@@ -11,7 +11,6 @@ const newWebDriver = function (scriptName) {
   let _scriptName = scriptName || "";
   const locatorType = {
     xpath: (target) => {
-      alert(target);
       return `'${target.replace(/'/g, "\\\'")}'`;
     },
     css: (target) => {
