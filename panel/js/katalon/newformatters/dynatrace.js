@@ -285,7 +285,7 @@ newFormatters.dynatrace = function(name, commands) {
             jsEvent.wait = new WaitCondition();
             jsEvent.wait.waitFor = "validation";
             jsEvent.javaScript = "";
-            jsEvent.wait.timeoutInMilliseconds = 60_000;
+            jsEvent.wait.timeoutInMilliseconds = 60000;
             const loc = createLocator(command);
             const target = new Target();
             target.locators.push(loc);
