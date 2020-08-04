@@ -552,7 +552,10 @@ newFormatters.dynatrace = function(name, commands) {
     }
 
     class WaitCondition {
-        waitFor = "page_complete"
+
+        constructor() {
+            this.waitFor = "page_complete";
+        }
     }
 
     class Target {
