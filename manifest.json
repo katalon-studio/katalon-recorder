@@ -2,7 +2,7 @@
     "description": "Selenium IDE alternative to record and export Selenium scripts. With reports & screenshots. Fast & open-source.",
     "manifest_version": 2,
     "name": "addon_name_placeholder",
-    "version": "5.3.1",
+    "version": "5.3.2",
     "homepage_url":"https://www.katalon.com/",
     "icons":
     {
