@@ -11,22 +11,22 @@ const newWebDriver = function (scriptName) {
   let _scriptName = scriptName || "";
   const locatorType = {
     xpath: (target) => {
-      return `'${target.replace(/'/g, "\\\'")}'`;
+      return `\`${target.replace(/'/g, "\\\'")}\``;
     },
     css: (target) => {
-      return `'${target.replace(/"/g, "\'")}'`;
+      return `\`${target.replace(/"/g, "\'")}\``;
     },
     id: (target) => {
-      return `'#${target.replace(/"/g, "\'")}'`;
+      return `\`#${target.replace(/"/g, "\'")}\``;
     },
     link: (target) => {
-      return `'=${target.replace(/"/g, "\'")}'`;
+      return `\`=${target.replace(/"/g, "\'")}\``;
     },
     name: (target) => {
-      return `'[name="${target.replace(/"/g, "\'")}"]'`;
+      return `\`[name="${target.replace(/"/g, "\'")}"]\``;
     },
     tag_name: (target) => {
-      return `'${target.replace(/"/g, "\'")}'`;
+      return `\`${target.replace(/"/g, "\'")}\``;
     }
   };
 
@@ -58,6 +58,10 @@ const newWebDriver = function (scriptName) {
       "const el__STEP_ = $(_BY_LOCATOR_);\n" +
       "\t\tel__STEP_.waitForClickable();\n" +
       "\t\tel__STEP_.click();",
+    "check":
+        "const el__STEP_ = $(_BY_LOCATOR_);\n" +
+        "\t\tif (!el__STEP_.isSelected()) " +
+        "el__STEP_.click();\n",
     "doubleClick": "$(_BY_LOCATOR_).doubleClick();",
     "doubleClickAndWait":
       "const el__STEP_ = $(_BY_LOCATOR_);\n" +
@@ -70,7 +74,7 @@ const newWebDriver = function (scriptName) {
       "\t\tel__STEP_.setValue('_VALUE_');",
     "pause": "browser.pause(_VALUE_);",
     "refresh": "browser.refresh();",
-    "sendKeys": "await $(_BY_LOCATOR_).sendKeys(_SEND_KEY_);",
+    "sendKeys": "$(_BY_LOCATOR_).setValue(`_VALUE_`);",
     "sendKeysAndWait":
       "const el__STEP_ = $(_BY_LOCATOR_);\n" +
       "\t\tel__STEP_.waitForClickable();\n" +
@@ -84,6 +88,7 @@ const newWebDriver = function (scriptName) {
     "assertText": "expect( $(_BY_LOCATOR_)).toHaveTextContaining(`_VALUE_STR_`);",
     "assertTitle": "expect( browser).toHaveTitle(`_VALUE_STR_`);",
     "assertValue": "expect( $(_BY_LOCATOR_)).toHaveValueContaining(`_VALUE_STR_`)",
+    "assertVisible": "expect($(_BY_LOCATOR_)).toBeDisplayed()",
     "waitForAlertPresent":
       "browser.waitUntil(function() {\n" +
       "\t\t\treturn browser.getAlertText()\n" +
@@ -99,9 +104,9 @@ const newWebDriver = function (scriptName) {
   };
 
   const header =
-    "var assert = require('assert');\n\n" +
+    "/* This uses @webdriverio/sync */\n\n" +
     "describe('_SCRIPT_NAME_', function() {\n\n" +
-    "\tit('should do something', function() {\n";
+    "\tit('should _SCRIPT_NAME_', function() {\n";
 
   const footer = "\t});\n\n});";
 
@@ -159,7 +164,7 @@ const newWebDriver = function (scriptName) {
     let selectorStr = target.substr(target.indexOf("=") + 1, target.length);
     let locatorFunc = locatorType[locType];
     if ( typeof (locatorFunc) == 'undefined' ) {
-      return `'${target.replace(/'/g, '"')}'`;
+      return `\`${target.replace(/'/g, '"')}\``;
     }
 
     return locatorFunc(selectorStr);
