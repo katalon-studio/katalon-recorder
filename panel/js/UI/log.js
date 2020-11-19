@@ -32,6 +32,16 @@ class Log {
         this._write("[error] " + str, "log-error");
     };
 
+    appendA(str, id) {
+        let a = document.createElement('a');
+        a.setAttribute("href", "#");
+        a.setAttribute("id", id);
+        a.setAttribute("class", "katalon-link");
+        a.textContent = str;
+        this.container.appendChild(a);
+        this.container.scrollIntoView(false);
+    }
+
     _write(str, className) {
         let textElement = document.createElement('h4');
         textElement.setAttribute("class", className);

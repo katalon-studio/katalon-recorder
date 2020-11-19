@@ -3816,6 +3816,15 @@ Selenium.prototype.doAssertAlert = function(message) {
            });
 };
 
+Selenium.prototype.doVerifyAlert = function(message) {
+    return this.browserbot.getAlertMessage().then(function(actualMessage) {
+        if (message != actualMessage) {
+            return Promise.reject("did not match");
+        } else
+            return Promise.resolve(true);
+    });
+};
+
 // Modified confirm by SideeX comitters (Copyright 2017)
 Selenium.prototype.doChooseCancelOnNextConfirmation = function() {
     return this.browserbot.setNextConfirmationResult(false);

@@ -1237,7 +1237,7 @@ $(function() {
         });
     }
 
-    $('#ka-upload').on('click', function() {
+    $(document).on('click', '#ka-upload,#ka-upload-log', function() {
         getProjects()
             .then(projects => {
                 var select = $('#select-ka-project');

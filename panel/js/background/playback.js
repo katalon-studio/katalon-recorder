@@ -738,6 +738,8 @@ function switchPS() {
             if (projects.length == 1) {
                 var project = projects[0];
                 uploadTestReportsToTestOps(null, project.id);
+            } else {
+                sideex_log.appendA('Upload this execution to Katalon TestOps', 'ka-upload-log');
             }
         })
     }
@@ -1266,7 +1268,8 @@ function isWindowMethodCommand(command) {
         || command == "chooseOkOnNextConfirmation"
         || command == "chooseCancelOnNextConfirmation"
         || command == "assertConfirmation"
-        || command == "assertAlert")
+        || command == "assertAlert"
+        || command == "verifyAlert")
         return true;
     return false;
 }

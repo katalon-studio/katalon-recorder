@@ -26,16 +26,6 @@
     <!-- TODO: Change the title bar text -->
     <title>Katalon Recorder</title>
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EPMKV6JV1B"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-EPMKV6JV1B');
-    </script>
-
     <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,700|Roboto:400,500,700" rel="stylesheet">
 
     <link rel="stylesheet" href="css/jquery-ui.min.css">
@@ -77,6 +67,8 @@
     <script type="text/javascript" src="js/katalon/codemirror-5.31.0/mode/xml/xml.js"></script>
     <script type="text/javascript" src="js/katalon/bowser.js"></script>
     <script type="text/javascript" src="js/katalon/papaparse.js"></script>
+
+    <script type="text/javascript" src="js/katalon/kar-extra.js"></script>
 </head>
 <!-- TODO: Make whole panel size flexible -->
 
@@ -315,7 +307,7 @@
                     <li id="reference-log"><a>Reference</a></li>
                     </ul>
                     <ul class="tabs">
-                        <li id="ka-open"><a><img src="../katalon/images/branding/ka_32x24px.png" alt="Katalon TestOps"/>TestOps</a></li>
+                        <li id="ka-open"><a><img src="../katalon/images/branding/ka_32x24px.png" alt="Katalon TestOps"/>Dashboard</a></li>
                         <li id="save-log"><a title="Save logs as...">Save</a></li>
                         <li id="clear-log"><a title="Clear logs">Clear</a></li>
                         <li id="data-files-add-csv"><a title="Add CSV File">Add CSV</a></li>
