@@ -964,6 +964,10 @@ function doCommand() {
         }, 10);
     });
     return p.then(function() {
+            if (commandName === 'break') {
+                pause();
+                return Promise.reject("shutdown");
+            }
             if (commandName === '#') {
                 return {
                     result: 'success'
