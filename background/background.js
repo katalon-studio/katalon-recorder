@@ -66,7 +66,7 @@ function openPanel(tab) {
                         } else {
                             master[contentWindowId] = panelWindowInfo.id;
                             if (Object.keys(master).length === 1) {
-                                createMenus();
+                                createKrMenus();
                             }
                             resolve(panelWindowInfo);
                             clearInterval(interval);
@@ -103,7 +103,7 @@ browser.windows.onRemoved.addListener(function(windowId) {
 });
 
 // context menu
-function createMenus() {
+function createKrMenus() {
     browser.contextMenus.create({
         id: "verifyText",
         title: "verifyText",
