@@ -1142,6 +1142,30 @@ function showDialog(html, showOK) {
         });
 }
 
+function showDialogWithCustomButtons(html, buttons) {
+    if (waitDialog) {
+        waitDialog.dialog('close');
+        waitDialog = null;
+    }
+    var buttons;
+    if (!buttons) {
+        buttons = {};
+    }
+    return $('<div></div>')
+        .html(html)
+        .dialog({
+            title: 'Katalon Recorder',
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: buttons,
+            close: function() {
+                $(this).remove();
+            }
+        });
+}
+
 function showErrorDialog() {
     return showDialog('Something went wrong. Please try again later.', true);
 }

@@ -677,7 +677,37 @@ function delay(t) {
     });
  }
 
+/**
+ * Show a dialog only once after the first test execution for KR users up to December 25th, 2020
+ */
+function showMarketingDialog() {
+    let expiryDate = Date.parse("2020-12-25");
+    let currentDate = new Date();
+    let shownStatus;
+
+    chrome.storage.local.get('marketingDialogShownStatus', function(result) {
+        shownStatus = result.marketingDialogShownStatus;
+        if(currentDate <= expiryDate && !shownStatus) {
+
+            let html = `
+            <p>Your voice matters to make Katalon Recorder a better tool.</p>
+            <p>Complete this 3-minute survey for a chance to win a $100 e-gift card.</p>`;
+    
+            showDialogWithCustomButtons(html, {
+                'Count me in': function() {
+                    window.open('https://www.research.net/r/Y73LZKL');
+                    browser.storage.local.set({
+                        marketingDialogShownStatus: true
+                    });
+                    $(this).dialog("close");
+                }
+            });
+        }    
+    });
+}
+
 function finalizePlayingProgress() {
+    showMarketingDialog();
     if (!isPause) {
         enableClick();
         extCommand.clear();
