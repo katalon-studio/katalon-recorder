@@ -1143,10 +1143,6 @@ function showDialog(html, showOK) {
 }
 
 function showDialogWithCustomButtons(html, buttons) {
-    if (waitDialog) {
-        waitDialog.dialog('close');
-        waitDialog = null;
-    }
     var buttons;
     if (!buttons) {
         buttons = {};
