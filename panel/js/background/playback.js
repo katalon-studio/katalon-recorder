@@ -715,7 +715,12 @@ function showMarketingDialog() {
 }
 
 function finalizePlayingProgress() {
-    showMarketingDialog();
+    try {
+        showMarketingDialog();
+    } catch (err) {
+        console.log(err);
+    }
+
     if (!isPause) {
         enableClick();
         extCommand.clear();
