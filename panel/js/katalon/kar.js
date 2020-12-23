@@ -1143,23 +1143,27 @@ function showDialog(html, showOK) {
 }
 
 function showDialogWithCustomButtons(html, buttons) {
-    var buttons;
-    if (!buttons) {
-        buttons = {};
+    try {
+        var buttons;
+        if (!buttons) {
+            buttons = {};
+        }
+        return $('<div></div>')
+            .html(html)
+            .dialog({
+                title: 'Katalon Recorder',
+                resizable: false,
+                height: "auto",
+                width: 400,
+                modal: true,
+                buttons: buttons,
+                close: function() {
+                    $(this).remove();
+                }
+            });
+    } catch (err) {
+        console.log(err);
     }
-    return $('<div></div>')
-        .html(html)
-        .dialog({
-            title: 'Katalon Recorder',
-            resizable: false,
-            height: "auto",
-            width: 400,
-            modal: true,
-            buttons: buttons,
-            close: function() {
-                $(this).remove();
-            }
-        });
 }
 
 function showErrorDialog() {

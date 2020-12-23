@@ -686,23 +686,31 @@ function showMarketingDialog() {
     let shownStatus;
 
     chrome.storage.local.get('marketingDialogShownStatus', function(result) {
-        shownStatus = result.marketingDialogShownStatus;
-        if(currentDate <= expiryDate && !shownStatus) {
+        try {
+            shownStatus = result.marketingDialogShownStatus;
+            if(currentDate <= expiryDate && !shownStatus) {
 
-            let html = `
-            <p>Your voice matters to make Katalon Recorder a better tool.</p>
-            <p>Complete this 3-minute survey for a chance to win a $100 e-gift card.</p>`;
-    
-            showDialogWithCustomButtons(html, {
-                'Count me in': function() {
-                    window.open('https://www.research.net/r/Y73LZKL');
-                    browser.storage.local.set({
-                        marketingDialogShownStatus: true
-                    });
-                    $(this).dialog("close");
-                }
-            });
-        }    
+                let html = `
+                <p>Your voice matters to make Katalon Recorder a better tool.</p>
+                <p>Complete this 3-minute survey for a chance to win a $100 e-gift card.</p>`;
+        
+                showDialogWithCustomButtons(html, {
+                    'Count me in': function() {
+                        try {
+                            window.open('https://www.research.net/r/Y73LZKL');
+                            browser.storage.local.set({
+                                marketingDialogShownStatus: true
+                            });
+                            $(this).dialog("close");
+                        } catch (err) {
+                            console.log(err);
+                        }
+                    }
+                });
+            }
+        } catch (err) {
+            console.log(err);
+        }
     });
 }
 
