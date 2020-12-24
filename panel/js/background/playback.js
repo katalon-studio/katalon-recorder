@@ -686,7 +686,7 @@ function delay(t) {
  */
 function showMarketingDialog() {
     try {
-        let expiryDate = Date.parse("2020-12-25");
+        let expiryDate = Date.parse("2020-12-31");
         let currentDate = new Date();
         let shownStatus;
 
