@@ -43,8 +43,6 @@ var implicitTime = "";
 var caseFailed = false;
 var extCommand = new ExtCommand();
 
-var marketingDialogShown = false;
-
 // TODO: move to another file
 window.onload = function() {
     var recordButton = document.getElementById("record");
@@ -679,53 +677,7 @@ function delay(t) {
     });
  }
 
-/**
- * Show a dialog only once after the first test execution for KR users up to December 25th, 2020
- */
-function showMarketingDialog() {
-    if (!marketingDialogShown) {
-        marketingDialogShown = true;
-        let expiryDate = Date.parse("2020-12-31");
-        let currentDate = new Date();
-        let shownStatus;
-
-        chrome.storage.local.get('marketingDialogShownStatus', function (result) {
-            try {
-                shownStatus = result.marketingDialogShownStatus;
-                if (currentDate <= expiryDate && !shownStatus) {
-
-                    let html = `
-                <p>Your voice matters to make Katalon Recorder a better tool.</p>
-                <p>Complete this 3-minute survey for a chance to win a $100 e-gift card.</p>`;
-
-                    showDialogWithCustomButtons(html, {
-                        'Count me in': function () {
-                            try {
-                                window.open('https://www.research.net/r/Y73LZKL');
-                                browser.storage.local.set({
-                                    marketingDialogShownStatus: true
-                                });
-                                $(this).dialog("close");
-                            } catch (err) {
-                                console.log(err);
-                            }
-                        }
-                    });
-                }
-            } catch (err) {
-                console.log(err);
-            }
-        });
-
-        try {
-            showMarketingDialog();
-        } catch (err) {
-            console.log(err);
-        }
-    }
-}
-
-function finalizePlayingProgress() { 
+function finalizePlayingProgress() {
     if (!isPause) {
         enableClick();
         extCommand.clear();
@@ -785,11 +737,17 @@ function switchPS() {
         }).then(projects => {
             if (projects.length == 1) {
                 var project = projects[0];
-                uploadTestReportsToTestOps(null, project.id);
+                uploadTestReportsToTestOps(null, project.id, true);
             } else {
                 sideex_log.appendA('Upload this execution to Katalon TestOps', 'ka-upload-log');
             }
         })
+
+        try {
+            checkLoginAfterExecution();
+        } catch (err) {
+            console.log(err);
+        }
     }
 }
 

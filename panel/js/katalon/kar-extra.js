@@ -9,22 +9,26 @@ _gaq.push(['_trackPageview']);
 })();
 
 $(document).on('click', 'button,a,select,input,i', function() {
-    var element = $(this);
-    var id = element.attr('id');
-    if (!id) {
-        var parent = element.closest("[id]");
-        if (parent) {
-            id = parent.attr('id');
-            if (!id) {
-                id = element.text();
+    try {
+        var element = $(this);
+        var id = element.attr('id');
+        if (!id) {
+            var parent = element.closest("[id]");
+            if (parent) {
+                id = parent.attr('id');
+                if (!id) {
+                    id = element.text();
+                }
             }
         }
+        var value;
+        if (element.is('select')) {
+            value = element.val();
+        } else {
+            value = 'clicked';
+        }
+        _gaq.push(['_trackEvent', id, value]);
+    } catch (e) {
+        
     }
-    var value;
-    if (element.is('select')) {
-        value = element.val();
-    } else {
-        value = 'clicked';
-    }
-    _gaq.push(['_trackEvent', id, value]);
 });

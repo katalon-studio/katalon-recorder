@@ -1183,6 +1183,8 @@ Selenium.prototype.doSendKeys = function(locator, value) {
     } else {
         bot.action.type(element, value);
     }
+    
+    bot.events.fire(element, bot.events.EventType.CHANGE);
 };
 
 
