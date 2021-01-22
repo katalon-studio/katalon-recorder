@@ -310,6 +310,7 @@
                         <li id="ka-open"><a><img src="../katalon/images/branding/ka_32x24px.png" alt="Katalon TestOps"/>Dashboard</a></li>
                         <li id="save-log"><a title="Save logs as...">Save</a></li>
                         <li id="clear-log"><a title="Clear logs">Clear</a></li>
+                        <li id="download-all"><a title="Download All">Download All</a></li>
                         <li id="data-files-add-csv"><a title="Add CSV File">Add CSV</a></li>
                         <li id="data-files-add-json"><a title="Add JSON File">Add JSON</a></li>
                         <li id="extension-add"><a title="Add JS File">Add Extension Script</a></li>
@@ -427,6 +428,9 @@
                     <option value="xml">XML</option>
                     <!-- must start with new-formatter- -->
                     <option value="new-formatter-sample">Sample for new formatters</option>
+                    <option value="new-formatter-puppeteer">Puppeteer</option>
+                    <option value="new-formatter-puppeteer_w_comment">Puppeteer w Comments</option>
+                    <option value="new-formatter-puppeteer_json">JSON (puppeteer)</option>
                 </select>
                 <div style="display: inline-block;">You can add your own formatter. Read more <a target="_blank" href="https://github.com/katalon-studio/katalon-recorder" class="katalon-link">here</a>.</div>
             </div>
@@ -479,13 +483,28 @@
     <script src="../common/escape.js"></script>
     <script src="js/background/editor.js"></script>
     <script src="js/background/formatCommand.js"></script>
+    <script src="js/background/website-login.js"></script>
     <script src="js/background/playback.js"></script>
 
+    <!-- <script src="js/katalon/kar.js"></script> -->
+    <script src="js/katalon/kar-testSuite.js"></script>
+    <script src="js/katalon/kar-upload.js"></script>
+    <script src="js/katalon/kar-loadCommand.js"></script>
+    <script src="js/katalon/kar-generateScript.js"></script>
+    <script src="js/katalon/kar-showDialog.js"></script>
+    <script src="js/katalon/kar-dataFile.js"></script>
+    <script src="js/katalon/kar-extensionScript.js"></script>
+    <script src="js/katalon/kar-restoreData.js"></script>
+    <script src="js/katalon/kar-screenshot.js"></script>
     <script src="js/katalon/kar.js"></script>
+
+
     <script type="text/javascript" src="js/katalon/newformatters/sample.js"></script>
     <script type="text/javascript" src="js/katalon/newformatters/nrsynthetics.js"></script>
     <script type="text/javascript" src="js/katalon/newformatters/protractorts.js"></script>
     <script type="text/javascript" src="js/katalon/newformatters/dynatrace.js"></script>
     <script type="text/javascript" src="js/katalon/newformatters/webdriver.js"></script>
+    <!-- new formatter -->
+    <script type="text/javascript" src="js/katalon/newformatters/puppeteer.js"></script>
 </body>
 </html>
