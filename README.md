@@ -1,6 +1,6 @@
 # Katalon Recorder
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-24-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-25-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## How to add new formatter
@@ -123,6 +123,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://www.boris.ca/"><img src="https://avatars.githubusercontent.com/u/7527307?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Boris Reisig</b></sub></a><br /><a href="https://github.com/katalon-studio/katalon-recorder/issues?q=author%3Abreisig" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://leandrocadetedasilva.blogspot.com/"><img src="https://avatars.githubusercontent.com/u/6534768?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Leandro Cadete da Silva</b></sub></a><br /><a href="https://github.com/katalon-studio/katalon-recorder/issues?q=author%3Aleandrocadete" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://github.com/alexandremsouza1"><img src="https://avatars.githubusercontent.com/u/38253342?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Alexandre Magno</b></sub></a><br /><a href="https://github.com/katalon-studio/katalon-recorder/issues?q=author%3Aalexandremsouza1" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/thangbui1999a"><img src="https://avatars.githubusercontent.com/u/76932015?v=4?s=100" width="100px;" alt=""/><br /><sub><b>thangbui1999a</b></sub></a><br /><a href="https://github.com/katalon-studio/katalon-recorder/commits?author=thangbui1999a" title="Code">💻</a></td>
   </tr>
 </table>
 
