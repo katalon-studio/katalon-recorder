@@ -238,7 +238,17 @@
       "contributions": [
         "bug"
       ]
+    },
+    {
+      "login": "thangbui1999a",
+      "name": "thangbui1999a",
+      "avatar_url": "https://avatars.githubusercontent.com/u/76932015?v=4",
+      "profile": "https://github.com/thangbui1999a",
+      "contributions": [
+        "code"
+      ]
     }
   ],
-  "contributorsPerLine": 7
+  "contributorsPerLine": 7,
+  "skipCi": true
 }
