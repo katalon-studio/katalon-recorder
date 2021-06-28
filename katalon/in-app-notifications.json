@@ -1,9 +1,16 @@
 [
   {
-    "id": "new-updates",
+    "id": "referral-cta",
     "type": "new-media",
     "date": "2021-06-28",
-    "title": "referral-cta",
-    "content": "Refer your friends and get <a href='https://www.katalon.com/referral/?utm_source=katalon_recorder&utm_medium=in-app_noti&utm_campaign=referral'>$100 e-gift card</a>."
+    "title": "Invite 3 friends and get $100",
+    "content": "Refer 3 friends to Katalon Recorder and get <a href='https://www.katalon.com/referral/?utm_source=katalon_recorder&utm_medium=in-app_noti&utm_campaign=referral'>a $100 e-gift card</a>."
   },
+    {
+    "id": "sample-projects-cta",
+    "type": "new-content",
+    "date": "2021-06-28",
+    "title": "Kickstart your automation with templates",
+    "content": "Go to Help > Sample Projects and add popular automation templates to your project."
+  }
 ]
