@@ -1,23 +1,9 @@
 [
   {
-    "id": "kr-webinar-5.5.0",
+    "id": "new-updates",
     "type": "new-media",
-    "date": "2020-06-05",
-    "title": "New webinar is available!",
-    "content": "A <a href='www.google.com'>new webinar</a> about Katalon Recorder is available!"
+    "date": "2021-06-28",
+    "title": "referral-cta",
+    "content": "Refer your friends and get <a href='https://www.katalon.com/referral/?utm_source=katalon_recorder&utm_medium=in-app_noti&utm_campaign=referral'>$100 e-gift card</a>."
   },
-  {
-    "id": "kr-version-5.4.0-is-out",
-    "content": "A new version is out! Please visit the Release Note to see what's going on",
-    "title": "KR version 5.4.5 is out!",
-    "type": "new-release",
-    "date": "2020-06-03"
-  },
-  {
-    "id": "kr-new-update",
-    "content": "A new version is out! Please visit the Release Note to see what's going on",
-    "title": "KR update",
-    "type": "new-content",
-    "date": "2020-06-10"
-  }
 ]
