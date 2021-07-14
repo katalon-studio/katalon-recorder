@@ -16,7 +16,6 @@ jobs:
           repository: katalon-studio/katalon-recorder-regression-tests
           ref: refs/heads/intergration-with-KR-part-5
           path: regression-tests
-          token: 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
 
       - name: Setup Nodejs
         uses: actions/setup-node@v1
