@@ -11,7 +11,7 @@ window.segmentService = async function () {
 }
 
 
-/*window.onload = function () {
+window.onload = function () {
   $("#save-log").click(savelog);
   $("#refercontainer").hide();
   $('#command-command').on('input change', function () {
@@ -62,7 +62,7 @@ window.segmentService = async function () {
     let command = commandFactory.createCommand("executeTestStep", event);
     command.execute();
   });
-};*/
+};
 
 
 
