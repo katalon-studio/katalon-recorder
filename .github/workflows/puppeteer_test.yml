@@ -1,0 +1,50 @@
+name: Puppeteer Test
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current push
+        uses: actions/checkout@v2
+        with:
+          path: katalon-recorder-private
+
+      - name: Checkout regression test repo
+        uses: actions/checkout@v2
+        with:
+          repository: katalon-studio/katalon-recorder-regression-tests
+          ref: refs/heads/intergration-with-KR-part-5
+          path: regression-tests
+          token: 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
+
+      - name: Setup Nodejs
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+        # need this variable so Puppeteer does not install conflicting versions of Chromium.
+        # see more here: https://github.com/marketplace/actions/puppeteer-headful
+        env:
+          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: 'true'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: regression-tests
+
+      - name: Set environment variables
+        run: echo "EXTENSION_PATH=$(echo $GITHUB_WORKSPACE/katalon-recorder-private/src/)" >> $GITHUB_ENV |
+             echo "TEST_PATH=$(echo $GITHUB_WORKSPACE/regression-tests)" >> $GITHUB_ENV |
+             echo "HEADLESS=$(echo true)" >> $GITHUB_ENV |
+             echo "SLOWMO=$(echo 1000)" >> $GITHUB_ENV
+
+      - run: ls $TEST_ -a -l
+
+      - name: Run test
+        uses: mujo-code/puppeteer-headful@master
+        env:
+          CI: 'true'
+        with:
+          args: npm test --prefix regression-tests
+
+
+
