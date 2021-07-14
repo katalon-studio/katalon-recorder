@@ -76,7 +76,25 @@ function renderDataListItem(name) {
             saveDataFiles();
         }
     });
-    tdActions.append(renameButton, deleteButton);
+    let downloadButton = $(`<button class="download-button" value="${name}"></button>`);
+    downloadButton.click(function(event){
+        let fileName = $(event.target).val();
+        let fileContent = "";
+        if (dataFiles[fileName].type === "csv"){
+            fileContent = "data:text/csv;charset=utf-8," + dataFiles[fileName].content;
+        } else if (dataFiles[fileName].type === "json"){
+            fileContent = 'data:application/json;charset=utf-8,'+ dataFiles[fileName].content;
+        }
+        let encodedUri = encodeURI(fileContent);
+        let link = document.createElement("a");
+        link.setAttribute("id", "123");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", fileName);
+        document.body.appendChild(link);
+        link.click();
+        $(link).remove();
+    });
+    tdActions.append(renameButton, deleteButton, downloadButton);
     tr.append(tdType, tdName, tdActions);
     return tr;
 }
@@ -98,8 +116,7 @@ function parseData(name) {
 }
 
 $(function() {
-
-    chrome.storage.local.get('dataFiles', function(result) {
+    browser.storage.local.get('dataFiles').then(function(result) {
         dataFiles = result.dataFiles;
         if (!dataFiles) {
             dataFiles = {};

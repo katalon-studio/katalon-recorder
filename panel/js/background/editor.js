@@ -20,7 +20,12 @@ var selfWindowId = -1;
 var contentWindowId;
 var notificationCount = 0;
 
-var recorder = new BackgroundRecorder();
+var recorder;
+
+(async function(){
+    let recorderModule = await import("./recorder.js");
+    recorder = new recorderModule.BackgroundRecorder();
+})();
 
 /* flags */
 var isRecording = false;

@@ -15,7 +15,7 @@ function updateBackupStatus(html) {
 }
 
 function backupData() {
-    return chrome.storage.local.get(null, function(result) {
+    return browser.storage.local.get(null).then(function(result) {
         $.ajax({
             url: testOpsUrls.getUploadUrlAvatar,
             type: 'GET',
@@ -220,11 +220,11 @@ $(function() {
                 var dialogHtml = `
                     <img class="kto-light" style="max-width: 50%;" src="../../../katalon/images/branding/Katalon-TestOps-full-color-large-w.png" alt="Katalon TestOps" />
                     <img class="kto-dark" style="max-width: 50%;" src="../../../katalon/images/branding/Katalon-TestOps-full-color-large.png" alt="Katalon TestOps" />
-                    <p>Please log in to <a target="_blank" href="${testOpsEndpoint}" class="testops-link">Katalon TestOps (beta)</a> first and try again.</p>
+                    <p>Please log in to <a target="_blank" href="${testOpsEndpoint}" class="testops-link">Katalon TestOps</a> first and try again.</p>
                     <p>You can register a completely free account at <a target="_blank" href="${katalonEndpoint}" class="testops-link">katalon.com</a>.</p>
                     <p>Katalon TestOps helps you manage automation results as you test it manually and generate quality, performance and flakiness reports to improve your confidence in evaluating the test results. 
                     Katalon TestOps supports both <a target="_blank" href="${katalonEndpoint}" class="testops-link">Katalon Studio</a> (one of the top 10 test automation solutions) and Katalon Recorder.</p>
-                    <p style="margin-bottom: 0;"><a target="_blank" href="${katalonEndpoint}/testops/" class="testops-link">Learn more</a> about Katalon TestOps (Beta).</p>'
+                    <p style="margin-bottom: 0;"><a target="_blank" href="${katalonEndpoint}/testops/" class="testops-link">Learn more</a> about Katalon TestOps.</p>'
                 `;
                 showDialog(dialogHtml, true);
             });

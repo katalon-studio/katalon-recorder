@@ -75,6 +75,17 @@ function saveOldCase() {
     }
 }
 
+function saveDataAndRemoveDirtyMarks(event,type) {
+    event.stopPropagation();
+    saveData();
+    var s_case = getSelectedCase();
+    $(s_case).parent().find("strong").removeClass("modified");
+    $(s_case).removeClass("modified");
+    _gaq.push(['_trackEvent', 'save-testCase', 'done']);
+    let title = $(getSelectedCase()).children('span').text();
+    segmentService().then(r=>r.trackingSaveTestCase(type,title));
+}
+
 function appendContextMenu(node, isCase) {
     var ul = document.createElement("ul");
     var a;
@@ -94,7 +105,7 @@ function appendContextMenu(node, isCase) {
         var remove_case = document.createElement("li");
         a = document.createElement("a");
         a.setAttribute("href", "#");
-        a.textContent = "Remove Test Case";
+        a.textContent = "Remove Test Case from Workspace";
         remove_case.appendChild(a);
         remove_case.addEventListener("click", function(event) {
             event.stopPropagation();
@@ -124,13 +135,14 @@ function appendContextMenu(node, isCase) {
         a.setAttribute("href", "#");
         a.textContent = "Play From Here";
         play_case_from_here.appendChild(a);
-        play_case_from_here.addEventListener("click", function(event) {
+        play_case_from_here.addEventListener("click", async function(event) {
             saveData();
             emptyNode(document.getElementById("logcontainer"));
             document.getElementById("result-runs").textContent = "0";
             document.getElementById("result-failures").textContent = "0";
             recorder.detach();
-            initAllSuite();
+            const playActions = await import('../background/playback/service/actions/play-actions.js');
+            playActions.initAllSuite();
             // KAT-BEGIN focus on window when playing test suite
             if (contentWindowId) {
                 browser.windows.update(contentWindowId, {focused: true});
@@ -148,9 +160,30 @@ function appendContextMenu(node, isCase) {
                 }
                 i++;
             }
-            playSuite(i);
+            playActions.playTestSuiteAction(i, false);
         }, false);
         ul.appendChild(play_case_from_here);
+
+        var save_case = document.createElement("li");
+        a = document.createElement("a");
+        a.setAttribute("href", "#");
+        a.textContent = "Save Test Case";
+        save_case.appendChild(a);
+        save_case.addEventListener("click", function(event) {
+            saveDataAndRemoveDirtyMarks(event,'context');
+        }, false);
+        ul.appendChild(save_case);
+
+
+        var save_case_as = document.createElement("li");
+        a = document.createElement("a");
+        a.setAttribute("href", "#");
+        a.textContent = "Save Test Case As";
+        save_case_as.appendChild(a);
+        save_case_as.addEventListener("click", function(event) {
+            downloadSuite(getSelectedSuite(), ()=>{});
+        }, false);
+        ul.appendChild(save_case_as);
     } else {
         /* KAT-BEGIN hide open test suite icon
         var open_suite = document.createElement("li");
@@ -181,7 +214,7 @@ function appendContextMenu(node, isCase) {
         var save_suite = document.createElement("li");
         a = document.createElement("a");
         a.setAttribute("href", "#");
-        a.textContent = "Save Test Suite As...";
+        a.textContent = "Save Test Suite to Computer";
         save_suite.appendChild(a);
         save_suite.addEventListener("click", function(event) {
             event.stopPropagation();
@@ -192,7 +225,7 @@ function appendContextMenu(node, isCase) {
         var close_suite = document.createElement("li");
         a = document.createElement("a");
         a.setAttribute("href", "#");
-        a.textContent = "Close Test Suite";
+        a.textContent = "Remove Test Suite from Workspace";
         close_suite.appendChild(a);
         close_suite.addEventListener("click", function(event) {
             event.stopPropagation();
@@ -203,7 +236,7 @@ function appendContextMenu(node, isCase) {
         var close_all_suite = document.createElement("li");
         a = document.createElement("a");
         a.setAttribute("href", "#");
-        a.textContent = "Close All Test Suites";
+        a.textContent = "Remove All Test Suites from Workspace";
         close_all_suite.appendChild(a);
         close_all_suite.addEventListener("click", function(event) {
             event.stopPropagation();
@@ -241,6 +274,19 @@ function appendContextMenu(node, isCase) {
             }
         }, false);
         ul.appendChild(rename_suite);
+
+        var save_suite_as = document.createElement("li");
+        a = document.createElement("a");
+        a.setAttribute("href", "#");
+        a.textContent = "Save Test Suite As";
+        save_suite_as.appendChild(a);
+        save_suite_as.addEventListener("click", function(event) {
+            event.stopPropagation();
+            downloadSuite(getSelectedSuite(), ()=>{});
+        }, false);
+        ul.appendChild(save_suite_as);
+
+
     }
 
     node.appendChild(ul);
@@ -313,10 +359,16 @@ function addTestCase(title, id) {
                 reAssignId("records-1", "records-" + getRecordsNum());
                 attachEvent(1, getRecordsNum());
             }
+        //reset focus to the top
+        document.getElementById("records-1").scrollIntoView({
+                behavior: 'auto',
+                block: 'center',
+            });
         } else {
             clean_panel();
             document.getElementById("records-grid").innerHTML = escapeHTML('<input id="records-count" type=hidden value=0></input>');
         }
+
         // prevent event trigger on parent from child
         event.stopPropagation();
     }, false);
@@ -450,10 +502,17 @@ function modifyCaseSuite() {
     getSelectedSuite().getElementsByTagName("strong")[0].classList.add("modified");
 }
 
-document.getElementById("add-testSuite").addEventListener("click", function(event) {
+document.getElementById("add-testSuite").addEventListener("click", async function(event) {
     event.stopPropagation();
+    
     var title = prompt("Please enter the Test Suite's name", "Untitled Test Suite");
     if (title) {
+        let module = await import('../../../content-marketing/panel/login-inapp.js');
+        let result = await module.checkLoginOrSignupUser();
+        if (!result) {
+          return;
+        }
+
         var id = "suite" + sideex_testSuite.count;
         sideex_testSuite.count++;
         sideex_testSuite[id] = {
@@ -474,7 +533,7 @@ var confirmCloseSuite = function(question) {
     $('<div></div>')
         .html(question)
         .dialog({
-            title: "Save?",
+            title: "Warning! Possible data loss",
             resizable: false,
             height: "auto",
             width: 400,
@@ -484,7 +543,7 @@ var confirmCloseSuite = function(question) {
                     defer.resolve("true");
                     $(this).dialog("close");
                 },
-                "No": function() {
+                "No, delete my data": function() {
                     defer.resolve("false");
                     $(this).dialog("close");
                 },
@@ -541,28 +600,39 @@ document.getElementById("close-all-testSuites").addEventListener('click', functi
 function close_testSuite(suite_index) {
     var suites = document.getElementById("testCase-grid").getElementsByClassName("message");
     if (suites[suite_index] && suites[suite_index].id.includes("suite")) {
-        var c_suite = suites[suite_index];
-        setSelectedSuite(c_suite.id);
-        if ($(c_suite).find(".modified").length) {
-            confirmCloseSuite("Would you like to save the " + sideex_testSuite[c_suite.id].title + " test suite?").then(function(answer) {
-                if (answer === "true"){
-                    downloadSuite(c_suite, remove_testSuite);
-            	} else {
-                    remove_testSuite();
-                }
-            });
+      var c_suite = suites[suite_index];
+      setSelectedSuite(c_suite.id);
+      let html = `<div style="color:red;">This action will remove your test suite and changes made to your test suite permanently, you can open it again only if a copy is available on your computer.</div>
+        </br>
+        <div>Save the
+        ${
+          sideex_testSuite[c_suite.id].title
+        } test suite to your computer?"</div>`;
+      confirmCloseSuite(html).then(function (answer) {
+        if (answer === "true") {
+          downloadSuite(c_suite, remove_testSuite);
         } else {
-            remove_testSuite();
+          remove_testSuite();
         }
+      });
     }
 };
 
-document.getElementById("add-testCase").addEventListener("click", function(event) {
+document.getElementById("add-testCase").addEventListener("click", async function(event) {
     var title = prompt("Please enter the Test Case's name", "Untitled Test Case");
     if (title) {
+        let module = await import('../../../content-marketing/panel/login-inapp.js');
+        let result = await module.checkLoginOrSignupUser();
+        if (!result){
+            return;
+        }
+        let data = await browser.storage.local.get("checkLoginData");
+        data.checkLoginData.testCreated ++;
+        await browser.storage.local.set(data);
+
         var id = "case" + sideex_testCase.count;
         sideex_testCase.count++;
-        addTestCase(title, id);
+        addTestCase(title, id);        
     }
 }, false);
 
@@ -576,25 +646,19 @@ var remove_testCase = function() {
 document.getElementById("delete-testCase").addEventListener('click', function() {
     var s_case = getSelectedCase();
     if (s_case) {
-        if ($(s_case).hasClass("modified")) {
-            confirmCloseSuite("Would you like to save this test case?").then(function(answer) {
-                if (answer === "true")
-                    downloadSuite(getSelectedSuite(), remove_testCase);
-                else
-                    remove_testCase();
+      let html = `<div style="color:red">This action will remove your test case or changes made to your test case permanently, you can open it again only if a copy is available on your computer.</div>
+            </br>
+            <div>Save this test case to your computer?</div>`;
+      confirmCloseSuite(html).then(function (answer) {
+        if (answer === "true")
+          downloadSuite(getSelectedSuite(), remove_testCase);
+        else remove_testCase();
 
-                // disable play button when there is no test case
-                if (getCaseNumInSuite() == 0) {
-                    disableButton("playback");
-                }
-            });
-        } else {
-            remove_testCase();
-            // disable play button when there is no test case
-            if (getCaseNumInSuite() == 0) {
-                disableButton("playback");
-            }
+        // disable play button when there is no test case
+        if (getCaseNumInSuite() == 0) {
+          disableButton("playback");
         }
+      });
     }
 }, false);
 
@@ -620,3 +684,7 @@ function clickSuiteOpenIcon(event) {
 
 document.getElementById("suite-plus").addEventListener("click", clickSuitePlusIcon);
 document.getElementById("suite-open").addEventListener("click", clickSuiteOpenIcon);
+
+
+
+

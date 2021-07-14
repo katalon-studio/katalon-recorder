@@ -839,6 +839,22 @@ div.suite-plus {
     flex: 1;
     padding: 0px 3px;
     border-radius: 5px;
+
+}
+
+div.import-selenium img{
+    width: 15px;
+    height: 15px;
+}
+
+div.import-selenium{
+    flex: 1;
+    padding: 0px 7px;
+    border-radius: 5px;
+}
+
+div.import-selenium:hover{
+    cursor: pointer;
 }
 
 .message {
@@ -1088,7 +1104,8 @@ input[type=submit].btn_post_message:hover {
     z-index: 9999;
 }
 
-.w3-dropdown-content option {
+.w3-dropdown-content tr,
+.w3-dropdown-content option  {
     padding-top: 4px;
     padding-bottom: 2px;
     padding-left: 5px;
@@ -1097,9 +1114,13 @@ input[type=submit].btn_post_message:hover {
     overflow-x: hidden;
 }
 
-.w3-dropdown-content option:hover {
+.w3-dropdown-content tr:hover,
+.w3-dropdown-content option:hover{
     color: white;
     background-color: #2284E6;
+}
+.w3-dropdown-content table{
+    width: 100%;
 }
 
 .w3-show {

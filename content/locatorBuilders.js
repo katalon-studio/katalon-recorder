@@ -98,6 +98,9 @@ LocatorBuilders.prototype.buildAll = function(el) {
 
                 if (locator) {
                     locator = String(locator);
+                    if(finderName.startsWith("xpath")) {
+                        locator = "xpath=" + locator;
+                    }
                     //this.log.debug("locator=" + locator);
                     // test the locator. If a is_fuzzy_match() heuristic function is
                     // defined for the location strategy, use it to determine the
@@ -509,6 +512,10 @@ LocatorBuilders.add('xpath:idRelative', function(e) {
     return null;
 });
 
+LocatorBuilders.add('xpath:neighbor', function (e){
+    return neighborXpathsGenerator.getXpathsByNeighbors(e, false);
+});
+
 LocatorBuilders.add('xpath:href', function(e) {
     if (e.attributes && e.hasAttribute("href")) {
         href = e.getAttribute("href");
@@ -568,3 +575,4 @@ LocatorBuilders.add('css', function (e) {
     }
     return "css=" + sub_path;
 });
+

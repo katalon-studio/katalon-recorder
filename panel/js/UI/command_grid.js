@@ -16,6 +16,7 @@
  */
 
 // get <tr> array
+
 function getRecordsArray() {
     return document.getElementById("records-grid").getElementsByTagName("tr");
 }
@@ -160,13 +161,61 @@ function reAssignId(start, end) {
     }
 }
 
+function makeTableSortable(table) {
+    $(table).sortable({
+        axis: "y",
+        items: "tr",
+        scroll: true,
+        revert: 200,
+        scrollSensitivity: 20,
+        helper: function (e, tr) {
+            let $originals = tr.children();
+            let $helper = tr.clone();
+            $helper.children().each(function (index) {
+                $(this).width($originals.eq(index).width());
+            });
+            return $helper;
+        },
+        update: function (event, ui) {
+            let selectedTestCaseID = getSelectedRecord();
+            let selectedTestCase = $(`#${selectedTestCaseID}`);
+            //remove old target list
+            let datalist = selectedTestCase.find("datalist")[0];
+            $(datalist).remove();
+            //update new target list
+            let valueList = [...$("#target-dropdown").find("tr")].map(element => element.innerText);
+            let newDatalist = $('<datalist></datalist>');
+            for (let i = 0; i < valueList.length; i++){
+                let option = $("<option></option>").html(valueList[i]);
+                newDatalist.append($(option));
+            }
+            let targetRow = selectedTestCase.children()[1];
+            $(targetRow).append($(newDatalist));
+        }
+    });
+}
+
+function getTargetOptionTable(targetList){
+    let optionList = [...$(targetList).find("option")];
+    let table = $("<table><tbody></tbody></table>");
+    for (let i = 0; i < optionList.length; i++){
+        let tr = $("<tr></tr>");
+        $(tr).html(`<td>${targetList.options[i].innerHTML}</td>`);
+        $(table).append(tr);
+    }
+    makeTableSortable( table[0]);
+    let div = $("<div></div>");
+    $(div).append(table);
+    return div[0];
+}
+
 // attach event on <tr> (records)
 var firstSelectedTrId = undefined;
 function attachEvent(start, end) {
     for (var i = start; i <= end; ++i) {
         var node = document.getElementById("records-" + i);
 
-        // sometimes target will be <td> or <tr>        
+        // sometimes target will be <td> or <tr>
         // click
         node.addEventListener("click", function(event) {
             // use jquery's API to add and remove class property
@@ -216,6 +265,8 @@ function attachEvent(start, end) {
             if (targetList.options[0].text.includes("d-XPath")) {
                 targetList.options[0].text = "auto-located-by-tac";
             }
+            targetList = getTargetOptionTable(targetList);
+
             assignChildNodes(document.getElementById("target-dropdown"), targetList, false);
             assignChildNodes(document.getElementById("command-target-list"), ref.getElementsByTagName("td")[1].getElementsByTagName("datalist")[0], true, true);
             document.getElementById("command-value").value = getCommandValue(ref);
@@ -242,6 +293,7 @@ function attachEvent(start, end) {
             if (targetList.options[0].text.includes("d-XPath")) {
                 targetList.options[0].text = "auto-located-by-tac";
             }
+            targetList = getTargetOptionTable(targetList);
             assignChildNodes(document.getElementById("target-dropdown"), targetList, false);
             assignChildNodes(document.getElementById("command-target-list"), ref.getElementsByTagName("td")[1].getElementsByTagName("datalist")[0], true, true);
             document.getElementById("command-value").value = getCommandValue(ref);
@@ -298,8 +350,8 @@ function addCommand(command_name, command_target_array, command_value, auto, ins
     // mark modified
     modifyCaseSuite();
     closeConfirm(true);
-    
-    // create tr node     
+
+    // create tr node
     var new_record = document.createElement("tr");
     new_record.setAttribute("class", "");
     new_record.setAttribute("style", "");
@@ -381,7 +433,7 @@ function addCommand(command_name, command_target_array, command_value, auto, ins
         new_record.parentNode.insertBefore(document.createTextNode("\n"), new_record);
     }
 
-    // set div_show's innerHTML here, because we need div's clientWidth 
+    // set div_show's innerHTML here, because we need div's clientWidth
     for (var k = 0; k < 3; ++k) {
         var string;
         if (k == 0) {

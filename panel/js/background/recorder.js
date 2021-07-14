@@ -16,7 +16,6 @@
  */
 
 // TODO: seperate UI
-
 class BackgroundRecorder {
     constructor() {
         this.currentRecordingTabId = {};
@@ -183,7 +182,11 @@ class BackgroundRecorder {
         if (!getSelectedSuite() || !getSelectedCase()) {
             let id = "case" + sideex_testCase.count;
             sideex_testCase.count++;
+            if(!getSelectedSuite()){
+                segmentService().then(r=>r.trackingCreateTestSuite('Record','Untitled Test Case'));
+            }
             addTestCase("Untitled Test Case", id);
+            segmentService().then(r=>r.trackingCreateTestCase('Record','Untitled Test Case'));
         }
 
         let testCaseId = getSelectedCase().id;
@@ -340,3 +343,7 @@ class BackgroundRecorder {
         return this.selfWindowId;
     }
 }
+
+
+
+export {BackgroundRecorder}

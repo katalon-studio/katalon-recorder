@@ -96,7 +96,7 @@ function saveData() {
 
 // load test suite saved in storage upon starting
 $(function() {
-    chrome.storage.local.get(null, function(result) {
+    browser.storage.local.get(null).then(function(result) {
         try {
             if (result.data) {
                 if (!result.backup) {
@@ -122,3 +122,11 @@ $(function() {
 $(window).on('beforeunload', function(e) {
     saveData();
 });
+
+function enableButton(buttonId) {
+    document.getElementById(buttonId).disabled = false;
+}
+
+function disableButton(buttonId) {
+    document.getElementById(buttonId).disabled = true;
+}

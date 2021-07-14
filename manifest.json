@@ -2,13 +2,18 @@
     "description": "Selenium IDE alternative to record and export Selenium scripts. With reports & screenshots. Fast & open-source.",
     "manifest_version": 2,
     "name": "addon_name_placeholder",
-    "version": "5.3.24",
-    "homepage_url":"https://www.katalon.com/",
-    "icons":
-    {
+    "version": "5.5.1.2",
+    "homepage_url": "https://www.katalon.com/",
+    "segment_url": "https://backend.katalon.com/api",
+    "icons": {
         "16": "katalon/images/branding/branding_16.png",
         "48": "katalon/images/branding/branding_48.png",
-       "128": "katalon/images/branding/branding_128.png"
+        "128": "katalon/images/branding/branding_128.png"
+    },
+    "applications": {
+        "gecko": {
+            "id": "{91f05833-bab1-4fb1-b9e4-187091a4d75d}"
+        }
     },
     "permissions": [
         "tabs",
@@ -27,15 +32,23 @@
 
     "content_security_policy": "script-src 'self' 'unsafe-eval' https://ssl.google-analytics.com; object-src 'self'",
 
-    "content_scripts": [
+    "content_scripts": [{
+        "matches": ["<all_urls>"],
+        "js": [
+            "common/browser-polyfill.js",
+            "content/prompt-injecter.js",
+            "content/runScript-injecter.js"
+        ],
+        "match_about_blank": true,
+        "all_frames": true,
+        "run_at": "document_start"
+    },
         {
-            "matches": ["<all_urls>"],
+            "matches": ["<all_urls>" ],
             "js": [
-                "common/browser-polyfill.js",
-                "content/prompt-injecter.js",
-                "content/runScript-injecter.js"
+                "content/check-browser-automation.js"
             ],
-            "match_about_blank": true,
+            "match_about_blank": false,
             "all_frames": true,
             "run_at": "document_start"
         },
@@ -49,6 +62,7 @@
                 "content/selenium-browserbot.js",
                 "common/escape.js",
                 "content/selenium-api.js",
+                "content/neighbor-xpaths-generator.js",
                 "content/locatorBuilders.js",
                 "content/recorder.js",
                 "content/recorder-handlers.js",
@@ -61,26 +75,70 @@
             "all_frames": true
         },
         {
+            "all_frames": true,
+            "matches": ["<all_urls>"],
+            "match_about_blank": true,
+            "js": [
+                "katalon/bowser.js",
+                "katalon/jquery-3.2.1.min.js",
+                "katalon/jquery.color.js",
+                "katalon/neighbor-xpaths-generator.js",
+                "katalon/constants.js",
+                "katalon/chrome_common.js",
+                "katalon/chrome_variables_default.js",
+                "chrome_variables_init.js",
+                "katalon/ku-locatorBuilders.js",
+                "katalon/context_menu.js",
+                "katalon/common.js",
+                "katalon/record_common.js",
+                "katalon/chrome_setup.js",
+                "katalon/dom_inspector.js",
+                "katalon/dom_collector.js",
+                "katalon/keycode.js",
+                "katalon/ku-recorder.js",
+                "katalon/ku-recorder-event-handlers.js",
+                "katalon/ku-recorder-key-handlers.js",
+                "katalon/dom_recorder.js",
+                "katalon/process_element.js",
+                "katalon/main.js"
+            ]
+        },
+        {
             "matches": ["<all_urls>"],
             "js": ["content/jquery.simulate.js"],
+            "match_about_blank": true,
+            "all_frames": true
+        },
+        {
+            "matches": ["https://www.facebook.com/dialog/share?*", "https://twitter.com/intent/tweet?*", "https://www.linkedin.com/sharing/share-offsite/?*"],
+            "js": [
+                "common/jquery-3.2.1.min.js",
+                "content-marketing/content/sharing-social.js"
+            ],
             "match_about_blank": true,
             "all_frames": true
         }
     ],
 
-    "background":
-    {
+    "background": {
         "scripts": [
             "content/bowser.js",
             "common/browser-polyfill.js",
             "background/background.js",
             "background/install.js",
-            "background/kar.js"
+            "background/kar.js",
+            "chrome_variables_init.js",
+            "katalon/constants.js",
+            "katalon/chrome_variables_default.js",
+            "katalon/chrome_common.js",
+            "katalon/background.js",
+            "content-marketing/socket-io/socket-io.min.js",
+            "panel/js/katalon/papaparse.js",
+            "playback/index.js"
         ]
     },
 
-    "browser_action":
-    {
+    "browser_action": {
         "default_icon": "katalon/images/branding/branding_16.png",
         "default_title": "Katalon Recorder"
     },
@@ -89,6 +147,8 @@
         "page/prompt.js",
         "page/runScript.js"
     ],
+
+    "options_page": "katalon/options.html",
 
     "offline_enabled": true
 }

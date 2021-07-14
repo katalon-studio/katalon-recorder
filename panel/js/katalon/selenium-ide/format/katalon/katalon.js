@@ -55,3 +55,29 @@ options.header =
 'selenium = new WebDriverBackedSelenium(driver, baseUrl)\n';
 
 options.footer = '';
+
+Equals.prototype.verify = function() {
+    return "WebUI.verifyEqual(" + this.e1.toString() + ", " + this.e2.toString() + ");";
+};
+
+NotEquals.prototype.verify = function() {
+    return "WebUI.verifyNotEqual(" + this.e1.toString() + ", " + this.e2.toString() + ");";
+};
+
+RegexpMatch.prototype.verify = function() {
+    let pattern = string(this.pattern);
+    if (pattern.includes("$")){
+        let regEx = /"/g;
+        pattern = pattern.replaceAll(regEx,"'" );
+    }
+    return `WebUI.verifyMatch(${this.expression}, ${pattern}, true)`
+};
+
+RegexpNotMatch.prototype.verify = function() {
+    let pattern = string(this.pattern);
+    if (pattern.includes("$")){
+        let regEx = /"/g;
+        pattern = pattern.replaceAll(regEx,"'" );
+    }
+    return `WebUI.verifyNotMatch(${this.expression}, ${pattern}, true)`
+};

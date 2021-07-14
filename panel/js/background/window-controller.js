@@ -367,15 +367,5 @@ class ExtCommand {
     }
 }
 
-function isExtCommand(command) {
-    switch(command) {
-        case "pause":
-        //case "open":
-        case "selectFrame":
-        case "selectWindow":
-        case "close":
-            return true;
-        default:
-            return false;
-    }
-}
+export {ExtCommand}
+

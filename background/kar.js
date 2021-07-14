@@ -1,8 +1,9 @@
 // KAT-BEGIN save last window size
 function getWindowSize(callback) {
-    chrome.storage.local.get('window', function(result) {
+    browser.storage.local.get('window').then(function(result) {
         var height = 740;
-        var width = 800;
+        var width = 900;
+      
         if (result) {
             try {
                 result = result.window;
@@ -30,29 +31,30 @@ function onDetach(debuggeeId) {
 }
 
 // https://chromedevtools.github.io/devtools-protocol/tot/DOM#method-disable
+// these are Chrome API should not change to Browser Polyfill
 function doDetach(sendResponse, debuggeeId, err) {
     chrome.debugger.sendCommand(
-        debuggeeId,
-        "DOM.disable",
-        {},
-        function(res) {
-            // force read last error
-            if (chrome.runtime.lastError) {
-            }
-            chrome.debugger.detach(debuggeeId, function() {
-                onDetach(debuggeeId);
-                if (err) {
-                    sendResponse({
-                        status: false,
-                        err: err.message
-                    });
-                } else {
-                    sendResponse({
-                        status: true
-                    });
-                }
-            });
-        }
+      debuggeeId,
+      "DOM.disable",
+      {},
+      function(res) {
+          // force read last error
+          if (chrome.runtime.lastError) {
+          }
+          chrome.debugger.detach(debuggeeId, function() {
+              onDetach(debuggeeId);
+              if (err) {
+                  sendResponse({
+                      status: false,
+                      err: err.message
+                  });
+              } else {
+                  sendResponse({
+                      status: true
+                  });
+              }
+          });
+      }
     );
 };
 
@@ -62,19 +64,19 @@ function doUploadFile(request, sendResponse, debuggeeId, frameId) {
     attachedTabs[tabId] = true;
     doActionOnNode(frameId, debuggeeId, sendResponse, request, function(nodeId) {
         chrome.debugger.sendCommand(
-            debuggeeId,
-            "DOM.setFileInputFiles",
-            {
-                nodeId: nodeId,
-                files: [request.file]
-            },
-            function (res) {
-                if (chrome.runtime.lastError) {
-                    doDetach(sendResponse, debuggeeId, chrome.runtime.lastError);
-                } else {
-                    doDetach(sendResponse, debuggeeId);
-                }
-            }
+          debuggeeId,
+          "DOM.setFileInputFiles",
+          {
+              nodeId: nodeId,
+              files: [request.file]
+          },
+          function (res) {
+              if (chrome.runtime.lastError) {
+                  doDetach(sendResponse, debuggeeId, chrome.runtime.lastError);
+              } else {
+                  doDetach(sendResponse, debuggeeId);
+              }
+          }
         );
     });
 };
@@ -86,71 +88,71 @@ function doSendSpecialKeys(request, sendResponse, debuggeeId, frameId) {
     attachedTabs[tabId] = true;
     doActionOnNode(frameId, debuggeeId, sendResponse, request, function(nodeId) {
         chrome.debugger.sendCommand(
-            debuggeeId,
-            "DOM.focus",
-            {
-                nodeId: nodeId
-            },
-            function (res) {
-                if (chrome.runtime.lastError) {
-                    doDetach(sendResponse, debuggeeId, chrome.runtime.lastError);
-                } else {
-                    var modifiers = request.modifiers;
-                    var keyCodes = request.keyCodes;
-                    var keyboardEventKeys = request.keyboardEventKeys;
-                    var keyboardEventCodes = request.keyboardEventCodes;
-                    var f = function(i) {
-                        if (i >= keyCodes.length) {
-                            doDetach(sendResponse, debuggeeId);
-                        } else {
-                            var keyCode = keyCodes[i];
-                            var keyboardEventKey = keyboardEventKeys[i];
-                            var keyboardEventCode = keyboardEventCodes[i];
-                            // code: 'KeyV' key: 'v'
-                            chrome.debugger.sendCommand(
-                                debuggeeId,
-                                "Input.dispatchKeyEvent",
-                                {
-                                    type: 'rawKeyDown',
-                                    windowsVirtualKeyCode: keyCode,
-                                    nativeVirtualKeyCode : keyCode,
-                                    macCharCode: keyCode,
-                                    key: keyboardEventKey,
-                                    code: keyboardEventCode,
-                                    modifiers: modifiers
-                                },
-                                function (res) {
-                                    if (chrome.runtime.lastError) {
-                                        doDetach(sendResponse, debuggeeId, chrome.runtime.lastError);
-                                    } else {
-                                        chrome.debugger.sendCommand(
-                                            debuggeeId,
-                                            "Input.dispatchKeyEvent",
-                                            {
-                                                type: 'keyUp',
-                                                windowsVirtualKeyCode: keyCode,
-                                                nativeVirtualKeyCode : keyCode,
-                                                macCharCode: keyCode,
-                                                key: keyboardEventKey,
-                                                code: keyboardEventCode,
-                                                modifiers: modifiers
-                                            },
-                                            function (res) {
-                                                if (chrome.runtime.lastError) {
-                                                    doDetach(sendResponse, debuggeeId, chrome.runtime.lastError);
-                                                } else {
-                                                    f(i + 1);
-                                                }
-                                            }
-                                        );
-                                    }
+          debuggeeId,
+          "DOM.focus",
+          {
+              nodeId: nodeId
+          },
+          function (res) {
+              if (chrome.runtime.lastError) {
+                  doDetach(sendResponse, debuggeeId, chrome.runtime.lastError);
+              } else {
+                  var modifiers = request.modifiers;
+                  var keyCodes = request.keyCodes;
+                  var keyboardEventKeys = request.keyboardEventKeys;
+                  var keyboardEventCodes = request.keyboardEventCodes;
+                  var f = function(i) {
+                      if (i >= keyCodes.length) {
+                          doDetach(sendResponse, debuggeeId);
+                      } else {
+                          var keyCode = keyCodes[i];
+                          var keyboardEventKey = keyboardEventKeys[i];
+                          var keyboardEventCode = keyboardEventCodes[i];
+                          // code: 'KeyV' key: 'v'
+                          chrome.debugger.sendCommand(
+                            debuggeeId,
+                            "Input.dispatchKeyEvent",
+                            {
+                                type: 'rawKeyDown',
+                                windowsVirtualKeyCode: keyCode,
+                                nativeVirtualKeyCode : keyCode,
+                                macCharCode: keyCode,
+                                key: keyboardEventKey,
+                                code: keyboardEventCode,
+                                modifiers: modifiers
+                            },
+                            function (res) {
+                                if (chrome.runtime.lastError) {
+                                    doDetach(sendResponse, debuggeeId, chrome.runtime.lastError);
+                                } else {
+                                    chrome.debugger.sendCommand(
+                                      debuggeeId,
+                                      "Input.dispatchKeyEvent",
+                                      {
+                                          type: 'keyUp',
+                                          windowsVirtualKeyCode: keyCode,
+                                          nativeVirtualKeyCode : keyCode,
+                                          macCharCode: keyCode,
+                                          key: keyboardEventKey,
+                                          code: keyboardEventCode,
+                                          modifiers: modifiers
+                                      },
+                                      function (res) {
+                                          if (chrome.runtime.lastError) {
+                                              doDetach(sendResponse, debuggeeId, chrome.runtime.lastError);
+                                          } else {
+                                              f(i + 1);
+                                          }
+                                      }
+                                    );
                                 }
-                            );
-                        }
-                    };
-                    f(0);
-                }
-            }
+                            }
+                          );
+                      }
+                  };
+                  f(0);
+              }
+          }
         );
     });
 };
@@ -240,16 +242,16 @@ function doAttachDebugger(sendResponse, debuggeeId, f) {
             doDetach(sendResponse, debuggeeId, chrome.runtime.lastError);
         } else {
             chrome.debugger.sendCommand(
-                debuggeeId,
-                "DOM.enable",
-                {},
-                function(res) {
-                    if (chrome.runtime.lastError) {
-                        doDetach(sendResponse, debuggeeId, chrome.runtime.lastError);
-                    } else {
-                        f();
-                    }
-                }
+              debuggeeId,
+              "DOM.enable",
+              {},
+              function(res) {
+                  if (chrome.runtime.lastError) {
+                      doDetach(sendResponse, debuggeeId, chrome.runtime.lastError);
+                  } else {
+                      f();
+                  }
+              }
             );
         }
     });
@@ -261,7 +263,7 @@ if (chrome.debugger) {
 
 var externalCapabilities = {};
 
-chrome.runtime.onMessageExternal.addListener(function(message, sender) {
+browser.runtime.onMessageExternal.addListener(function(message, sender) {
     if (message.type === 'katalon_recorder_register') {
         var payload = message.payload;
         // payload: {

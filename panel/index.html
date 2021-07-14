@@ -35,11 +35,15 @@
 
     <link rel="stylesheet" href="js/katalon/codemirror-5.31.0/lib/codemirror.css">
     <link rel="stylesheet" href="css/kar.css"/>
+    <link rel="stylesheet" href="css/dropdown.css"/>
+    <link rel="stylesheet" href="css/bootstrap-tour-standalone.min.css"/>
+    <link rel="stylesheet" href="css/notification.css"/>
     <!-- to hide right button feature -->
     <!--[if lt IE 9]>
     <link rel="stylesheet" href="panel/css/ie.css" type="text/css" media="screen" />
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <script type="module" src="js/UI/command-toolbar-undo-redo.js"></script>
     <script type="text/javascript" src="js/lib/utils.js"></script>
     <script type="text/javascript" src="../common/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="js/lib/jquery-ui.min.js"></script>
@@ -50,7 +54,9 @@
     <script type="text/javascript" src="js/lib/jquery.tabletab.js"></script>
     <script type="text/javascript" src="js/lib/colResizable-1.6.min.js"></script>
     <script type="text/javascript" src="js/UI/panelSetting.js"></script>
-    <script type="text/javascript" src="js/UI/sortable-ui.js"></script>
+    <script type="text/javascript" src="js/UI/testcase-container-sortable-ui.js"></script>
+    <script type="module" src="js/UI/records-grid-sortable-ui.js"></script>
+
     <script type="text/javascript" src="js/background/doc.js"></script>
 
     <script type="text/javascript" src="../content/utils.js"></script>
@@ -69,17 +75,11 @@
     <script type="text/javascript" src="js/katalon/papaparse.js"></script>
 
     <script type="text/javascript" src="js/katalon/kar-extra.js"></script>
+    <script type="text/javascript" src="js/onboarding/helper/bootstrap-tour-standalone.min.js"></script>
 </head>
 <!-- TODO: Make whole panel size flexible -->
 
 <body>
-    <header id="header">
-        <hgroup>
-            <img class="logo_img" src="../icons/logo.png"></img>
-            <a href="#"><img id="help" class="toolBar_img" src="../icons/help.png"></img></a>
-        </hgroup>
-    </header>
-    <!-- end of header bar -->
     <!-- right button feature -->
     <div id="suite-grid-menu" class="menu">
         <ul>
@@ -87,19 +87,10 @@
             <li id="add-testSuite-menu"><a href="#">Add New Test Suite</a></li>
         </ul>
     </div>
-    <div id="command-grid-menu" class="menu">
-        <ul>
-            <li id="grid-add"><a href="#">Add Command <span class="hotKey">Ctrl+I</span></a></li>
-            <li id="grid-delete"><a href="#">Delete Command <span class="hotKey"></span></a></li>
-            <li id="grid-deleteAll"><a href="#">Delete All Commands</a></li>
-            <li id="grid-copy"><a href="#">Copy Command <span class="hotKey">Ctrl+C</span></a></li>
-            <li id="grid-paste"><a href="#">Paste Command <span class="hotKey">Ctrl+V</span></a></li>
-            <li id="grid-breakpoint"><a href="#">Toggle Breakpoint </a><span class="hotKey">Ctrl+B</span></li>
-        </ul>
-    </div>
     <section id="main" class="column">
         <div id="toolbar-container" class="submit_link">
             <!-- hidden, because it has default style -->
+            <input id="import-selenium-hidden" type="file" multiple accept=".side" style="display: none"></input>
             <input id="load-testSuite-hidden" type="file" multiple accept="text/*" style="display: none"></input>
             <input id="load-older-testSuite" type="file" multiple accept="text/*" style="display: none">
             <input id="load-testSuite-show" type="button" value="OpenSuite" style="display: none"></input>
@@ -128,13 +119,25 @@
             <button id="ka-upload" class="sub_btn" style="width: 20%" title="Upload logs to Katalon TestOps to keep track of execution history, access to automation dashboard and reports.">
                 <img src="../katalon/images/branding/ka_32x24px.png" alt="Katalon TestOps"/>Report</button>
             <button id="export" class="sub_btn" style="width: 15%"><i class="fa"></i> Export</button>
-            <div id="speed-wrapper" style="position: relative; flex-grow: 0; flex-shrink: 0;">
+
+            <div style="position: relative; flex-grow: 0; flex-shrink: 0;margin-left: auto;">
+                <a id="referral" class="sub_btn" href="https://www.katalon.com/referral/?utm_source=katalon_recorder&utm_medium=in-app_noti&utm_campaign=referral" target="_blank">
+                </a>
+            </div>
+            <div id="speed-wrapper">
                 <button id="speed" class="sub_btn"><i class="fa"></i>&nbsp;</button>
                 <div id="slider-container" style="display:none"></div>
             </div>
             <button id="settings" class="sub_btn"><i class="fa"></i></button>
             <a id="help" class="sub_btn"><i class="fa"></i></a>
             <a id="github" class="sub_btn" target="_blank" href="https://github.com/katalon-studio/katalon-recorder"><i class="fa fa-github"></i></a>
+            <div class="dropdown">
+                <button id="extended-features" class="sub_btn dropbtn"></button>
+                  <a id="dailyUsage" style="display: none"></a>
+            </div>
+            <div class="dropdown">
+                <button id="notification" class="sub_btn"></button>
+            </div>
             <!--a id="adjust" class="sub_btn"><i class="fa fa-adjust" aria-hidden="true"></i></a-->
             <!-- TODO: Add a stop button -->
         </div>
@@ -153,6 +156,7 @@
                             <div id="suite-fun" class="suite-fun">
                                 <div id="suite-open" class="suite-open"><i id="suite-open-icon" class="fa fa-folder-open-o suite-open" aria-hidden="true"></i></div>
                                 <div id="suite-plus" class="suite-plus"><i id="suite-plus-icon" class="fa fa-plus suite-plus" aria-hidden="true"></i></div>
+                                <div id="import-selenium" class="import-selenium" title="Import Selenium Test Suite"><img src="images/selenium_ide_16px@2x.png"/> </div>
                             </div>
                         </h3>
                     </header>
@@ -263,12 +267,14 @@
                         <button id="grid-delete-btn"></button>
                         <button id="grid-copy-btn"></button>
                         <button id="grid-paste-btn"></button>
+                        <button id="grid-undo-btn"></button>
+                        <button id="grid-redo-btn"></button>
                     </div>
                     <div class="fieldset">
                         <!-- TODO: make (command &) target selectable -->
                         <div class="command-row">
                             <label>Command</label>
-                            <input id="command-command" list="command-command-list" type="text"><i id="command-" class="fa fa-chevron-down" aria-hidden="true"></i>
+                            <input id="command-command" type="text"  list="command-command-list"><i id="command-" class="fa fa-chevron-down" aria-hidden="true"></i>
                             <div id="command-dropdown" class="w3-dropdown-content w3-bar-block">
                             </div>
                         </div>
@@ -276,7 +282,7 @@
                         </datalist>
                         <div class="command-row">
                             <label>Target</label>
-                            <input id="command-target" list="command-target-list" type="text"><i id="target-" class="fa fa-chevron-down" aria-hidden="true"></i>
+                            <input id="command-target" type="text" list="command-target-list"><i id="target-" class="fa fa-chevron-down" aria-hidden="true"></i>
                             <div id="target-dropdown" class="w3-dropdown-content w3-bar-block">
                             </div>
                             <button id="selectElementButton" class="btn_sf" style="width: 60px" tabindex="-1">Select</button>
@@ -305,6 +311,7 @@
                     <li id="data-files"><a>Data Driven</a></li>
                     <li id="extensions"><a>Extension Scripts</a></li>
                     <li id="reference-log"><a>Reference</a></li>
+                    <li id="self-healing"><a>Self-healing</a></li>
                     </ul>
                     <ul class="tabs">
                         <li id="ka-open"><a><img src="../katalon/images/branding/ka_32x24px.png" alt="Katalon TestOps"/>Dashboard</a></li>
@@ -314,6 +321,13 @@
                         <li id="data-files-add-csv"><a title="Add CSV File">Add CSV</a></li>
                         <li id="data-files-add-json"><a title="Add JSON File">Add JSON</a></li>
                         <li id="extension-add"><a title="Add JS File">Add Extension Script</a></li>
+                        <li id="select-self-healing-test-status">
+                            <select name="self-healing-test-status" style="color: var(--main-txt-color); background-color: var(--input-bg-color);">
+                                <option value="All">All</option>
+                                <option value="Passed">Passed</option>
+                                <option value="Failed">Failed</option>
+                            </select>
+                        </li>
                         <li id="collapse-console"><a href="javascript:void(0);" title="Toggle panel" id="show-hide-bottom-panel">
                             <img src="/katalon/images/SVG/ic_keyboard_arrow_down_black_18px.svg" data-show="/katalon/images/SVG/ic_keyboard_arrow_up_black_18px.svg" data-hide="/katalon/images/SVG/ic_keyboard_arrow_down_black_18px.svg" alt="Show/Hide">
                         </a></li>
@@ -393,6 +407,29 @@
                         </div>
                         <div id="refercontainer">
                         </div>
+                        <div id="selfHealingContainer" class="file-container">
+                            <table style="table-layout:fixed;word-wrap: break-word;">
+                                <colgroup>
+                                    <col style="width:20%">
+                                    <col style="width:10%">
+                                    <col style="width:30%">
+                                    <col style="width:30%">
+                                    <col style="width:10%">
+                                </colgroup>
+                                <thead>
+                                <tr>
+                                    <th>Test Case</th>
+                                    <th>Status</th>
+                                    <th>Broken Locator</th>
+                                    <th>Proposed</th>
+                                    <th>Approve</th>
+                                </tr>
+                                </thead>
+                                <tbody id="selfHealingList">
+                                </tbody>
+                            </table>
+                            <button id="self-healing-approve-btn" >Approve</button>
+                        </div>
                     </div>
                 </div>
                 <!-- end of #tab4 -->
@@ -404,9 +441,13 @@
             <p>
                 <span id="backup-status"></span>
                 <a href="#" id="backup-refresh-btn" class="katalon-link" style="display: none">Refresh</a>
-                <a href="#" id="backup-restore-btn" class="katalon-link" style="display: none">Restore</a>
+                <a href="#" id="backup-restore-btn" class="katalon-link" style="display: none">Restore</a>  
             </p>
         </div>
+        <!--<div class="connecting"></div>-->
+        <div id="connecting" style="position: relative; display: inline-block;">
+            <button id="connecttous" type="button" style="float:right; border-radius: 50%; margin-top: -30px;"><i class="fa"></i></button>
+        </div> 
         <!--<div class="spacer"></div>-->
         <div id="generateToScriptsDialog" title="Export Test Case as Script" style="display: none">
             <div class="" style="height: 30px; line-height: 30px; margin-bottom: 12px;"><label for="select-script-language-id">Format </label>
@@ -449,10 +490,10 @@
                     <p class="panel-title">User Manual</p>
                     <p class="panel-description">Guides to utilize Katalon Recorder for automation effectively.</p>
                 </a>
-                <a class="panel" href="https://www.katalon.com/videos/katalon-recorder-videos/?utm_source=chrome%20recorder%20pop-up" target="_blank">
+                <a class="panel" id="sample-project" target="_blank">
                     <img src="/katalon/images/SVG/videos-icon.svg">
-                    <p class="panel-title">Videos</p>
-                    <p class="panel-description">Tutorial videos from our expert users with detailed instruction.</p>
+                    <p class="panel-title">Sample Project</p>
+                    <p class="panel-description">A collection of templates to kick-start your automation </p>
                 </a>
                 <a class="panel" href="https://forum.katalon.com/?utm_source=chrome%20recorder%20pop-up" target="_blank">
                     <img src="/katalon/images/SVG/community-icon.svg">
@@ -472,19 +513,35 @@
     <script src="js/IO/inputFileTransformer.js"></script>
     <script src="js/IO/load_file.js"></script>
     <script src="js/IO/save_file.js"></script>
-    <script src="js/UI/context_menu.js"></script>
+    <script type="module" src="js/UI/context-menu/context_menu.js"></script>
+    <script type="module" src="js/UI/context-menu/hotkeys.js"></script>
+    <script type="module" src="js/UI/command-toolbar-button.js"></script>
+    <script src="js/UI/hotkeys.js"></script>
     <script src="js/UI/command_grid.js"></script>
     <script src="js/UI/command_grid_toolbar.js"></script>
     <script src="js/UI/testcase_grid.js"></script>
     <script src="js/UI/log.js"></script>
-    <script src="js/background/window-controller.js"></script>
-    <script src="js/background/recorder.js"></script>
+    <script src="js/UI/log.js"></script>
+    <script type="module" src="js/background/load-setting-data.js"></script>
+    <script type="module" src="js/background/window-controller.js"></script>
+    <script type="module" src="js/background/recorder.js"></script>
     <script src="js/background/initial.js"></script>
     <script src="../common/escape.js"></script>
     <script src="js/background/editor.js"></script>
     <script src="js/background/formatCommand.js"></script>
     <script src="js/background/website-login.js"></script>
-    <script src="js/background/playback.js"></script>
+    <script type="module" src="js/self-healing/index.js"></script>
+    <script type="module" src="js/self-healing/hotkeys.js"></script>
+    <script type="module" src="js/background/playback/index.js"></script>
+    <script src="../content-marketing/panel/converttosimage.js"></script>
+    <script src="../content-marketing/panel/popup-sharing.js"></script>
+    <script type="module" src="../content-marketing/panel/self-healing-rating.js"></script>
+    <script type="module" src="../content-marketing/panel/popup-chrome-store.js"></script>
+    <script type="module" src="../content-marketing/panel/popup-sample-data.js"></script>
+    <script type="module" src="../content-marketing/panel/popup-what-are-you-automating.js"></script>
+    <script src="js/tracking/welcome-tracking.js"></script>
+    <script src="js/tracking/user-researching.js"></script>
+    <script type="module" src="js/tracking/add-tracking-handler.js"></script>
 
     <!-- <script src="js/katalon/kar.js"></script> -->
     <script src="js/katalon/kar-testSuite.js"></script>
@@ -506,5 +563,11 @@
     <script type="text/javascript" src="js/katalon/newformatters/webdriver.js"></script>
     <!-- new formatter -->
     <script type="text/javascript" src="js/katalon/newformatters/puppeteer.js"></script>
+
+    <script type="module" src="js/onboarding/index.js"></script>
+    <script type="module" src="js/onboarding/contextual/index.js"></script>
+    <script type="module" src="js/notification/index.js"></script>
+    <script type="module" src="js/import-selenium/index.js"></script>
+    <script type="module" src="js/UI/sample-project.js"></script>
 </body>
 </html>
