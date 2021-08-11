@@ -1891,6 +1891,10 @@ Useful for debugging.</comment>
 </function>
 
 <function name="storeCsv">
+<comment>
+Read information from a CSV file into the variable.
+Add the sample project through Help > Sample Project > Read and use values from a CSV file.
+</comment>
 
 <param name="location">Location of the data inside the CSV file. Structure: data_file,row_index,column_name. Example: data.csv,10,first_name.</param>
 
@@ -1920,6 +1924,35 @@ Useful for debugging.</comment>
 
 <param name="label">the label name</param>
 
+</function>
+
+<function name="writeToCSV">
+  <comment>
+  Write the value to the provided location in a CSV file. 
+  For example, use `writeToCsv | data.csv,2,first_name | Thomas` to write "Thomas" to the second row of the column "first_name".
+  Add the sample project through Help > Sample Project > Write values to a CSV file.
+  </comment>
+  <param name="location">Location of the data inside the CSV file. Structure: data_file,row_index,column_name. Example: data.csv,10,first_name.</param>
+  <param name="value">The value to be written to the specified location.</param>
+
+</function>
+<function name="appendToCSV">
+  <comment>
+    Append the value to the given CSV file. 
+    For example, if `data.csv` contains 2 columns: firstName and lastName, then use `appendToCsv | data.csv | Thomas,To| to add a new row: 'Thomas' and 'To' to the CSV file. 
+    Add the sample project through Help > Sample Project > Write values to a CSV file.
+  </comment>
+  <param name="location">Name of the CSV data file. Example: data.csv.</param>
+  <param name="values">Values separated by commas to be appended.</param>
+</function>
+
+<function name="upload">
+  <comment>Upload the given file(s) simulating drag-and-drop to a drop zone. 
+  If a target is empty, the drop zone will default to the current web page. 
+  If a target is specified, the drop zone will be the element retrieved from the target locator.
+  Add the sample project through Help > Sample Project > Simulate uploading files with drag and drop.</comment>
+  <param name="location">(Optional) The target locator that points to a drop zone (where users can drag and drop the files).</param>
+  <param name="values">The file path(s) to be uploaded.</param>
 </function>
 
 </apidoc>

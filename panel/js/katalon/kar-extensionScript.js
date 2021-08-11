@@ -7,7 +7,7 @@ function readExtension(f) {
         extensions[f.name] = {
             content: reader.result,
             type: 'Extension'
-        };
+        };      
         saveExtensions();
     }
 }
@@ -28,6 +28,15 @@ function resetExtensionsList() {
         var tr = renderExtensionsListItem(name);
         list.append(tr);
     }
+
+    // execute extension script to add command to Selenium
+    Object.keys(extensions).forEach(function(extensionFileName){
+        var newFunction = new Function(extensions[extensionFileName].content);
+        newFunction();        
+    });
+
+    // GUI reload list of commands
+    $("#command-dropdown,#command-command-list").html(genCommandDatalist());
 }
 
 function renderExtensionsListItem(name) {
@@ -57,8 +66,7 @@ function renderExtensionsListItem(name) {
 }
 
 $(function() {
-
-    chrome.storage.local.get('extensions', function(result) {
+    browser.storage.local.get('extensions').then(function(result) {
         extensions = result.extensions;
         if (!extensions) {
             extensions = {};

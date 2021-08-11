@@ -32,7 +32,15 @@ function xlateArgument(value) {
         if (lastIndex < value.length) {
             parts.push(string(value.substring(lastIndex, value.length)));
         }
-        return parts.join("");
+        //join parts into a string
+        return parts.reduce((str, part) => {
+            if (part instanceof Object) {
+                str += JSON.stringify(part);
+            } else {
+                str += part;
+            }
+            return str;
+        }, "");
     } else {
         return string(value);
     }

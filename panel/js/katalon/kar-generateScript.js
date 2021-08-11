@@ -17,7 +17,6 @@ function getCommandsToGenerateScripts() {
         let commandName = getCommandName(commands[index]);
         let commandTarget = getCommandTarget(commands[index]);
         let commandValue = getCommandValue(commands[index]);
-
         ret.push(new Command(commandName, commandTarget, commandValue));
     }
     return ret;
@@ -409,7 +408,11 @@ $(function() {
         height: 600,
         width: '90%',
         buttons: {
-            "Copy to Clipboard": copyToClipboard,
+            "Copy to Clipboard": ()=>{
+                copyToClipboard();
+                let source= $("#select-script-language-id").val();
+                segmentService().then(r=>r.trackingExportTestCase(source));
+            },
             "Save As File...": saveToFile,
             Close: function() {
                 $(this).dialog("close");

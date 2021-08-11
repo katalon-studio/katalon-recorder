@@ -1,5 +1,6 @@
+var _gaq = _gaq || []; // DO NOT REMOVE THIS LINE
 
-var manifestData = chrome.runtime.getManifest();
+var manifestData = browser.runtime.getManifest();
 
 var katalonEndpoint = manifestData.homepage_url;
 var testOpsEndpoint = 'https://analytics.katalon.com';
@@ -38,21 +39,6 @@ $(window).on('resize', function() {
 
 // modify and add handler for command grid toolbar buttons
 $(function() {
-    $('#grid-add-btn').on('click', function(event) {
-        $('#grid-add').click();
-    });
-
-    $('#grid-delete-btn').on('click', function(event) {
-        $('#grid-delete').click();
-    });
-
-    $('#grid-copy-btn').on('click', function(event) {
-        $('#grid-copy').click();
-    });
-
-    $('#grid-paste-btn').on('click', function(event) {
-        $('#grid-paste').click();
-    });
 
     //move select and find buttons to the toolbar using js in order not to modify HTML
     // var pasteButton = $('#grid-paste-btn');
@@ -120,7 +106,8 @@ $(function() {
     var screenshotLi = $('#screenshot');
     var dataLi = $('#data-files');
     var extensionsLi = $('#extensions');
-    var lis = [logLi, referenceLi, variableLi, screenshotLi, dataLi, extensionsLi];
+    var selfHealingLi = $('#self-healing');
+    var lis = [logLi, referenceLi, variableLi, screenshotLi, dataLi, extensionsLi, selfHealingLi];
 
     var logContainer = $('#logcontainer');
     var referenceContainer = $('#refercontainer');
@@ -128,7 +115,8 @@ $(function() {
     var screenshotContainer = $('#screenshotcontainer');
     var dataContainer = $('#datacontainer');
     var extensionsContainer = $('#extensionscontainer');
-    var containers = [logContainer, referenceContainer, variableContainer, screenshotContainer, dataContainer, extensionsContainer];
+    var selfHealingContainer = $('#selfHealingContainer');
+    var containers = [logContainer, referenceContainer, variableContainer, screenshotContainer, dataContainer, extensionsContainer, selfHealingContainer];
 
     var clearLog = $('#clear-log');
     var saveLog = $('#save-log');
@@ -139,6 +127,7 @@ $(function() {
     var csvAdd = $('#data-files-add-csv');
     var jsonAdd = $('#data-files-add-json');
     var extensionAdd = $('#extension-add');
+    var selfHealingSelect = $("#select-self-healing-test-status");
 
     setActiveTab(logLi, logContainer);
 
@@ -161,6 +150,12 @@ $(function() {
         setActiveTab(extensionsLi, extensionsContainer);
     });
 
+    selfHealingLi.on('click', function (){
+        setActiveTab(selfHealingLi, selfHealingContainer);
+    })
+
+
+
     function setActiveTab(li, container) {
         for (var i = 0; i < lis.length; i++) {
             lis[i].removeClass("active");
@@ -180,6 +175,7 @@ $(function() {
             csvAdd.hide();
             jsonAdd.hide();
             extensionAdd.hide();
+            selfHealingSelect.hide();
         } else if (li == screenshotLi) {
             // upload.hide();
             saveLog.hide();
@@ -188,7 +184,8 @@ $(function() {
             csvAdd.hide();
             jsonAdd.hide();
             extensionAdd.hide();
-        } else if (li == dataLi) { 
+            selfHealingSelect.hide();
+        } else if (li == dataLi) {
             // upload.hide();
             saveLog.hide();
             clearLog.hide();
@@ -196,7 +193,8 @@ $(function() {
             csvAdd.show();
             jsonAdd.show();
             extensionAdd.hide();
-        } else if (li == extensionsLi) { 
+            selfHealingSelect.hide();
+        } else if (li == extensionsLi) {
             // upload.hide();
             saveLog.hide();
             clearLog.hide();
@@ -204,7 +202,17 @@ $(function() {
             csvAdd.hide();
             jsonAdd.hide();
             extensionAdd.show();
-        } else {
+            selfHealingSelect.hide();
+        } else if (li == selfHealingLi){
+            saveLog.hide();
+            clearLog.hide();
+            downloadAll.hide();
+            csvAdd.hide();
+            jsonAdd.hide();
+            extensionAdd.hide();
+            selfHealingSelect.show();
+        }
+        else {
             // upload.hide();
             saveLog.hide();
             clearLog.hide();
@@ -212,6 +220,7 @@ $(function() {
             csvAdd.hide();
             jsonAdd.hide();
             extensionAdd.hide();
+            selfHealingSelect.hide();
         }
         // if (li !== logLi) {
         //     clearLog.parent().hide();
@@ -222,18 +231,31 @@ $(function() {
 });
 
 // KAT-END
-
+var settingWindowID;
 // KAT-BEGIN handle click event for settings button
 $(function() {
-    $('#settings').on('click', function() {
-        browser.windows.update(
-            contentWindowId,
-            { focused: true }
-        );
-        chrome.tabs.create({
-            url: chrome.extension.getURL('katalon/options.html'),
-            windowId: contentWindowId
-        }, function(tab){});
+    function openPanel(){
+        let height = 740;
+        let width = 820;
+        browser.windows.create({
+            url: browser.runtime.getURL("setting-panel/index.html"),
+            type: "popup",
+            height: height,
+            width: width,
+            focused: true,
+        }).then(panel => settingWindowID = panel.id);
+    }
+    $("#settings").on("click", function(){
+        if (settingWindowID === undefined){
+            openPanel();
+        } else{
+            browser.windows.update(settingWindowID, {
+                focused: true
+            }).catch(function() {
+                settingWindowID = undefined;
+                openPanel();
+            });
+        }
     });
 });
 // KAT-END
@@ -244,12 +266,9 @@ $(function() {
     $('#playback').attr('title', "Run selected test case on the active tab, any interference may stop the process. NOTE: If the tab has been opened before Katalon Recorder was installed, please refresh it.");
     $('#playSuite').attr('title', "Run selected test suite on the active tab, any interference may stop the process. NOTE: If the tab has been opened before Katalon Recorder was installed, please refresh it.");
     $('#playSuites').attr('title', "Run all test suites on the active tab, any interference may stop the process. NOTE: If the tab has been opened before Katalon Recorder was installed, please refresh it.");
+    $('#extended-features').attr('title', "Daily usage");
     $('#settings').attr('title', "Settings");
     $('.sub_btn#help').attr('title', "Help");
-    $('#grid-add-btn').attr('title', "Add new test step");
-    $('#grid-delete-btn').attr('title', "Delete the current test steps");
-    $('#grid-copy-btn').attr('title', "Copy the current test steps");
-    $('#grid-paste-btn').attr('title', "Paste the copied test steps as the next step of the current one");
     $('#selectElementButton').attr('title', "Select a target element for the current command");
     $('#showElementButton').attr('title', "Find and highlight the curent target element of the current command");
     $('#speed').attr('title', "Adjust play speed");
@@ -365,30 +384,54 @@ $(function() {
     // record.after(newCase);
 
     var imagesLookup = {
-        '#record': 'record-icon-16.svg',
-        '#new': 'new-icon-16.svg',
-        '#playback': 'play-icon-16.svg',
-        '#stop': 'stop-icon-16.svg',
-        '#playSuite': 'play-suite-icon-16.svg',
-        '#playSuites': 'play-all-icon-16.svg',
-        '#pause': 'pause-icon-16.svg',
-        '#resume': 'resume-icon-16.svg',
-        '#export': 'export-icon-16.svg',
-        '#speed': 'speed-icon-16.svg',
-        '#settings': 'setting-icon-16.svg',
-        '.sub_btn#help': 'help-icon-16.svg',
-        '#github-repo': 'github-icon.png'
-    }
+      "#record": "record-icon-16.svg",
+      "#new": "new-icon-16.svg",
+      "#playback": "play-icon-16.svg",
+      "#stop": "stop-icon-16.svg",
+      "#playSuite": "play-suite-icon-16.svg",
+      "#playSuites": "play-all-icon-16.svg",
+      "#pause": "pause-icon-16.svg",
+      "#resume": "resume-icon-16.svg",
+      "#export": "export-icon-16.svg",
+      "#speed": "speed-icon-16.svg",
+    };
+
+    // These images need to set margin to 0
+    var imagesLookup2 = {
+      "#settings": "setting-icon-16.svg",
+      ".sub_btn#help": "help-icon-16.svg",
+      "#github-repo": "github-icon.png",
+      "#extended-features": "extended-features.svg",
+      "#notification": "notification-bell-icon.svg",
+      "#referral": "referral-icon.svg"
+    };
 
     for (var buttonId in imagesLookup) {
-        if (imagesLookup.hasOwnProperty(buttonId)) {
-            var button = $(buttonId);
-            var img = $('<img>');
-            img.attr('src', '/katalon/images/SVG/' + imagesLookup[buttonId]);
-            button.find("i:first-child").remove();
-            button.prepend(img);
-        }
+      if (imagesLookup.hasOwnProperty(buttonId)) {
+        var button = $(buttonId);
+        var img = $("<img>");
+        img.attr("src", "/katalon/images/SVG/" + imagesLookup[buttonId]);
+        button.find("i:first-child").remove();
+        button.prepend(img);
+      }
     }
+
+    for (var buttonId in imagesLookup2) {
+      if (imagesLookup2.hasOwnProperty(buttonId)) {
+        var button = $(buttonId);
+        var img = $("<img>");
+        img.attr("src", "/katalon/images/SVG/" + imagesLookup2[buttonId]);
+        img.attr("style", "margin-right: 0px;");
+        button.find("i:first-child").remove();
+        button.prepend(img);
+      }
+    }
+});
+// KAT-END
+
+// KAT-BEGIN add handler for button "Profile" click event
+$('#extended-features').click(()=>{
+    $('#dailyUsage').click();
 });
 // KAT-END
 
@@ -535,7 +578,6 @@ function expandForStoreEval(expression) {
     variables += 'var storedVars = ' + JSON.stringify(mergedVars) + ';';
     return variables + expression;
 }
-
 
 browser.runtime.onMessage.addListener(handleFormatCommand);
 

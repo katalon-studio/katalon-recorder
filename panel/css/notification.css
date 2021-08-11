@@ -1,0 +1,200 @@
+#notification-count {
+    width: 10px;
+    height: 9px;
+    background: #D32E1F;
+    border: 1px solid #F7F7F7;
+    border-radius: 50%;
+    position: relative;
+    left: 9px;
+    top: -30px;
+    z-index: 500;
+}
+
+#notification-count > div {
+    width: 4px;
+    height: 8px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 7px;
+    line-height: 8px;
+    color: white;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 0.5px;
+}
+
+#notificationDialog {
+    position: absolute;
+    display: none;
+    top: 48px;
+    z-index: 1;
+    background-color: #FFFFFF;
+    width: 400px;
+    margin-bottom: -1%;
+    right: 10px;
+    border: 1px solid #DBDBDB;
+    box-shadow: 0 4px 4px -3px rgba(0, 0, 0, 0.21);
+    border-radius: 8px;
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
+#notificationDialog > div:nth-child(odd) {
+    background-color: #FFFFFF;
+    border-radius: 8px;
+
+}
+
+#notificationDialog > div:nth-child(even) {
+    background: #F9F9F9;
+    border-radius: 8px
+
+}
+
+#notificationDialog .header {
+    height: 30px;
+    padding: 10px 20px 0 20px;
+}
+
+#notificationDialog .header .title {
+    position: relative;
+    float: left;
+    top: 5px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    color: #09092E;
+}
+
+#noti-markAll {
+    position: relative;
+    float: right;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    color: #2B7FE1;
+    top: 5px;
+    right: 10px;
+}
+
+#noti-markAll:hover{
+    cursor: pointer;
+}
+
+.notification {
+    display: flex;
+    min-height: 80px;
+}
+
+.noti-type {
+    flex: 2;
+}
+
+.noti-content {
+    color: black!important;
+    flex: 9;
+}
+
+.noti-content .title{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 17px;
+    margin: 10px 0 0 0;
+}
+
+.noti-content .content{
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 14px;
+    color: #6B6B6B;
+    margin: 5px 0 0 0;
+    padding-right: 20px;
+}
+
+.noti-time {
+    flex: 3;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    color: #6B6B6B;
+    padding-top: 10px;
+}
+
+.noti-read {
+    flex: 1;
+    padding-top: 10px;
+
+}
+
+.noti-read>input{
+    opacity: 0;
+    cursor: pointer;
+    position: relative;
+    top: -2px;
+    left: -6px;
+    z-index: 2;
+}
+
+/* Create a custom radio button */
+.checkmark {
+    position: relative;
+    top: -15px;
+    left: 0;
+    height: 12px;
+    width: 12px;
+    background-color: #009AFF;
+    border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.noti-read>input:hover ~ .checkmark {
+    background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.noti-read>input:checked ~ .checkmark {
+    background-color: #C8E0F0;
+}
+
+
+.noti-new-release {
+    width: 28px;
+    height: 28px;
+    background-image: url(/katalon/images/SVG/notification-new-release-icon.svg);
+    position: relative;
+    top: 15px;
+    left: 10px;
+}
+
+.noti-new-media{
+    width: 28px;
+    height: 28px;
+    background-image: url(/katalon/images/SVG/notification-new-media-icon.svg);
+    position: relative;
+    top: 15px;
+    left: 10px;
+}
+
+.noti-new-content{
+    width: 28px;
+    height: 28px;
+    background-image: url(/katalon/images/SVG/notification-new-content-icon.svg);
+    position: relative;
+    top: 15px;
+    left: 10px;
+}
+
+.noti-empty{
+    height: 40px;
+    line-height: 40px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    text-align: center;
+}
+

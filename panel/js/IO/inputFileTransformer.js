@@ -134,8 +134,48 @@ function appendOpenCommandTarget(str) {
     return "<td>" + seleniumBase + str.substring(4, str.length-5) + "</td>";
 }
 
+function readTestCaseModelFromHTMLString(testCaseHTMLString){
+    const testCase = {
+      title: "",
+      testCommands: []
+    };
+    const doc = new DOMParser().parseFromString(testCaseHTMLString, "text/html");
+    const testCaseElement = doc.getElementsByTagName("table")[0];
+    testCase.title = testCaseElement.querySelector("thead>tr>td").innerHTML;
+    const commandElements = testCaseElement.querySelectorAll("tbody tr");
+    for (const commandElement of commandElements) {
+        const commandPartElements = commandElement.querySelectorAll("td");
+        const commandName = commandPartElements[0].innerHTML;
+        const commandValue = commandPartElements[2].innerHTML;
+        const {
+            defaultTarget: commandDefaultTarget,
+            targetList: commandTargetList
+        } = parseTarget(commandPartElements[1]);
+        const testCommand = {
+            name: commandName,
+            target: commandDefaultTarget,
+            targetList: commandTargetList,
+            value: commandValue,
+        }
+        testCase.testCommands.push(testCommand);
+    }
+    return testCase;
+
+}
+
+function readTestSuiteModelFromFile(fileContent){
+    const testCasesHTML = fileContent.match(/<table[\s\S]*?<\/table>/gi);
+    const testCases = [];
+    if (testCasesHTML){
+        for (let i = 0; i < testCasesHTML.length; i++) {
+            const testCase = readTestCaseModelFromHTMLString(testCasesHTML[i]);
+            testCases.push(testCase);
+        }
+    }
+    return testCases;
+}
+
 function appendTestSuite(suiteFile, suiteResult) {
-    // append on test grid
     var id = "suite" + sideex_testSuite.count;
     sideex_testSuite.count++;
     var suiteFileName;
@@ -144,20 +184,19 @@ function appendTestSuite(suiteFile, suiteResult) {
     } else {
         suiteFileName = suiteFile.name;
     }
+    let fileName = suiteFile.name.replace(".html", ".krecorder");
 
     addTestSuite(suiteFileName, id);
     // name is used for download
     sideex_testSuite[id] = {
-        file_name: suiteFile.name,
+        file_name: fileName,
         title: suiteFileName
     };
-
-    test_case = suiteResult.match(/<table[\s\S]*?<\/table>/gi);
-    if (test_case) {
-        for (var i = 0; i < test_case.length; ++i) {
-            readCase(test_case[i]);
-        }
+    const testCases = readTestSuiteModelFromFile(suiteResult);
+    for (const testCase of testCases){
+        readCase(testCase);
     }
+
 
     setSelectedSuite(id);
     clean_panel();

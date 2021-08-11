@@ -1,0 +1,153 @@
+:root {
+    --main-bg-color: #D7DBDB;
+    --main-txt-color: #333333;
+    --sub-btn-txt-color: #54585D;
+    --sub-btn-txt-hover-color: #54585D;
+    --sub-btn-bg-start-color: #FFF;
+    --sub-btn-bg-end-color: #e0e1df;
+    --white-bg: #FFF;
+    --header-bg: #F7F7F7;
+    --test-suite-title: #FFF;
+    --border-color: #d4d4d4;
+    --border-color-kat: #f54966; /*#329D00*/
+    --selected-bg-color: #EFF2EE;
+    --success-bg-color: #e5ffe5;
+    --executing-bg-color: #ffffe6;
+    --fail-bg-color: #ffe5e5; /*#E60000*/
+    --success-txt-color: initial;
+    --executing-txt-color: initial;
+    --fail-txt-color: #d63031;
+    --inset-box-shadow: rgba(228,228,228,0.5);
+    --dialog-bg-header: linear-gradient(180deg, #F9F9F9 0%, #F0F1F1 100%);
+    --dialog-bg-hover-header: linear-gradient(180deg, #F0F1F1 0%, #F9F9F9 100%);
+    --menu-item-hover: #f1f1f1;
+    --input-bg-color: #fafbfc;
+    --input-inner-shadow-color: rgba(228,228,228,0.5);
+    --ui-button-bg-color: linear-gradient(180deg, #FFFFFF 0%, #E0E1DF 100%);
+    --ui-button-border-color: #d4d4d4;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --main-bg-color: #111;
+        --main-txt-color: #fafafa;
+        --sub-btn-txt-color: #54585D;
+        --sub-btn-txt-hover-color: #fafafa;
+        --sub-btn-bg-start-color: #222;
+        --sub-btn-bg-end-color: #333;
+        --white-bg: #202020;
+        --header-bg: #181818;
+        --test-suite-title: #191919;
+        --border-color: #151515;
+        --border-color-kat: #f54966; /*#329D00*/
+        --selected-bg-color: rgba(0,0,0,0.1);
+        --success-bg-color: none;
+        --executing-bg-color: none;
+        --fail-bg-color: none;
+        --success-txt-color: green;
+        --executing-txt-color: #ffeaa7;
+        --fail-txt-color: #d63031;
+        --dialog-bg-header: linear-gradient(180deg, #151515 0%, #181818 100%);
+        --dialog-bg-hover-header: linear-gradient(180deg, #181818 0%, #151515 100%);
+        --inset-box-shadow: rgba(228,228,228,0.1);
+        --menu-item-hover: rgba(0,0,0,0.1);
+        --input-bg-color: #252525;
+        --input-inner-shadow-color: rgba(0,0,0,0.2);
+        --ui-button-bg-color: linear-gradient(180deg, #111 0%, #121212 100%);
+        --ui-button-border-color: #151515;
+    }
+}
+
+
+* {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+html{
+    height: 100%;
+}
+body{
+    background-color: lightgrey;
+    padding: 5px;
+}
+
+#main-section{
+    display: flex;
+    height: 95%;
+    background-color: var(--main-bg-color);
+    color: var(--main-txt-color);
+}
+#scroll-container {
+    overflow-y: scroll;
+    user-select: none;
+    display: flex;
+    height: 100%;
+    width: 20%;
+}
+
+#menu-tree-view{
+    width: 100%;
+    background-color: var(--header-bg);
+}
+
+#content{
+    margin-left: 5px;
+    width: 80%;
+    overflow-y: auto;
+    padding: 10px;
+    background-color: var(--header-bg);
+}
+
+table {
+    width: 100%;
+    padding: 0;
+}
+
+#locatorContainer, #excludeCommandContainer{
+    max-height: 150px;
+    overflow-y: scroll;
+    border: 1px #d4d4d4 solid;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    width: 50%;
+}
+
+#footer{
+    z-index: 100;
+    position: absolute;
+    height: 5%;
+    width: calc(100% - 10px);
+    bottom: 2px;
+    padding: 5px;
+    border: 1px #d4d4d4 solid;
+}
+
+.selected{
+    background-color: var(--selected-bg-color);
+}
+
+input[type="text"] {
+    border-radius: 3px;
+    border: 0.5px solid var(--border-color);
+    outline: none;
+    background: var(--input-bg-color);
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+    padding: 5px 20px 5px 10px;
+    height: auto;
+    box-shadow: inset 0 0 3px 0 var(--input-inner-shadow-color);
+    color: var(--main-txt-color);
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.ui-button {
+    color: var(--main-txt-color);
+}
+
+tr{
+    background-color: var(--input-bg-color);
+}
+

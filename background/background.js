@@ -17,10 +17,10 @@
 
 var master = {};
 var clickEnabled = true;
+const popupWindowIDs = [];
 
 // open main window
 function openPanel(tab) {
-
     let contentWindowId = tab.windowId;
     if (master[contentWindowId] != undefined) {
         browser.windows.update(master[contentWindowId], {
@@ -75,6 +75,7 @@ function openPanel(tab) {
                 }, 200);
             });
         }).then(function bridge(panelWindowInfo){
+            popupWindowIDs.push(panelWindowInfo.id);
             return browser.tabs.sendMessage(panelWindowInfo.tabs[0].id, {
                 selfWindowId: panelWindowInfo.id,
                 commWindowId: contentWindowId
@@ -91,6 +92,11 @@ function openPanel(tab) {
 browser.browserAction.onClicked.addListener(openPanel);
 
 browser.windows.onRemoved.addListener(function(windowId) {
+    // if (popupWindowIDs.includes(windowId)){
+    //     const index = popupWindowIDs.indexOf(windowId);
+    //     popupWindowIDs.splice(index, 1);
+    //     segment().then(r=>r.trackingCloseApp());
+    // }
     let keys = Object.keys(master);
     for (let key of keys) {
         if (master[key] === windowId) {
@@ -101,6 +107,12 @@ browser.windows.onRemoved.addListener(function(windowId) {
         }
     }
 });
+
+async function segment() {
+    const segmentSer =  await import('../panel/js/tracking/segment-tracking-service.js');
+    return segmentSer;
+}
+
 
 // context menu
 function createKrMenus() {

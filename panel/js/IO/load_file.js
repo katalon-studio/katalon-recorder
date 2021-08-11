@@ -18,49 +18,44 @@
 var olderTestSuiteResult = undefined;
 var olderTestSuiteFile = undefined;
 
-function fileToPanel(f) {
-    // set records
-    var output = f.match(/<tbody>[\s\S]+?<\/tbody>/);
-    if (!output) {
-        return null;
+function parseTarget(targetElement) {
+    const commandDefaultTarget = targetElement.childNodes[0].data;
+    const commandTargetList = [...targetElement.querySelectorAll("option")].map(element => {
+        return element.innerHTML;
+    });
+    return {defaultTarget: commandDefaultTarget, targetList: commandTargetList}
+}
+
+function generateHTMLOptionList(options) {
+    return options.reduce((output, option) => {
+        return output + `<option>${option}</option>`
+    }, "");
+}
+
+
+function getTestCaseRenderedGridContent(testCase) {
+    let output = "";
+    for (const testCommand of testCase.testCommands) {
+        const commandName = testCommand.name;
+        const commandValue = testCommand.value;
+        const commandDefaultTarget = testCommand.target;
+        const commandTargetList = testCommand.targetList;
+        let htmlOptionList = generateHTMLOptionList(commandTargetList);
+        let new_tr = '<tr><td><div style="display: none;">' + commandName + '</div><div style="overflow:hidden;height:15px;"></div></td>' + '<td><div style="display: none;">' + commandDefaultTarget +
+          '</div><div style="overflow:hidden;height:15px;"></div>\n        ' + '<datalist>' + htmlOptionList + '</datalist>' + '</td>' +
+          '<td><div style="display: none;">' + commandValue + '</div><div style="overflow:hidden;height:15px;"></div></td>' + '</tr>';
+        output = output + new_tr;
     }
-    output = output[0]
-        .replace(/<tbody>/, "")
-        .replace(/<\/tbody>/, "");
-    var tr = output.match(/<tr>[\s\S]*?<\/tr>/gi);
-    output = "";
-    if (tr)
-        for (var i = 0; i < tr.length; ++i) {
-            pattern = tr[i].match(/(?:<tr>)([\s]*?)(?:<td>)([\s\S]*?)(?:<\/td>)([\s]*?)(?:<td>)([\s\S]*?)(?:<datalist>)([\s\S]*?)(?:<\/datalist>([\s]*?)<\/td>)([\s]*?)(?:<td>)([\s\S]*?)(?:<\/td>)([\s]*?)(?:<\/tr>)/);
-            if (pattern === null) {
-                pattern = tr[i].match(/(?:<tr>)([\s]*?)(?:<td class="break">)([\s\S]*?)(?:<\/td>)([\s]*?)(?:<td>)([\s\S]*?)(?:<datalist>)([\s\S]*?)(?:<\/datalist>([\s]*?)<\/td>)([\s]*?)(?:<td>)([\s\S]*?)(?:<\/td>)([\s]*?)(?:<\/tr>)/);
-            }
-            if (pattern == null) {
-                pattern = tr[i].match(/(?:<tr>)([\s]*?)(?:<td class="[\w\s-]*?">)([\s\S]*?)(?:<\/td>)([\s]*?)(?:<td>)([\s\S]*?)(?:<datalist>)([\s\S]*?)(?:<\/datalist>([\s]*?)<\/td>)([\s]*?)(?:<td>)([\s\S]*?)(?:<\/td>)([\s]*?)(?:<\/tr>)/);
-            }
-            var index = pattern[4].indexOf('\n');
-            if (index > 0) {
-                pattern[4] = pattern[4].substring(0, index);
-            } else if (index === 0) {
-                pattern[4] = '';
-            }
-            var new_tr = '<tr>' + pattern[1] + '<td><div style="display: none;">' + pattern[2] + '</div><div style="overflow:hidden;height:15px;"></div></td>' + pattern[3] + '<td><div style="display: none;">' + pattern[4] +
-                '</div><div style="overflow:hidden;height:15px;"></div>\n        ' + '<datalist>' + pattern[5] + '</datalist>' + pattern[6] + '</td>' +
-                pattern[7] + '<td><div style="display: none;">' + pattern[8] + '</div><div style="overflow:hidden;height:15px;"></div></td>' + pattern[9] + '</tr>';
-
-            output = output + new_tr + "\n";
-
-        }
-    output = '<input id="records-count" value="' + ((!tr) ? 0 : tr.length) + '" type="hidden">' + output;
+    output = '<input id="records-count" value="' + ((!testCase.testCommands) ? 0 : testCase.testCommands.length) + '" type="hidden">' + output;
     return output;
 }
 
-function readCase(f) {
-    var grid_content = fileToPanel(f);
+
+function readCase(testCase) {
+    var grid_content = getTestCaseRenderedGridContent(testCase);
     if (grid_content) {
         clean_panel();
         document.getElementById("records-grid").innerHTML = escapeHTML(grid_content);
-
         var count = getRecordsNum();
         if (count !== '0') {
             reAssignId("records-1", "records-" + count);
@@ -77,14 +72,13 @@ function readCase(f) {
         }
     } else {
         clean_panel();
-        // document.getElementById("records-grid").innerHTML = "";
     }
 
     // append on test grid
     var id = "case" + sideex_testCase.count;
     sideex_testCase.count++;
     var records = document.getElementById("records-grid").innerHTML;
-    var case_title = f.match(/(?:<thead>[\s\S]*?<td rowspan="1" colspan="3">)([\s\S]*?)(?:<\/td>)/)[1];
+    var case_title = testCase.title;
     sideex_testCase[id] = {
         records: records,
         title: case_title
@@ -94,7 +88,7 @@ function readCase(f) {
 
 function readSuite(f) {
     var reader = new FileReader();
-    if (!f.name.includes("htm")) return;
+    if (!f.name.includes(".krecorder") && !f.name.includes(".html")) return;
     reader.readAsText(f);
 
     reader.onload = function(event) {

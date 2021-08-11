@@ -18,6 +18,25 @@
 
 var typeTarget;
 var typeLock = 0;
+Recorder.prototype.checkForm = function(targetName, target){
+    let atrList = ['id', 'name', 'class'];
+    let tempTarget = target;
+    if (targetName === 'form'
+      && atrList.some(atr => target.hasAttribute(atr))
+      && !target.hasAttribute("onsubmit")
+      && !target.hasAttribute("ng-submit")
+) {
+        if (tempTarget.hasAttribute("id"))
+            this.record("submit", [["id=" + tempTarget.id, "id"]], "");
+        else if (tempTarget.hasAttribute("name"))
+            this.record("submit", [["name=" + tempTarget.name, "name"]], "");
+        else {
+            this.record("submit", [["css=." + tempTarget.classList[0]]], "");
+        }
+    } else
+        this.record("sendKeys", this.locatorBuilders.buildAll(enterTarget), "${KEY_ENTER}");
+}
+
 Recorder.inputTypes = ["text", "password", "file", "datetime", "datetime-local", "date", "month", "time", "week", "number", "range", "email", "url", "search", "tel", "color"];
 Recorder.addEventHandler('type', 'change', function(event) {
     // © Chen-Chieh Ping, SideeX Team
@@ -37,17 +56,7 @@ Recorder.addEventHandler('type', 'change', function(event) {
                             tempTarget = tempTarget.parentElement;
                             formChk = tempTarget.tagName.toLowerCase();
                         }
-                        if (formChk == 'form' && (tempTarget.hasAttribute("id") || tempTarget.hasAttribute("name")) && (!tempTarget.hasAttribute("onsubmit"))) {
-                            if (tempTarget.hasAttribute("id"))
-                                this.record("submit", [
-                                    ["id=" + tempTarget.id, "id"]
-                                ], "");
-                            else if (tempTarget.hasAttribute("name"))
-                                this.record("submit", [
-                                    ["name=" + tempTarget.name, "name"]
-                                ], "");
-                        } else
-                            this.record("sendKeys", this.locatorBuilders.buildAll(enterTarget), "${KEY_ENTER}");
+                        this.checkForm(formChk, tempTarget);
                         enterTarget = null;
                     }
                     // END
@@ -154,13 +163,7 @@ Recorder.addEventHandler('sendKeys', 'keydown', function(event) {
                         tempTarget = tempTarget.parentElement;
                         formChk = tempTarget.tagName.toLowerCase();
                     }
-                    if (formChk == 'form' && (tempTarget.hasAttribute("id") || tempTarget.hasAttribute("name")) && (!tempTarget.hasAttribute("onsubmit"))) {
-                        if (tempTarget.hasAttribute("id"))
-                            this.record("submit", [["id=" + tempTarget.id]], "");
-                        else if (tempTarget.hasAttribute("name"))
-                            this.record("submit", [["name=" + tempTarget.name]], "");
-                    } else
-                        this.record("sendKeys", this.locatorBuilders.buildAll(enterTarget), "${KEY_ENTER}");
+                    this.checkForm(formChk, tempTarget);
                     enterTarget = null;
                 }
                 if (typeTarget.tagName && !preventType && (typeLock = 1)) {
@@ -179,17 +182,7 @@ Recorder.addEventHandler('sendKeys', 'keydown', function(event) {
                                         tempTarget = tempTarget.parentElement;
                                         formChk = tempTarget.tagName.toLowerCase();
                                     }
-                                    if (formChk == 'form' && (tempTarget.hasAttribute("id") || tempTarget.hasAttribute("name")) && (!tempTarget.hasAttribute("onsubmit"))) {
-                                        if (tempTarget.hasAttribute("id"))
-                                            this.record("submit", [
-                                                ["id=" + tempTarget.id, "id"]
-                                            ], "");
-                                        else if (tempTarget.hasAttribute("name"))
-                                            this.record("submit", [
-                                                ["name=" + tempTarget.name, "name"]
-                                            ], "");
-                                    } else
-                                        this.record("sendKeys", this.locatorBuilders.buildAll(enterTarget), "${KEY_ENTER}");
+                                    this.checkForm(formChk, tempTarget);
                                     enterTarget = null;
                                 }
                                 // END

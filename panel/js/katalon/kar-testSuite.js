@@ -7,16 +7,16 @@ function readSuiteFromString(test_suite) {
     addTestSuite(suiteName, id);
     // name is used for download
     sideex_testSuite[id] = {
-        file_name: suiteName + '.html',
+        file_name: suiteName + '.krecorder',
         title: suiteName
     };
 
-    test_case = test_suite.match(/<table[\s\S]*?<\/table>/gi);
-    if (test_case) {
-        for (var i = 0; i < test_case.length; ++i) {
-            readCase(test_case[i]);
-        }
+
+    const testCases = readTestSuiteModelFromFile(test_suite);
+    for (const testCase of testCases){
+        readCase(testCase);
     }
+
 }
 
 // parse test suite name from an HTML string
@@ -96,7 +96,7 @@ function saveData() {
 
 // load test suite saved in storage upon starting
 $(function() {
-    chrome.storage.local.get(null, function(result) {
+    browser.storage.local.get(null).then(function(result) {
         try {
             if (result.data) {
                 if (!result.backup) {
@@ -122,3 +122,11 @@ $(function() {
 $(window).on('beforeunload', function(e) {
     saveData();
 });
+
+function enableButton(buttonId) {
+    document.getElementById(buttonId).disabled = false;
+}
+
+function disableButton(buttonId) {
+    document.getElementById(buttonId).disabled = true;
+}

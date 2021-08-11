@@ -4,17 +4,17 @@
 @media (max-width: 1023px) {
 	#logo_kr_full { display: none; }
 	#logo_kr_icon {
-		margin-right: 10px; 
-		width: 36px; 
-		height: auto; 
-		border-radius: 3px; 
+		margin-right: 10px;
+		width: 36px;
+		height: auto;
+		border-radius: 3px;
 		padding: 5px 0;
 		background: none;
 		box-shadow: none;
 		border: 0;
 	}
 	#logo_kr_icon img {
-		height: 26px; 
+		height: 26px;
 		margin: 0;
 		max-height: 100%;
 		max-width: 100%;
@@ -23,24 +23,24 @@
 @media (min-width: 1024px) {
 	#logo_kr_icon { display: none; }
 	#logo_kr_full {
-		margin-right: 10px; 
-		width: auto; 
-		height: auto; 
-		border-radius: 3px; 
+		margin-right: 10px;
+		width: auto;
+		height: auto;
+		border-radius: 3px;
 		padding: 5px 0;
 		background: none;
 		box-shadow: none;
 		border: 0;
 	}
 	#logo_kr_full img.dark {
-		height: 26px; 
+		height: 26px;
 		margin: 0;
 		max-height: 100%;
 		max-width: 100%;
 		display: block;
 	}
 	#logo_kr_full img.light {
-		height: 26px; 
+		height: 26px;
 		margin: 0;
 		max-height: 100%;
 		max-width: 100%;
@@ -129,14 +129,14 @@ img.kto-dark {
 	}
 	#logo_kr_full img.light {
 		display: block;
-		height: 26px; 
+		height: 26px;
 		margin: 0;
 		max-height: 100%;
 		max-width: 100%;
 	}
 	#logo_kr_full img.dark {
 		display: none;
-		height: 26px; 
+		height: 26px;
 		margin: 0;
 		max-height: 100%;
 		max-width: 100%;
@@ -294,7 +294,6 @@ section#main {
 }
 
 #speed-wrapper {
-    margin-left: auto;
 }
 
 @-webkit-keyframes pulse {
@@ -370,8 +369,7 @@ section#main {
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
     position: absolute;
     z-index: 1;
-    right: -4px;
-	top: 40px;
+	top: 46px;
 	border-radius: 3px;
     width: 44px;
     height: 158px;
@@ -942,6 +940,26 @@ div.test-suite-title {
     background-image: url(/katalon/images/SVG/paste-icon-hover.svg);
 }
 
+#grid-undo-btn{
+    background-image: url(/katalon/images/SVG/undo-arrow.svg);
+    background-size: 100%
+}
+
+#grid-undo-btn:hover{
+    background-image: url(/katalon/images/SVG/undo-arrow-hover.svg);
+    background-size: 100%
+}
+
+#grid-redo-btn{
+    background-image: url(/katalon/images/SVG/redo-arrow.svg);
+    background-size: 100%
+}
+
+#grid-redo-btn:hover{
+    background-image: url(/katalon/images/SVG/redo-arrow-hover.svg);
+    background-size: 100%
+}
+
 #command-toolbar {
     flex-grow: 0;
     flex-shrink: 0;
@@ -962,7 +980,7 @@ div.test-suite-title {
 	border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
 	border-top-left-radius: 0px;
-	border-top-right-radius: 0px;	
+	border-top-right-radius: 0px;
 }
 
 .command-row {
@@ -1123,7 +1141,7 @@ ul.tabs li#collapse-console a {
 ul.tabs li#collapse-console a img {
 	position: relative;
 	margin: 0 auto;
-}	
+}
 
 html ul.tabs #clear-log,
 html ul.tabs #save-log,
@@ -1154,12 +1172,12 @@ html ul.tabs #ka-open a {
 	height: 27px;
     line-height: 27px;
 }
-html ul.tabs #ka-open a img { 
-	margin: 4px 5px 4px 0; 
+html ul.tabs #ka-open a img {
+	margin: 4px 5px 4px 0;
 	max-height: 18px;
     vertical-align: middle;
     position: relative;
-}	
+}
 
 html ul.tabs #clear-log a,
 html ul.tabs #save-log a {
@@ -1615,7 +1633,8 @@ a.katalon-link {
     flex-shrink: 1;
 }
 
-#helpDialog-close {
+#helpDialog-close,
+#close-sample-data-dialog {
     position: absolute;
     top: 14px;
     right: 14px;
@@ -1631,12 +1650,17 @@ a.katalon-link {
     background-position: center;
     background-repeat: no-repeat;
 }
+#close-sample-data-dialog{
+    top: 11px
+}
 
-#helpDialog-close:hover {
+#helpDialog-close:hover,
+#close-sample-data-dialog:hover {
     background-image: url(/katalon/images/SVG/close-icon-hover.svg);
 }
 
-#helpDialog-close:focus {
+#helpDialog-close:focus,
+#close-sample-data-dialog:focus {
     outline: none;
 }
 
@@ -1753,12 +1777,19 @@ a.katalon-link {
 .file-container button.delete-button:hover {
     background-image: url(/katalon/images/SVG/delete-icon-hover.svg);
 }
+.file-container button.download-button{
+    background-image: url(/katalon/images/SVG/save-icon.svg);
+}
+.file-container button.download-button:hover{
+    background-image: url(/katalon/images/SVG/save-icon-hover.svg);
+}
+
 
 .file-container th,
 #variablecontainer th {
 	padding: 10px;
 	text-align: left;
-} 
+}
 
 .file-container td {
     padding: 0px 10px;
@@ -1769,7 +1800,8 @@ a.katalon-link {
 }
 #data-files-list tr:nth-child(odd),
 #extensions-list tr:nth-child(odd),
-#variablecontainer tbody tr:nth-child(odd) {
+#variablecontainer tbody tr:nth-child(odd),
+#selfHealingList tr:nth-child(odd){
 	background: rgba(0,0,0,0.05);
 }
 
@@ -1818,4 +1850,109 @@ select.select-script-language option { outline: 0; border:0; }
 select.select-script-language option:checked {
 	background: var(--border-color-kat);
 	color: #fff;
+}
+
+#kat-connect {
+    background-color: green;
+    color: white;
+    width: 100%;
+    height: 28px;
+    border: none;
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,0.2);
+    border-radius: 3px;
+}
+
+#kat-connect:hover {
+    cursor: pointer;
+}
+
+#kat-connect:focus {
+    outline: none;
+}
+
+#refresh-login {
+	color: #4d94ff;
+	text-decoration: none;
+	outline: none;
+}
+
+#refresh-login:hover {
+	color: #5cceff;
+	text-decoration: underline;
+    outline: none;
+    cursor: pointer;
+}
+
+#kr-doc {
+	color: #4d94ff;
+	text-decoration: none;
+	outline: none;
+}
+
+#kr-doc:hover {
+	color: #5cceff;
+	text-decoration: underline;
+    outline: none;
+    cursor: pointer;
+}
+
+#warn-connect {
+    display: none;
+    color: red;
+}
+
+#self-healing-approve-btn {
+    float: right;
+    margin-top: 5px;
+    margin-right: 5%;
+    background: var(--dialog-bg-header);
+    border: 0.5px solid var(--border-color);
+    box-shadow: inset 0 0 3px 0 var(--inset-box-shadow);
+    padding: 0 6px;
+    border-radius: 3px;
+    height: 27px;
+    line-height: 27px;
+}
+#selfHealingList tr:hover{
+    cursor: pointer;
+}
+
+#selfHealingList tr{
+    user-select: none;
+}
+
+#selfHealingList .selected{
+    background: rgba(38, 28, 28, 0.24)  !important;
+}
+
+#select-self-healing-test-status select{
+    background: var(--dialog-bg-header);
+    border: 0.5px solid var(--border-color);
+    box-shadow: inset 0 0 3px 0 var(--inset-box-shadow);
+    padding: 0 6px;
+    border-radius: 3px;
+    height: 27px;
+    line-height: 27px;
+}
+#sample-project-dialog{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+#sample-project-dialog div{
+    flex: 0 30%;
+    margin-bottom: 2%;
+    border: 1px black solid;
+    padding: 5px
+}
+
+#sample-project-dialog div:hover{
+    background-color: #E4E4E47F;
+    cursor: pointer;
+}
+
+#sample-project-dialog .selected{
+    background-color: rgba(180, 178, 178, 0.47);
 }

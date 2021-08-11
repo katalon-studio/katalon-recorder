@@ -50,12 +50,15 @@ function _loadSeleniumCommands() {
     commands.push('loadVars');
     commands.push('endLoadVars');
     commands.push('storeCsv');
+    commands.push('writeToCSV');
+    commands.push('appendToCSV');
 
     commands.push('dragAndDropToObjectByJqueryUI');
 
     commands.push('gotoIf');
     commands.push('gotoLabel');
     commands.push('label');
+    commands.push('upload');
 
     commands.sort();
 

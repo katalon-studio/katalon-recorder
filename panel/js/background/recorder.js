@@ -16,7 +16,6 @@
  */
 
 // TODO: seperate UI
-
 class BackgroundRecorder {
     constructor() {
         this.currentRecordingTabId = {};
@@ -183,7 +182,11 @@ class BackgroundRecorder {
         if (!getSelectedSuite() || !getSelectedCase()) {
             let id = "case" + sideex_testCase.count;
             sideex_testCase.count++;
+            if(!getSelectedSuite()){
+                segmentService().then(r=>r.trackingCreateTestSuite('Record','Untitled Test Case'));
+            }
             addTestCase("Untitled Test Case", id);
+            segmentService().then(r=>r.trackingCreateTestCase('Record','Untitled Test Case'));
         }
 
         let testCaseId = getSelectedCase().id;
@@ -210,9 +213,31 @@ class BackgroundRecorder {
             ], "");
         }
 
-        if (this.openedTabIds[testCaseId][sender.tab.id] == undefined)
-            return;
+        if (this.openedTabIds[testCaseId][sender.tab.id] == undefined) {
+            addCommandAuto("open", [
+                [sender.tab.url]
+            ], "");
+            this.currentRecordingTabId[testCaseId] = sender.tab.id;
+            this.currentRecordingWindowId[testCaseId] = sender.tab.windowId;
+            this.openedTabNames[testCaseId]["win_ser_local"] = sender.tab.id;
+            this.openedTabIds[testCaseId][sender.tab.id] = "win_ser_local";
+            /* uncomment this for the following scenario
+            user records 2 opened tabs and want to playback with those 2 tabs opened simultaneously
+            //open new tab
+            addCommandAuto("runScript", [
+                [`window.open("${sender.tab.url}", "_blank");`]
+            ], "");
+            //set focus to that tab
+            addCommandAuto("selectWindow", [
+                [`win_ser_${this.openedTabCount[testCaseId]}`]
+            ], "");
+            this.openedTabNames[testCaseId]["win_ser_" + this.openedTabCount[testCaseId]] = sender.tab.id;
+            this.openedTabIds[testCaseId][sender.tab.id] = "win_ser_" + this.openedTabCount[testCaseId];
+            this.openedTabCount[testCaseId]++;
+            this.currentRecordingTabId[testCaseId] = sender.tab.id;
+            this.currentRecordingWindowId[testCaseId] = sender.tab.windowId;*/
 
+        }
         if (message.frameLocation !== this.currentRecordingFrameLocation[testCaseId]) {
             let newFrameLevels = message.frameLocation.split(':');
             let oldFrameLevels = this.currentRecordingFrameLocation[testCaseId].split(':');
@@ -340,3 +365,7 @@ class BackgroundRecorder {
         return this.selfWindowId;
     }
 }
+
+
+
+export {BackgroundRecorder}

@@ -8111,7 +8111,7 @@ bot.events.KeyboardEventFactory_.prototype.create = function(a, b) {
     c.initKeyEvent(this.type_, this.bubbles_, this.cancelable_, a, b.ctrlKey, b.altKey, b.shiftKey, b.metaKey, d, b.charCode);
     this.type_ == bot.events.EventType.KEYPRESS && b.preventDefault && c.preventDefault();
   } else {
-    if (bot.userAgent.IE_DOC_PRE9 ? c = c.createEventObject() : (c = c.createEvent("Events"), c.initEvent(this.type_, this.bubbles_, this.cancelable_)), c.altKey = b.altKey, c.ctrlKey = b.ctrlKey, c.metaKey = b.metaKey, c.shiftKey = b.shiftKey, c.keyCode = b.charCode || b.keyCode, goog.userAgent.WEBKIT || goog.userAgent.EDGE) {
+    if (bot.userAgent.IE_DOC_PRE9 ? c = c.createEventObject() : (c = c.createEvent("Events"), c.initEvent(this.type_, this.bubbles_, this.cancelable_)), c.altKey = b.altKey, c.ctrlKey = b.ctrlKey, c.metaKey = b.metaKey, c.shiftKey = b.shiftKey, c.keyCode = b.charCode || b.keyCode, c.which = b.which, goog.userAgent.WEBKIT || goog.userAgent.EDGE) {
       c.charCode = this == bot.events.EventType.KEYPRESS ? c.keyCode : 0;
     }
   }
@@ -9403,10 +9403,75 @@ bot.Keyboard.prototype.pressKey = function(a) {
   if (goog.array.contains(bot.Keyboard.MODIFIERS, a) && this.isPressed(a)) {
     throw new bot.Error(bot.ErrorCode.UNKNOWN_ERROR, "Cannot press a modifier key that is already pressed.");
   }
-  var b = !goog.isNull(a.code) && this.fireKeyEvent_(bot.events.EventType.KEYDOWN, a);
-  !b && !goog.userAgent.GECKO || this.requiresKeyPress_(a) && !this.fireKeyEvent_(bot.events.EventType.KEYPRESS, a, !b) || !b || (this.maybeSubmitForm_(a), this.editable_ && this.maybeEditText_(a));
+  if (a.code === 13){
+    this.keyPressEnter(a);
+  } else {
+    this.keyPressLegacy(a);
+  }
   this.setKeyPressed_(a, !0);
 };
+
+/**
+ * This method is different from keyPressLegacy in that it calls this.dispatchKREvent
+ * @param key
+ */
+bot.Keyboard.prototype.keyPressEnter = function(key) {
+  var performDefault = this.dispatchKREvent('keyup') && this.dispatchKREvent('keydown');
+  // Fires keydown and stops if unsuccessful.
+  if (performDefault || goog.userAgent.GECKO) {
+    // Fires keypress if required and stops if unsuccessful.
+    if (!this.requiresKeyPress_(key) || this.dispatchKREvent("keypress")) {
+      if (performDefault) {
+        this.maybeSubmitForm_(key);
+        if (this.editable_) {
+          this.maybeEditText_(key);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * This code cannot handle certain cases of pressing Enter on inputs.
+ * The reason is likely due to this.fireKeyEvent_ constructing events in Event Object
+ * @param key
+ */
+bot.Keyboard.prototype.keyPressLegacy = function (key) {
+  // Note that GECKO is special-cased below because of
+  // https://bugzilla.mozilla.org/show_bug.cgi?id=501496. "preventDefault on
+  // keydown does not cancel following keypress"
+  var performDefault = !goog.isNull(key.code) && this.fireKeyEvent_(bot.events.EventType.KEYDOWN, key);
+  // Fires keydown and stops if unsuccessful.
+  if (performDefault || goog.userAgent.GECKO) {
+    // Fires keypress if required and stops if unsuccessful.
+    if (!this.requiresKeyPress_(key) || this.fireKeyEvent_(bot.events.EventType.KEYPRESS, key, !performDefault)) {
+      if (performDefault) {
+        this.maybeSubmitForm_(key);
+        if (this.editable_) {
+          this.maybeEditText_(key);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Dispatch event using Keyboard Event object
+ * @param eventName
+ * @returns {void|boolean|*} false if canlleable AND one of the event handlers called Event#preventDefault()
+ */
+bot.Keyboard.prototype.dispatchKREvent = function(eventName) {
+  let event = new KeyboardEvent(eventName, {
+    code: 'Enter',
+    key: 'Enter',
+    charCode: 13,
+    keyCode: 13,
+    which: 13, //this property is nessessary for Firefox
+    bubbles: true
+  });
+  return this.element_.dispatchEvent(event);
+}
+
 bot.Keyboard.prototype.requiresKeyPress_ = function(a) {
   if (a.character || a == bot.Keyboard.Keys.ENTER) {
     return !0;
@@ -9545,7 +9610,7 @@ bot.Keyboard.prototype.fireKeyEvent_ = function(a, b, c) {
   if (goog.isNull(b.code)) {
     throw new bot.Error(bot.ErrorCode.UNKNOWN_ERROR, "Key must have a keycode to be fired.");
   }
-  b = {altKey:this.isPressed(bot.Keyboard.Keys.ALT), ctrlKey:this.isPressed(bot.Keyboard.Keys.CONTROL), metaKey:this.isPressed(bot.Keyboard.Keys.META), shiftKey:this.isPressed(bot.Keyboard.Keys.SHIFT), keyCode:b.code, charCode:b.character && a == bot.events.EventType.KEYPRESS ? this.getChar_(b).charCodeAt(0) : 0, preventDefault:!!c};
+  b = {altKey:this.isPressed(bot.Keyboard.Keys.ALT), ctrlKey:this.isPressed(bot.Keyboard.Keys.CONTROL), metaKey:this.isPressed(bot.Keyboard.Keys.META), shiftKey:this.isPressed(bot.Keyboard.Keys.SHIFT), keyCode:b.code, which:b.code, charCode:b.character && a == bot.events.EventType.KEYPRESS ? this.getChar_(b).charCodeAt(0) : 0, preventDefault:!!c};
   return this.fireKeyboardEvent(a, b);
 };
 bot.Keyboard.prototype.moveCursor = function(a) {

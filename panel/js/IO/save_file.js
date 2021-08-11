@@ -81,7 +81,7 @@ function panelToFile(str) {
 var textFile = null,
     makeTextFile = function(text) {
         var data = new Blob([text], {
-            type: 'text/html'
+            type: 'text/*'
         });
         // If we are replacing a previously generated file we need to
         // manually revoke the object URL to avoid memory leaks.
@@ -123,6 +123,7 @@ function downloadSuite(s_suite,callback) {
 
         var f_name = sideex_testSuite[s_suite.id].file_name,
             link = makeTextFile(output);
+        f_name = f_name.replace(".html", ".krecorder");
         var downloading = browser.downloads.download({
             filename: f_name,
             url: link,

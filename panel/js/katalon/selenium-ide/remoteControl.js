@@ -128,19 +128,19 @@ RegexpNotMatch.prototype.verify = function() {
     return verifyFalse(this.invert());
 };
 
-function seleniumEquals(type, pattern, expression) {
+function seleniumEquals(type, pattern, expression, command) {
     if (type == 'String[]') {
-        return seleniumEquals('String', pattern.replace(/\\,/g, ',') , joinExpression(expression));
+        return seleniumEquals('String', pattern.replace(/\\,/g, ',') , joinExpression(expression), command);
     } else if (type == 'String' && pattern.match(/^regexp:/)) {
-        return new RegexpMatch(pattern.substring(7), expression);
+        return new RegexpMatch(pattern.substring(7), expression, command);
     } else if (type == 'String' && pattern.match(/^regex:/)) {
-        return new RegexpMatch(pattern.substring(6), expression);
+        return new RegexpMatch(pattern.substring(6), expression, command);
     } else if (type == 'String' && (pattern.match(/^glob:/) || pattern.match(/[\*\?]/))) {
         pattern = pattern.replace(/^glob:/, '');
         pattern = pattern.replace(/([\]\[\\\{\}\$\(\).])/g, "\\$1");
         pattern = pattern.replace(/\?/g, "[\\s\\S]");
         pattern = pattern.replace(/\*/g, "[\\s\\S]*");
-        return new RegexpMatch("^" + pattern + "$", expression);
+        return new RegexpMatch("^" + pattern + "$", expression, command);
     } else {
         pattern = pattern.replace(/^exact:/, '');
         return new Equals(xlateValue(type, pattern), expression);
@@ -291,21 +291,21 @@ function formatCommand(command) {
                     line = (def.negative ? verifyFalse : verifyTrue)(call);
                 } else if (command.command.match(/^store/)) {
                     addDeclaredVar(extraArg);
-                    line = statement(assignToVariable('boolean', extraArg, call));
+                    line = statement(assignToVariable('boolean', extraArg, call, command));
                 } else if (command.command.match(/^waitFor/)) {
                     line = waitFor(def.negative ? call.invert() : call);
                 }
             } else { // getXXX
                 if (command.command.match(/^(verify|assert)/)) {
-                    var eq = seleniumEquals(def.returnType, extraArg, call);
+                    var eq = seleniumEquals(def.returnType, extraArg, call, command);
                     if (def.negative) eq = eq.invert();
                     var method = (!this.assertOrVerifyFailureOnNext && command.command.match(/^verify/)) ? 'verify' : 'assert';
                     line = eq[method]();
                 } else if (command.command.match(/^store/)) {
                     addDeclaredVar(extraArg);
-                    line = statement(assignToVariable(def.returnType, extraArg, call));
+                    line = statement(assignToVariable(def.returnType, extraArg, call, command));
                 } else if (command.command.match(/^waitFor/)) {
-                    var eq = seleniumEquals(def.returnType, extraArg, call);
+                    var eq = seleniumEquals(def.returnType, extraArg, call, command);
                     if (def.negative) eq = eq.invert();
                     line = waitFor(eq);
                 }
@@ -316,7 +316,7 @@ function formatCommand(command) {
             line = echo(command.target);
         } else if ('store' == command.command) {
             addDeclaredVar(command.value);
-            line = statement(assignToVariable('String', command.value, xlateArgument(command.target)));
+            line = statement(assignToVariable('String', command.value, xlateArgument(command.target), command));
         } else if (this.set && command.command.match(/^set/)) {
             line = set(command.command, command.target);
         } else if (command.command.match(/^(assert|verify)Selected$/)) {
@@ -331,7 +331,7 @@ function formatCommand(command) {
             var method = (!this.assertOrVerifyFailureOnNext && command.command.match(/^verify/)) ? 'verify' : 'assert';
             var call = new CallSelenium("getSelected" + flavor);
             call.args.push(xlateArgument(command.target));
-            var eq = seleniumEquals('String', value, call);
+            var eq = seleniumEquals('String', value, call, command);
             line = statement(eq[method]());
         } else if (def) {
             if (def.name.match(/^(assert|verify)(Error|Failure)OnNext$/)) {

@@ -983,7 +983,7 @@ Selenium.prototype.doType = function(locator, value) {
             return new Promise(function(resolve, reject) {
                 var krId = new Date().getTime() + '-' + Math.random();
                 element.setAttribute('katalon-recorder-id', krId);
-                browser.runtime.sendMessage({ 
+                browser.runtime.sendMessage({
                     uploadFile: true,
                     locator: '[katalon-recorder-id="' + krId + '"]',
                     krId: krId,
@@ -1017,8 +1017,7 @@ Selenium.prototype.doType = function(locator, value) {
                                 );
                             },
                             error: function(jqXHR, textStatus, errorThrown) {
-                                console.log('Please check if Katalon Recorder helper has started.')
-                                reject(textStatus);
+                                reject(`${textStatus} - If you are using Firefox, please check if Katalon Recorder helper has started.`)
                             }
                         });
                     },
@@ -3865,3 +3864,72 @@ Selenium.prototype.doShowElement = function(locator){
         return false;
     }
 };
+
+Selenium.prototype.doUpload = function(locator , value){
+    if (locator === "") locator = "css=body";
+    let element = this.browserbot.findElement(locator);
+    let doc = (element != null ? element.ownerDocument : document) || document;
+
+    // Default drop zone to the body
+    let target = document.body;
+
+    // if a custom drop zone is provided, check for interactability
+    if (element != null) {
+        for (let i = 0; ; ) {
+            let box = element.getBoundingClientRect(),
+              clientX = box.left + (box.width / 2),
+              clientY = box.top + (box.height / 2),
+              target = doc.elementFromPoint(clientX, clientY);
+
+            if (target && element.contains(target)) break;
+
+            if (++i > 1) {
+                let ex = new Error("Element not interactable");
+                ex.code = 15;
+                throw ex;
+            }
+
+            element.scrollIntoView({
+                behavior: "instant",
+                block: "center",
+                inline: "center"
+            });
+        }
+    }
+
+    // Create virtual input
+    let input = doc.createElement("INPUT");
+    input.setAttribute("id", "katalon-recorder-fake-file-input");
+    input.setAttribute("type", "file");
+    input.setAttribute("multiple", "");
+    input.setAttribute("style", "position:fixed;z-index:2147483647;left:0;top:0;");
+    input.onchange = function(ev) {
+        // Remove this virtual input
+        input.parentElement.removeChild(input);
+        // Prevent side effects
+        ev.stopPropagation();
+        let dataTransfer = new DataTransfer();
+        dataTransfer.dropEffect = "move";
+        dataTransfer.effectAllowed = "all";
+        for (let file of input.files){
+            dataTransfer.items.add(file);
+        }
+        // Attach dataTransfer to events and dispatch them to the drop zone
+        ["dragenter", "dragover", "drop"].forEach(function(type) {
+            let event = new DragEvent(type, {dataTransfer: dataTransfer, bubbles: true})
+            target.dispatchEvent(event);
+        });
+
+    };
+
+    doc.documentElement.appendChild(input);
+    input.getBoundingClientRect(); /* force reflow for Firefox */
+    return this.doType("css=#katalon-recorder-fake-file-input", value).catch(error => {
+        input.parentElement.removeChild(input);
+        throw error;
+    });
+
+
+
+
+}
