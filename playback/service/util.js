@@ -1,4 +1,4 @@
-import { getCommandTargetOptions } from "../../panel/js/self-healing/service/utils.js";
+import { getSelfHealingSettingLocatorsList } from "../../panel/js/UI/services/self-healing-service/utils";
 
 const getRecordsArray = (casesHTMLList) => {
   let tbody = document.createElement("tbody");
@@ -41,6 +41,25 @@ const isWindowMethodCommand = (command) => {
     || command === "assertConfirmation"
     || command === "assertAlert"
     || command === "verifyAlert";
+}
+
+
+async function getCommandTargetOptions(baseOptionList){
+  let optionList = [];
+  let locatorList = await getSelfHealingSettingLocatorsList();
+  //get option base on priority in locator list
+  optionList = locatorList.reduce((prev, locator) => {
+    let reg = new RegExp(`^${locator}`);
+    let filterOptionList = baseOptionList.filter(opt => reg.exec(opt)?.length);
+    prev.push(...filterOptionList);
+    return prev;
+  }, []);
+
+  let otherOptionList = baseOptionList.filter(option => {
+    return !optionList.includes(option);
+  });
+  optionList.push(...otherOptionList);
+  return optionList;
 }
 
 const getPossibleTargetList = async (currentCommand) => {

@@ -1,6 +1,6 @@
-import { getChangedProperty } from "../../panel/js/tracking/playback-local-tracking.js";
-import { getTrackingPopupData, setTrackingPopupData } from "../../panel/js/tracking/popup-tracking.js";
-import { trackingSegment } from "../../panel/js/tracking/segment-tracking-service.js";
+import { getChangedProperty } from "../../panel/js/UI/services/tracking-service/playback-local-tracking.js";
+import { getTrackingPopupData, setTrackingPopupData } from "../../panel/js/UI/services/tracking-service/popup-tracking.js";
+import { trackingSegment } from "../../panel/js/UI/services/tracking-service/segment-tracking-service.js";
 
 
 function userAgree() {

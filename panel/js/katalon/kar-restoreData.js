@@ -1,5 +1,9 @@
+import { loadData } from "../UI/services/data-service/load-data.js";
+import { getTestSuiteCount, getTextSuiteByIndex } from "../UI/services/data-service/test-suite-service.js";
+import { displayNewTestSuite } from "../UI/view/testcase-grid/display-new-test-suite.js";
+import { testSuitContainerOpen } from "../UI/view/testcase-grid/test-suite-container.js";
+
 // backup data will like: {"data": {...}, ...}
-// so it can be read upon start at kar-testSuite.js
 function readBackupData(f) {
     var reader = new FileReader();
     reader.readAsText(f);
@@ -10,18 +14,33 @@ function readBackupData(f) {
 }
 
 function restoreBackupData(backupData) {
-    chrome.storage.local.clear(function() {
-        chrome.storage.local.set(backupData, function() {
-            reload();
+    browser.storage.local.clear().then(function() {
+        browser.storage.local.set(backupData).then( function() {
+            loadData().then(() => {
+                const testSuiteCount = getTestSuiteCount();
+                for (let i = 0; i < testSuiteCount; i++) {
+                    displayNewTestSuite(getTextSuiteByIndex(i));
+                }
+                if (testSuiteCount > 0){
+                    //expand test explorer to the first test case
+                    testSuitContainerOpen();
+                    const firstTestSuite = getTextSuiteByIndex(0);
+                    if (firstTestSuite){
+                        const firstTestSuiteElement = document.getElementById(firstTestSuite.id);
+                        const testSuiteDropdown = firstTestSuiteElement.getElementsByClassName("dropdown")[0];
+                        $(testSuiteDropdown).click();
+                    }
+                }
+                browser.storage.local.get("language").then(result => {
+                    if (result.language) {
+                        $("#select-script-language-id").val(result.language);
+                    }
+                })
+            });
+
         });
     });
 }
-
-function reload() {
-    $(window).off('beforeunload');
-    window.close()
-}
-
 
 function refreshStatusBar() {
     $.ajax({
@@ -30,6 +49,9 @@ function refreshStatusBar() {
         success: function(data) {
             if (data.email) {
                 showBackupEnabledStatus();
+                if (document.getElementById("logcontainer").childElementCount === 0){
+                    $("#ka-upload").addClass("disable");
+                }
             } else {
                 showBackupDisabledStatus();
             }
@@ -38,16 +60,6 @@ function refreshStatusBar() {
             showBackupDisabledStatus();
         },
     });
-}
-
-function showBackupRestoreButton() {
-    $('#backup-restore-btn').show();
-    $('#backup-refresh-btn').hide();
-}
-
-function hideBackupRestoreButton() {
-    $('#backup-restore-btn').hide();
-    $('#backup-refresh-btn').show();
 }
 
 $(function() {

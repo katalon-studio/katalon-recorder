@@ -1,19 +1,15 @@
-/*
- * Copyright 2017 SideeX committers
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
- *
- */
+import { createTestSuite, findTestSuiteById } from "../UI/services/data-service/test-suite-service.js";
+import { renderNewTestSuite } from "../UI/view/testcase-grid/render-new-test-suite.js";
+import { createTestCase, findTestCaseById } from "../UI/services/data-service/test-case-service.js";
+import { renderNewTestCase } from "../UI/view/testcase-grid/render-new-test-case.js";
+import { trackingCreateTestCase, trackingCreateTestSuite } from "../UI/services/tracking-service/segment-tracking-service.js";
+import { deleteCommand } from "../UI/services/records-grid-service/actions.js";
+import { getSelectedCase } from "../UI/view/testcase-grid/selected-case.js";
+import { addCommandAuto, addCommandBeforeLastCommand } from "../UI/view/records-grid/add-command.js";
+import { getSelectedRecord } from "../UI/view/records-grid/selected-records.js";
+import { getRecordsArray } from "../UI/view/records-grid/get-records-array.js";
+import { getCommandName, getCommandTarget, getCommandValue } from "../UI/view/records-grid/record-utils.js";
+import { getSelectedSuite } from "../UI/view/testcase-grid/selected-suite.js";
 
 // TODO: seperate UI
 class BackgroundRecorder {
@@ -178,15 +174,26 @@ class BackgroundRecorder {
     addCommandMessageHandler(message, sender, sendRequest) {
         if (!message.command || this.openedWindowIds[sender.tab.windowId] == undefined)
             return;
+        const selectedTestSuite = getSelectedSuite();
+        const selectedTestCase = getSelectedCase();
 
-        if (!getSelectedSuite() || !getSelectedCase()) {
-            let id = "case" + sideex_testCase.count;
-            sideex_testCase.count++;
-            if(!getSelectedSuite()){
-                segmentService().then(r=>r.trackingCreateTestSuite('Record','Untitled Test Case'));
-            }
-            addTestCase("Untitled Test Case", id);
-            segmentService().then(r=>r.trackingCreateTestCase('Record','Untitled Test Case'));
+        let testSuite;
+        let testCase;
+        if (!selectedTestSuite) {
+            testSuite = createTestSuite("Untitled Test Suite");
+            renderNewTestSuite("Untitled Test Suite", testSuite.id);
+            trackingCreateTestSuite('Record','Untitled Test Suite');
+        } else{
+            const testSuiteID = selectedTestSuite.id;
+            testSuite = findTestSuiteById(testSuiteID);
+        }
+        if (!selectedTestCase){
+            testCase = createTestCase("Untitled Test Case", testSuite);
+            renderNewTestCase("Untitled Test Case", testCase.id);
+            trackingCreateTestCase('Record','Untitled Test Case');
+        } else{
+            const testCaseID = selectedTestCase.id;
+            testCase = findTestCaseById(testCaseID);
         }
 
         let testCaseId = getSelectedCase().id;
@@ -266,11 +273,11 @@ class BackgroundRecorder {
         if (message.command == "doubleClickAt") {
             var command = getRecordsArray();
             var select = getSelectedRecord();
-            var length = (select == "") ? getRecordsNum() : select.split("-")[1] - 1;
-            var equaln = getCommandName(command[length - 1]) == getCommandName(command[length - 2]);
-            var equalt = getCommandTarget(command[length - 1]) == getCommandTarget(command[length - 2]);
+            var length = (select == "") ? testCase.getTestCommandCount() : select.split("-")[1] - 1;
+            var equaln = getCommandName(command[length - 1]) === getCommandName(command[length - 2]);
+            var equalt = getCommandTarget(command[length - 1]) === getCommandTarget(command[length - 2]);
             var equalv = getCommandValue(command[length - 1]) == getCommandValue(command[length - 2]);
-            if (getCommandName(command[length - 1]) == "clickAt" && equaln && equalt && equalv) {
+            if (getCommandName(command[length - 1]) === "clickAt" && equaln && equalt && equalv) {
                 deleteCommand(command[length - 1].id);
                 deleteCommand(command[length - 2].id);
                 if (select != "") {
@@ -290,7 +297,7 @@ class BackgroundRecorder {
             browser.windows.update(this.selfWindowId, {focused: true})
             .then(function() {
                 // Even if window has been focused, window.prompt() still failed.
-                // Delay a little time to ensure that status has been updated 
+                // Delay a little time to ensure that status has been updated
                 setTimeout(function() {
                     message.value = prompt("Enter the name of the variable");
                     if (message.insertBeforeLastCommand) {
@@ -302,7 +309,7 @@ class BackgroundRecorder {
                 }, 100);
             })
             return;
-        } 
+        }
 
         //handle choose ok/cancel confirm
         if (message.insertBeforeLastCommand) {

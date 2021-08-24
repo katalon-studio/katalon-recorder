@@ -96,6 +96,7 @@
 .noti-content {
     color: black!important;
     flex: 9;
+    padding-bottom: 10px;
 }
 
 .noti-content .title{

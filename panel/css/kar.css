@@ -941,12 +941,12 @@ div.test-suite-title {
 }
 
 #grid-undo-btn{
-    background-image: url(/katalon/images/SVG/undo-arrow.svg);
+    background-image: url(/katalon/images/SVG/new-undo-arrow.svg);
     background-size: 100%
 }
 
 #grid-undo-btn:hover{
-    background-image: url(/katalon/images/SVG/undo-arrow-hover.svg);
+    background-image: url(/katalon/images/SVG/new-undo-arrow-hover.svg);
     background-size: 100%
 }
 

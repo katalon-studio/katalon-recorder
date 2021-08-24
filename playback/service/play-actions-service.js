@@ -1,4 +1,4 @@
-import { isCommandExcluded, isSelfHealingEnable } from "../../panel/js/self-healing/service/utils.js";
+import { isCommandExcluded, isSelfHealingEnable } from "../../panel/js/UI/services/self-healing-service/utils.js";
 import { logger } from "./log-service.js";
 import {
     getCommandName,
@@ -12,7 +12,7 @@ import {
 import { convertVariableToString, evalIfCondition, expandForStoreEval } from "./variable-sevice.js";
 import { ExtCommand } from "../../panel/js/background/window-controller.js";
 
-import { trackingExecuteTestSuite } from "../../panel/js/tracking/segment-tracking-service.js"
+import { trackingExecuteTestSuite } from "../../panel/js/UI/services/tracking-service/segment-tracking-service.js"
 
 let testSuiteData = [];
 let selectedCaseIndex = 0;
@@ -841,7 +841,6 @@ async function runCommand(commands, commandName, commandTarget, commandValue) {
                     captureEntirePageScreenshot: true,
                     captureWindowId: extCommand.getContentWindowId()
                 }).then(function(captureResponse) {
-                    addToScreenshot(captureResponse.image, 'fail-' + sideex_testCase[currentTestCaseId].title + '-' + originalCurrentPlayingCommandIndex);
                 }).catch(function(e) {
                     console.log(e);
                 });

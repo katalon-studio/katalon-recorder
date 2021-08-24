@@ -40,9 +40,10 @@ function openPanel(tab) {
     }, 1000);
 
     // open GUI with specified size
-    var f = function(height, width) {
+    var f = function(height, width, oldUI) {
+        const url = oldUI ? "old-panel/index.html" : "panel/index.html"
         browser.windows.create({
-            url: browser.runtime.getURL("panel/index.html"),
+            url: browser.runtime.getURL(url),
             type: "popup",
             height: height,
             width: width
@@ -72,7 +73,7 @@ function openPanel(tab) {
                             clearInterval(interval);
                         }
                     })
-                }, 200);
+                }, 500);
             });
         }).then(function bridge(panelWindowInfo){
             popupWindowIDs.push(panelWindowInfo.id);
@@ -86,8 +87,19 @@ function openPanel(tab) {
     };
 
     // get previous window size, and open the window
-    getWindowSize(f);
+
+    browser.storage.local.get("UIStyle").then(result => {
+        if (result.UIStyle === "old"){
+            getWindowSize(f, true);
+        } else {
+            getWindowSize(f, false);
+        }
+
+    } )
+
+
 }
+
 
 browser.browserAction.onClicked.addListener(openPanel);
 
@@ -109,7 +121,7 @@ browser.windows.onRemoved.addListener(function(windowId) {
 });
 
 async function segment() {
-    const segmentSer =  await import('../panel/js/tracking/segment-tracking-service.js');
+    const segmentSer =  await import('../panel/js/UI/services/tracking-service/segment-tracking-service.js');
     return segmentSer;
 }
 

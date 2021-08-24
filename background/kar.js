@@ -1,9 +1,13 @@
 // KAT-BEGIN save last window size
-function getWindowSize(callback) {
+function getWindowSize(callback, oldUI) {
     browser.storage.local.get('window').then(function(result) {
-        var height = 740;
-        var width = 900;
-      
+        var height = 621;
+        var width = 1050;
+        if (oldUI){
+            height = 740;
+            width = 900;
+        }
+
         if (result) {
             try {
                 result = result.window;
@@ -16,7 +20,7 @@ function getWindowSize(callback) {
             } catch (e) {
             }
         }
-        callback(height, width);
+        callback(height, width, oldUI);
     });
 }
 // KAT-END

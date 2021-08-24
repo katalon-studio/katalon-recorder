@@ -7,7 +7,7 @@ function readExtension(f) {
         extensions[f.name] = {
             content: reader.result,
             type: 'Extension'
-        };      
+        };
         saveExtensions();
     }
 }
@@ -25,44 +25,135 @@ function resetExtensionsList() {
     var names = Object.keys(extensions).sort();
     for (var i = 0; i < names.length; i++) {
         var name = names[i];
-        var tr = renderExtensionsListItem(name);
+        var tr = renderExtensionsListItem(name, i);
         list.append(tr);
     }
 
     // execute extension script to add command to Selenium
     Object.keys(extensions).forEach(function(extensionFileName){
         var newFunction = new Function(extensions[extensionFileName].content);
-        newFunction();        
+        newFunction();
     });
 
     // GUI reload list of commands
     $("#command-dropdown,#command-command-list").html(genCommandDatalist());
 }
 
-function renderExtensionsListItem(name) {
-    var tr = $('<tr></tr>');
-    var tdType = $('<td></td>').text('JavaScript');
-    var tdName = $('<td></td>').text(name);
-    var tdActions = $('<td></td>');
-    var renameButton = $('<button class="rename-button"></button>');
-    renameButton.on('click', function() {
-        var newName = prompt('Please enter the new name for this extension script.', name);
-        if (newName.length > 0 && name !== newName) {
-            extensions[newName] = extensions[name];
-            delete extensions[name];
-            saveExtensions();
-        }
-    });
-    var deleteButton = $('<button class="delete-button"></button>');
-    deleteButton.on('click', function() {
-        if (confirm('Do you want to remove this extension script?')) {
-            delete extensions[name];
-            saveExtensions();
-        }
-    });
-    tdActions.append(renameButton, deleteButton);
-    tr.append(tdType, tdName, tdActions);
-    return tr;
+
+function renderExtensionListContextMenu(id, name){
+
+    function renderRenameListItem(oldName){
+        const rename = document.createElement("li");
+        const a = document.createElement("a");
+        a.setAttribute("href", "#");
+        a.textContent = "Rename";
+        rename.appendChild(a);
+        rename.addEventListener("click", function(event) {
+            event.stopPropagation();
+            const newName = prompt('Please enter the new name for this extension script.', oldName);
+            if (newName.length > 0 && oldName !== newName) {
+                extensions[newName] = extensions[oldName];
+                delete extensions[oldName];
+                resetExtensionsList();
+            }
+        }, false);
+        return rename;
+    }
+
+    function renderDownloadListItem(name){
+        const download = document.createElement("li");
+        const a = document.createElement("a");
+        a.setAttribute("href", "#");
+        a.textContent = "Download";
+        download.appendChild(a);
+        download.addEventListener("click", function(event) {
+            event.stopPropagation();
+            let fileContent = "data:text/javascript;charset=utf-8," + extensions[name].content;
+            let encodedUri = encodeURI(fileContent);
+            let link = document.createElement("a");
+            link.setAttribute("id", "123");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", name);
+            document.body.appendChild(link);
+            link.click();
+            $(link).remove();
+        }, false);
+        return download;
+    }
+
+    function renderDeleteListItem(name){
+        const deleteItem = document.createElement("li");
+        const a = document.createElement("a");
+        a.setAttribute("href", "#");
+        a.textContent = "Delete";
+        deleteItem.appendChild(a);
+        deleteItem.addEventListener("click", function(event) {
+            event.stopPropagation();
+            if (confirm('Do you want to remove this extension script?')) {
+                delete extensions[name];
+                resetExtensionsList();
+            }
+        }, false);
+        return deleteItem;
+    }
+
+    const menu = document.createElement("div");
+    menu.setAttribute("class", "menu");
+    menu.setAttribute("id", "menu" + id);
+
+    const rename = renderRenameListItem(name);
+    const download = renderDownloadListItem(name);
+    const deleteItem = renderDeleteListItem(name);
+    const list = document.createElement("ul");
+
+    list.appendChild(rename);
+    list.appendChild(download);
+    list.appendChild(deleteItem);
+
+    menu.appendChild(list)
+    return menu;
+}
+
+
+function renderExtensionsListItem(name, index) {
+    const id = "extension" + index;
+    const div = document.createElement('div');
+    div.classList.add("extension-item");
+    div.id = id;
+
+    const imageDiv = document.createElement('div');
+    imageDiv.classList.add("extensionIcon");
+    const img = document.createElement('img');
+    img.src = "/katalon/images/SVG/paper-icon.svg";
+    imageDiv.append(img);
+    div.appendChild(imageDiv);
+
+    const titleDiv = document.createElement("div");
+    titleDiv.innerHTML = name;
+    div.append(titleDiv);
+
+    const contextMenu = renderExtensionListContextMenu(id, name);
+    div.append(contextMenu);
+    addContextMenuButton(id, div, contextMenu, "data");
+    div.addEventListener("contextmenu", function(event){
+        event.preventDefault();
+        event.stopPropagation();
+        var mid = "#" + "menu" + id;
+        $(".menu").css("left", event.pageX);
+        $(".menu").css("top", event.pageY);
+        $(mid).show();
+    })
+    return div;
+
+}
+
+function extensionScriptContainerOpen(){
+    const image = $("#extensionDropdown").find("img");
+    const src = $(image).attr("src");
+    if (src.includes("off")) {
+        $(image).attr("src", "/katalon/images/SVG/dropdown-arrow-on.svg");
+        $("#extensions-list").css("display", "flex");
+    }
 }
 
 $(function() {
@@ -83,6 +174,7 @@ $(function() {
         for (var i = 0; i < this.files.length; i++) {
             readExtension(this.files[i]);
         }
+        extensionScriptContainerOpen();
         this.value = null;
     }, false);
 });

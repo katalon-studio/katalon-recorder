@@ -1,11 +1,12 @@
 // KAT-BEGIN show docs on install or upgrade from 1.0
 browser.runtime.onInstalled.addListener(function (details) {
+
     if (details.reason === 'install') {
         browser.tabs.create({
             url: 'https://www.katalon.com/sign-up/?utm_source=browser%20store&utm_campaign=installed%20KR'
         });
         segment().then(service => service.trackingInstallApp());
-
+        browser.storage.local.set( {UIStyle: "new"} );
     }
     else if (details.reason === 'update') {
         browser.storage.local.set({
@@ -14,9 +15,27 @@ browser.runtime.onInstalled.addListener(function (details) {
             }
         });
         notificationUpdate("Katalon Recorder has been updated", "Find out about new bug fixes and enhancements!");
+        browser.storage.local.get("UIStyle").then(result => {
+            let UIStyle;
+            if (!result.UIStyle){
+                UIStyle = getUserUIStyle();
+            } else {
+                UIStyle = result.UIStyle;
+            }
+            import('../panel/js/UI/services/tracking-service/segment-tracking-service.js').then(module => {
+                module.trackingSegment("kru_new_uiux", {is_using_new_uiux: UIStyle !== "old"});
+            });
+            browser.storage.local.set( {UIStyle} );
+        });
     }
 
 });
+
+function getUserUIStyle(){
+    const threshold = 0.2;
+    return "new";
+    return Math.random() > threshold ? "old" : "new";
+}
 
 browser.runtime.onMessage.addListener(function (message) {
     browser.storage.local.get('segment').then(function (result) {
@@ -32,7 +51,7 @@ browser.runtime.onMessage.addListener(function (message) {
 // KAT-END
 
 async function segment() {
-    const segmentSer =  await import('../panel/js/tracking/segment-tracking-service.js');
+    const segmentSer =  await import('../panel/js/UI/services/tracking-service/segment-tracking-service.js');
     return segmentSer;
 }
 

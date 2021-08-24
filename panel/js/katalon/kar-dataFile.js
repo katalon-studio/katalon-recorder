@@ -37,64 +37,122 @@ function resetDataList() {
     var names = Object.keys(dataFiles).sort();
     for (var i = 0; i < names.length; i++) {
         var name = names[i];
-        var tr = renderDataListItem(name);
+        var tr = renderDataListItem(name, i);
         list.append(tr);
     }
 }
 
-function renderDataListItem(name) {
-    var tr = $('<tr></tr>');
-    var tdType = $('<td></td>').text( function() {
-        var dataFile = dataFiles[name];
-        var type = dataFile.type;
-        if (!type) {
-            type = 'csv';
-        }
-        if (type === 'csv') {
-            return "CSV";
-        } else {
-            return "JSON";
-        }
-    });
-    var tdName = $('<td></td>').text(name);
-    var tdActions = $('<td></td>');
-    var renameButton = $('<button class="rename-button"></button>');
-    renameButton.on('click', function() {
-        var newName = prompt('Please enter the new name for this data file.', name);
-        if (newName.length > 0 && name !== newName) {
-            dataFiles[newName] = dataFiles[name];
-            delete dataFiles[name];
-            saveDataFiles();
-        }
-    });
-    var deleteButton = $('<button class="delete-button"></button>');
-    deleteButton.on('click', function() {
-        if (confirm('Do you want to remove this data file?')) {
-            delete dataFiles[name];
-            saveDataFiles();
-        }
-    });
-    let downloadButton = $(`<button class="download-button" value="${name}"></button>`);
-    downloadButton.click(function(event){
-        let fileName = $(event.target).val();
-        let fileContent = "";
-        if (dataFiles[fileName].type === "csv"){
-            fileContent = "data:text/csv;charset=utf-8," + dataFiles[fileName].content;
-        } else if (dataFiles[fileName].type === "json"){
-            fileContent = 'data:application/json;charset=utf-8,'+ dataFiles[fileName].content;
-        }
-        let encodedUri = encodeURI(fileContent);
-        let link = document.createElement("a");
-        link.setAttribute("id", "123");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", fileName);
-        document.body.appendChild(link);
-        link.click();
-        $(link).remove();
-    });
-    tdActions.append(renameButton, deleteButton, downloadButton);
-    tr.append(tdType, tdName, tdActions);
-    return tr;
+
+
+
+function renderDataListContextMenu(id, name){
+
+    function renderRenameListItem(oldName){
+        const rename = document.createElement("li");
+        const a = document.createElement("a");
+        a.setAttribute("href", "#");
+        a.textContent = "Rename";
+        rename.appendChild(a);
+        rename.addEventListener("click", function(event) {
+            event.stopPropagation();
+            const newName = prompt('Please enter the new name for this data file.', oldName);
+            if (newName.length > 0 && oldName !== newName) {
+                dataFiles[newName] = dataFiles[oldName];
+                delete dataFiles[oldName];
+                saveDataFiles();
+            }
+        }, false);
+        return rename;
+    }
+
+    function renderDownloadListItem(name){
+        const download = document.createElement("li");
+        const a = document.createElement("a");
+        a.setAttribute("href", "#");
+        a.textContent = "Download";
+        download.appendChild(a);
+        download.addEventListener("click", function(event) {
+            event.stopPropagation();
+            let fileContent = "";
+            if (dataFiles[name].type === "csv"){
+                fileContent = "data:text/csv;charset=utf-8," + dataFiles[name].content;
+            } else if (dataFiles[name].type === "json"){
+                fileContent = 'data:application/json;charset=utf-8,'+ dataFiles[name].content;
+            }
+            let encodedUri = encodeURI(fileContent);
+            let link = document.createElement("a");
+            link.setAttribute("id", "123");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", name);
+            document.body.appendChild(link);
+            link.click();
+            $(link).remove();
+        }, false);
+        return download;
+    }
+
+    function renderDeleteListItem(name){
+        const deleteItem = document.createElement("li");
+        const a = document.createElement("a");
+        a.setAttribute("href", "#");
+        a.textContent = "Delete";
+        deleteItem.appendChild(a);
+        deleteItem.addEventListener("click", function(event) {
+            event.stopPropagation();
+            if (confirm('Do you want to remove this data file?')) {
+                delete dataFiles[name];
+                saveDataFiles();
+            }
+        }, false);
+        return deleteItem;
+    }
+
+    const menu = document.createElement("div");
+    menu.setAttribute("class", "menu");
+    menu.setAttribute("id", "menu" + id);
+
+    const rename = renderRenameListItem(name);
+    const download = renderDownloadListItem(name);
+    const deleteItem = renderDeleteListItem(name);
+    const list = document.createElement("ul");
+
+    list.appendChild(rename);
+    list.appendChild(download);
+    list.appendChild(deleteItem);
+
+    menu.appendChild(list)
+    return menu;
+}
+
+function renderDataListItem(name, index) {
+    const id = "data" + index;
+    const div = document.createElement('div');
+    div.classList.add("data-item");
+    div.id = id;
+
+    const imageDiv = document.createElement('div');
+    imageDiv.classList.add("dataIcon");
+    const img = document.createElement('img');
+    img.src = "/katalon/images/SVG/paper-icon.svg";
+    imageDiv.append(img);
+    div.appendChild(imageDiv);
+
+    const titleDiv = document.createElement("div");
+    titleDiv.innerHTML = name;
+    div.append(titleDiv);
+
+    const contextMenu = renderDataListContextMenu(id, name);
+    div.append(contextMenu);
+    addContextMenuButton(id, div, contextMenu, "data");
+    div.addEventListener("contextmenu", function(event){
+        event.preventDefault();
+        event.stopPropagation();
+        var mid = "#" + "menu" + id;
+        $(".menu").css("left", event.pageX);
+        $(".menu").css("top", event.pageY);
+        $(mid).show();
+    })
+    return div;
 }
 
 function parseData(name) {
@@ -113,6 +171,15 @@ function parseData(name) {
     return dataFile;
 }
 
+function testDataContainerOpen(){
+    const image = $("#testDataDropdown").find("img");
+    const src = $(image).attr("src");
+    if (src.includes("off")) {
+        $(image).attr("src", "/katalon/images/SVG/dropdown-arrow-on.svg");
+        $("#data-files-list").css("display", "flex");
+    }
+}
+
 $(function() {
     browser.storage.local.get('dataFiles').then(function(result) {
         dataFiles = result.dataFiles;
@@ -121,27 +188,16 @@ $(function() {
         }
         resetDataList();
     });
-
-    var csvInput = $('#load-csv-hidden');
-    $('#data-files-add-csv').click(function() {
-        csvInput.click();
-    });
-    var jsonInput = $('#load-json-hidden');
-    $('#data-files-add-json').click(function() {
-        jsonInput.click();
-    });
-    document.getElementById("load-csv-hidden").addEventListener("change", function(event) {
+    document.getElementById("load-data-file-hidden").addEventListener("change", function(event) {
         event.stopPropagation();
         for (var i = 0; i < this.files.length; i++) {
-            readCsv(this.files[i]);
+            if (this.files[i].type === "text/csv"){
+                readCsv(this.files[i]);
+            } else {
+                readJson(this.files[i]);
+            }
         }
-        this.value = null;
-    }, false);
-    document.getElementById("load-json-hidden").addEventListener("change", function(event) {
-        event.stopPropagation();
-        for (var i = 0; i < this.files.length; i++) {
-            readJson(this.files[i]);
-        }
+        testDataContainerOpen();
         this.value = null;
     }, false);
 });

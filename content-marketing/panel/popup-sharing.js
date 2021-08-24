@@ -1,3 +1,5 @@
+import { getAllTestCaseCount } from "../../panel/js/UI/services/data-service/test-case-service.js";
+
 let succeedReferral;
 
 function popupDailyUsageDialog() {
@@ -278,7 +280,7 @@ function setUsageSummary(type) {
                 usageDay.numExc += cases.length;
                 break;
             case "playSuites":
-                usageDay.numExc += sideex_testCase.count;
+                usageDay.numExc += getAllTestCaseCount();
                 break;
             case "newTestcase":
                 usageDay.numTest++;
@@ -403,8 +405,8 @@ $(() => {
 
     $("#essentialProductTours").click(() => {
         Promise.all([
-            import ("../../panel/js/onboarding/service/onboarding-sample-data.js"),
-            import ("../../panel/js/onboarding/index.js"),
+            import ("../../panel/js/UI/services/onboarding-service/onboarding-sample-data.js"),
+            import ("../../panel/js/UI/controllers/onboarding/onboarding-listener.js"),
         ]).then((obj) => {
             const { addOnboardingSampleData } = obj[0];
             const { startEssentialProductTours } = obj[1];

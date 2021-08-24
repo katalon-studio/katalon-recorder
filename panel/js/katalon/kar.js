@@ -53,16 +53,16 @@ $(function() {
     showElementButton.text("");
 });
 
-//add context menu button for test suite/case
-function addContextMenuButton(id, node, menu, isCase) {
+function addContextMenuButton(id, node, menu, type) {
     var buttonWrapper = document.createElement('div');
     buttonWrapper.innerHTML = '<button class="btn-more"><img src="/katalon/images/SVG/more-icon.svg" alt="More" title="More"></button>';
     var button = buttonWrapper.firstChild;
     node.appendChild(button);
     button.addEventListener("click", function(event) {
-        if (isCase) {
+        event.stopPropagation();
+        if (type === "case") {
             setSelectedCase(id);
-        } else {
+        } else if (type === "suite"){
             setSelectedSuite(id);
         }
         var mid = "#" + "menu" + id;
@@ -104,10 +104,8 @@ $(function() {
     var referenceLi = $('#reference-log');
     var variableLi = $('#variable-log');
     var screenshotLi = $('#screenshot');
-    var dataLi = $('#data-files');
-    var extensionsLi = $('#extensions');
     var selfHealingLi = $('#self-healing');
-    var lis = [logLi, referenceLi, variableLi, screenshotLi, dataLi, extensionsLi, selfHealingLi];
+    var lis = [logLi, referenceLi, variableLi, screenshotLi, selfHealingLi];
 
     var logContainer = $('#logcontainer');
     var referenceContainer = $('#refercontainer');
@@ -121,12 +119,9 @@ $(function() {
     var clearLog = $('#clear-log');
     var saveLog = $('#save-log');
     var upload = $('#ka-upload');
-    
+
     var downloadAll = $('#download-all');
 
-    var csvAdd = $('#data-files-add-csv');
-    var jsonAdd = $('#data-files-add-json');
-    var extensionAdd = $('#extension-add');
     var selfHealingSelect = $("#select-self-healing-test-status");
 
     setActiveTab(logLi, logContainer);
@@ -142,12 +137,6 @@ $(function() {
     });
     screenshotLi.on("click", function() {
         setActiveTab(screenshotLi, screenshotContainer);
-    });
-    dataLi.on('click', function() {
-        setActiveTab(dataLi, dataContainer);
-    });
-    extensionsLi.on('click', function() {
-        setActiveTab(extensionsLi, extensionsContainer);
     });
 
     selfHealingLi.on('click', function (){
@@ -172,44 +161,17 @@ $(function() {
             saveLog.show();
             clearLog.show();
             downloadAll.hide();
-            csvAdd.hide();
-            jsonAdd.hide();
-            extensionAdd.hide();
             selfHealingSelect.hide();
         } else if (li == screenshotLi) {
             // upload.hide();
             saveLog.hide();
             clearLog.hide();
             downloadAll.show();
-            csvAdd.hide();
-            jsonAdd.hide();
-            extensionAdd.hide();
             selfHealingSelect.hide();
-        } else if (li == dataLi) {
-            // upload.hide();
+        }  else if (li == selfHealingLi){
             saveLog.hide();
             clearLog.hide();
             downloadAll.hide();
-            csvAdd.show();
-            jsonAdd.show();
-            extensionAdd.hide();
-            selfHealingSelect.hide();
-        } else if (li == extensionsLi) {
-            // upload.hide();
-            saveLog.hide();
-            clearLog.hide();
-            downloadAll.hide();
-            csvAdd.hide();
-            jsonAdd.hide();
-            extensionAdd.show();
-            selfHealingSelect.hide();
-        } else if (li == selfHealingLi){
-            saveLog.hide();
-            clearLog.hide();
-            downloadAll.hide();
-            csvAdd.hide();
-            jsonAdd.hide();
-            extensionAdd.hide();
             selfHealingSelect.show();
         }
         else {
@@ -217,9 +179,6 @@ $(function() {
             saveLog.hide();
             clearLog.hide();
             downloadAll.hide();
-            csvAdd.hide();
-            jsonAdd.hide();
-            extensionAdd.hide();
             selfHealingSelect.hide();
         }
         // if (li !== logLi) {
@@ -384,54 +343,58 @@ $(function() {
     // record.after(newCase);
 
     var imagesLookup = {
-      "#record": "record-icon-16.svg",
-      "#new": "new-icon-16.svg",
-      "#playback": "play-icon-16.svg",
-      "#stop": "stop-icon-16.svg",
-      "#playSuite": "play-suite-icon-16.svg",
-      "#playSuites": "play-all-icon-16.svg",
-      "#pause": "pause-icon-16.svg",
-      "#resume": "resume-icon-16.svg",
-      "#export": "export-icon-16.svg",
-      "#speed": "speed-icon-16.svg",
+        "#record": "record.svg",
+        "#playback": "play.svg",
+        "#stop": "pause.svg",
+        "#playSuite": "play-suite.svg",
+        "#playSuites": "play-all.svg",
+        "#pause": "pause.svg",
+        "#resume": "play.svg",
+        "#notification": "notify.svg",
+        "#referral": "gift.svg",
+        "#more": "more.svg"
     };
 
     // These images need to set margin to 0
     var imagesLookup2 = {
-      "#settings": "setting-icon-16.svg",
-      ".sub_btn#help": "help-icon-16.svg",
-      "#github-repo": "github-icon.png",
-      "#extended-features": "extended-features.svg",
-      "#notification": "notification-bell-icon.svg",
-      "#referral": "referral-icon.svg"
+        "#settings": "setting-icon-16.svg",
+        ".sub_btn#help": "help-icon-16.svg",
+        "#github-repo": "github-icon.png",
+        "#extended-features": "extended-features.svg",
+        "#speed": "speed-icon-16.svg",
+        "#github": "github-icon.svg"
     };
 
     for (var buttonId in imagesLookup) {
-      if (imagesLookup.hasOwnProperty(buttonId)) {
-        var button = $(buttonId);
-        var img = $("<img>");
-        img.attr("src", "/katalon/images/SVG/" + imagesLookup[buttonId]);
-        button.find("i:first-child").remove();
-        button.prepend(img);
-      }
+        if (imagesLookup.hasOwnProperty(buttonId)) {
+            var button = $(buttonId);
+            var img = $("<img>");
+            img.attr("src", "./icons/" + imagesLookup[buttonId]);
+            button.find("i:first-child").remove();
+            button.prepend(img);
+        }
     }
 
     for (var buttonId in imagesLookup2) {
-      if (imagesLookup2.hasOwnProperty(buttonId)) {
-        var button = $(buttonId);
-        var img = $("<img>");
-        img.attr("src", "/katalon/images/SVG/" + imagesLookup2[buttonId]);
-        img.attr("style", "margin-right: 0px;");
-        button.find("i:first-child").remove();
-        button.prepend(img);
-      }
+        if (imagesLookup2.hasOwnProperty(buttonId)) {
+            var button = $(buttonId);
+            var img = $("<img>");
+            img.attr("src", "/katalon/images/SVG/" + imagesLookup2[buttonId]);
+            // img.attr("style", "margin-right: 0px;");
+            button.find("i:first-child").remove();
+            button.prepend(img);
+        }
     }
 });
 // KAT-END
 
 // KAT-BEGIN add handler for button "Profile" click event
-$('#extended-features').click(()=>{
+$('#extended-features').click(() => {
     $('#dailyUsage').click();
+});
+
+$('#more').click(() => {
+    $('#myDropdown').toggle();
 });
 // KAT-END
 
@@ -537,8 +500,8 @@ $(function() {
                 $('.ui-widget-overlay').removeClass("dim-overlay");
             }
         })
-        .parent()
-        .draggable();
+          .parent()
+          .draggable();
 
         $('#helpDialog').dialog("open");
 

@@ -157,7 +157,7 @@ input[type=email],input[type=password],input[type=text]{
     <label>Email</label>
     <input id="email" type="email" name="email" required>
     </div>
-    <div class="block-input">
+    <div class="block-input" id="block-pass">
     <label>Password</label>
     <input id="pass" type="password" name="password" placeholder="Minimun 8 characters" required>
     <i class="fa fa-eye-slash" id="toggle-pass" toggle="#pass"></i>
@@ -175,263 +175,298 @@ input[type=email],input[type=password],input[type=text]{
 `;
 
 function togglerButton(data) {
-  $(".io-toggler").each(function () {
-    var io = $(this).data("io"),
-      $opts = $(this).find(".io-options"),
-      $clon = $opts.clone(),
-      $span = $clon.find("span"),
-      width = $opts.width() / 2;
+    $(".io-toggler").each(function() {
+        var io = $(this).data("io"),
+            $opts = $(this).find(".io-options"),
+            $clon = $opts.clone(),
+            $span = $clon.find("span"),
+            width = $opts.width() / 2;
 
-    $(this).append($clon);
+        $(this).append($clon);
 
-    function swap(x) {
-      $clon.stop().animate({ left: x }, 150);
-      $span.stop().animate({ left: -x }, 150);
-      $(this).data("io", x === 0 ? 0 : 1);
-      if (x === 0) {
-        $("#signup").show();
-        $("#signin").hide();
-      } else {
-        $("#signin").show();
-        $("#signup").hide();
-      }
-    }
+        function swap(x) {
+            $clon.stop().animate({ left: x }, 150);
+            $span.stop().animate({ left: -x }, 150);
+            $(this).data("io", x === 0 ? 0 : 1);
+            if (x === 0) {
+                $("#signup").show();
+                $("#signin").hide();
+            } else {
+                $("#signin").show();
+                $("#signup").hide();
+            }
+        }
 
-    $clon.draggable({
-      axis: "x",
-      containment: "parent",
-      drag: function (evt, ui) {
-        $span.css({ left: -ui.position.left });
-      },
-      stop: function (evt, ui) {
-        swap(ui.position.left < width / 2 ? 0 : width);
-      },
+        $clon.draggable({
+            axis: "x",
+            containment: "parent",
+            drag: function(evt, ui) {
+                $span.css({ left: -ui.position.left });
+            },
+            stop: function(evt, ui) {
+                swap(ui.position.left < width / 2 ? 0 : width);
+            },
+        });
+
+        $opts.on("click", function() {
+            swap($clon.position().left > 0 ? 0 : width);
+        });
+
+        if (data) {
+            $opts.click();
+        }
+
+        // Read and set initial predefined data-io
+        if (!!io) $opts.trigger("click");
+        // on submit read $(".io-toggler").data("io") value
     });
-
-    $opts.on("click", function () {
-      swap($clon.position().left > 0 ? 0 : width);
-    });
-
-    if (data) {
-      $opts.click();
-    }
-
-    // Read and set initial predefined data-io
-    if (!!io) $opts.trigger("click");
-    // on submit read $(".io-toggler").data("io") value
-  });
 }
 
 function setUserLogin(rs, isLoggedIn) {
-  if (isLoggedIn) {
-    browser.storage.local.get("checkLoginData").then(function (result) {
-      let checkLoginData = result.checkLoginData;
+    if (isLoggedIn) {
+        browser.storage.local.get("checkLoginData").then(function(result) {
+            let checkLoginData = result.checkLoginData;
 
-      if (rs.data.jwt) {
-        checkLoginData.user = rs.email;
-        checkLoginData.hasLoggedIn = true;
+            if (rs.data.jwt) {
+                checkLoginData.user = rs.email;
+                checkLoginData.hasLoggedIn = true;
 
-        const options = {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${rs.data.jwt}`,
-            "Content-Type": "application/json",
-          },
-        };
-        fetch(getKatalonAPI().checkActived, options)
-          .then((rs) => rs.json())
-          .then((rs) => {
-            let check = false;
-            if (rs.data.status !== "NEW") {
-              checkLoginData.isActived = true;
-              check = true;
-            } else {
-              check = false;
+                const options = {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${rs.data.jwt}`,
+                        "Content-Type": "application/json",
+                    },
+                };
+                fetch(getKatalonAPI().checkActived, options)
+                    .then((rs) => rs.json())
+                    .then((rs) => {
+                        let check = false;
+                        if (rs.data.status !== "NEW") {
+                            checkLoginData.isActived = true;
+                            check = true;
+                        } else {
+                            check = false;
+                        }
+                        browser.storage.local.set(result);
+                        return check;
+                    })
+                    .then((check) => {
+                        if (check) {
+                            segmentTrackingService().then((r) => r.trackingLogin());
+                            _gaq.push(['_trackEvent', 'kru_registration', 'kru_sign_in']);
+                            $(dialogSignIn).dialog("close");
+                        } else {
+                            $("#sign-in").text("Sign in");
+                            $("#error-login1")
+                                .css("color", "#ff0000d6")
+                                .html(
+                                    '<span>This email is not verified yet. Please check your inbox, or go to <a target="_blank" href="https://my.katalon.com/profile">My Account</a> to finish the process.<span>'
+                                );
+                        }
+                    });
             }
-            browser.storage.local.set(result);
-            return check;
-          })
-          .then((check) => {
-            if (check) {
-              segmentTrackingService().then((r) => r.trackingLogin());
-              _gaq.push(['_trackEvent', 'kru_registration', 'kru_sign_in']);
-              $(dialogSignIn).dialog("close");
-            } else {
-              $("#sign-in").text("Sign in");
-              $("#error-login1")
-                .css("color", "#ff0000d6")
-                .html(
-                  '<span>This email is not verified yet. Please check your inbox, or go to <a target="_blank" href="https://my.katalon.com/profile">My Account</a> to finish the process.<span>'
-                );
-            }
-          });
-      }
-    });
-  } else {
-    let emailSignup = $("#email").val();
-    let passSignup = $("#pass").val();
+        });
+    } else {
+        let emailSignup = $("#email").val();
+        let passSignup = $("#pass").val();
 
-    if (emailSignup && passSignup) {
-      $("#email-signin").val(emailSignup);
-      $("#pass-signin").val(passSignup);
-      document.getElementById("name").value = "";
-      document.getElementById("email").value = "";
-      document.getElementById("pass").value = "";
+        if (emailSignup && passSignup) {
+            $("#email-signin").val(emailSignup);
+            $("#pass-signin").val(passSignup);
+            document.getElementById("name").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("pass").value = "";
+        }
+        $("#error-login1")
+            .css("color", "rgb(54, 179, 126)")
+            .html(
+                "Sign up successfully, please sign in to start using Katalon Recorder."
+            );
+        $("#sign-up").text("Sign up");
+        togglerButton(true);
     }
-    $("#error-login1")
-      .css("color", "rgb(54, 179, 126)")
-      .html(
-        "Sign up successfully, please sign in to start using Katalon Recorder."
-      );
-    $("#sign-up").text("Sign up");
-    togglerButton(true);
-  }
 }
 
 function togglePassword(toggle) {
-  $(toggle).toggleClass("fa-eye-slash fa-eye");
-  var input = $($(toggle).attr("toggle"));
-  if (input.attr("type") == "password") {
-    input.attr("type", "text");
-  } else {
-    input.attr("type", "password");
-  }
+    $(toggle).toggleClass("fa-eye-slash fa-eye");
+    var input = $($(toggle).attr("toggle"));
+    if (input.attr("type") == "password") {
+        input.attr("type", "text");
+    } else {
+        input.attr("type", "password");
+    }
 }
 
 function getKatalonAPI() {
-  const endpoint = `https://www.katalon.com/wp-json/restful_api/v1/user`;
-  const endpointAPI = "https://api.katalon.com/auth";
-  const url = {
-    signup: `${endpoint}/create-new-account`,
-    signin: `${endpointAPI}/login`,
-    checkActived: `${endpointAPI}/me`,
-  };
-  return url;
+    const endpoint = `https://www.katalon.com/wp-json/restful_api/v1/user`;
+    const endpointAPI = "https://api.katalon.com/auth";
+    const url = {
+        signup: `${endpoint}/create-new-account`,
+        signin: `${endpointAPI}/login`,
+        checkActived: `${endpointAPI}/me`,
+    };
+    return url;
 }
 
-const segmentTrackingService = async function () {
-  const segmentSer = await import("../../panel/js/tracking/segment-tracking-service.js");
-  return segmentSer;
+const segmentTrackingService = async function() {
+    const segmentSer = await
+    import ("../../panel/js/tracking/segment-tracking-service.js");
+    return segmentSer;
 };
 
 const dialogSignIn = $('<div id="dialgue"></div>')
-  .html(loginSignup)
-  .dialog({
-    dialogClass: "no-titlebar",
-    autoOpen: false,
-    resizable: false,
-    height: 530,
-    width: 450,
-    modal: true,
-    open: function () {
-      togglerButton(false);
-      $("#signup").show();
-      $("#signin").hide();
-    },
-    close: function () {
-      $(this).hide();
-    },
-    closeOnEscape: false
-  });
+    .html(loginSignup)
+    .dialog({
+        dialogClass: "no-titlebar",
+        autoOpen: false,
+        resizable: false,
+        height: 530,
+        width: 450,
+        modal: true,
+        open: function() {
+            togglerButton(false);
+            $("#signup").show();
+            $("#signin").hide();
+        },
+        close: function() {
+            $(this).hide();
+        },
+        closeOnEscape: false
+    });
 
 function setLoginOrSignup() {
-  $(dialogSignIn).dialog("open");
+    $(dialogSignIn).dialog("open");
 
-  $("#ignore-1").click(() => {
-    $(dialogSignIn).dialog("close");
-  });
+    $("#ignore-1").click(() => {
+        $(dialogSignIn).dialog("close");
+    });
 
-  $("#sign-in").click(() => {
-    let email = $("#email-signin").val();
-    let pass = $("#pass-signin").val();
+    $('#pass').focusin(() => {
+        $('#block-pass').append(`<div id="req-pass" class="tooltip">
+        <span style="color: steelblue;margin-left: 27px;">Password Requirements</span>
+        <ul style="margin-block-end: 0;margin-block-start: 0;">
+          <li>1 upper and lowercase letter</li>
+          <li>1 special character (e.g. @,#,$,...)</li>
+          <li>At least 8 characters</li>
+          <li>Do not allow space</li>
+        </ul>
+      </div>`).show();
 
-    if (!email || !pass) {
-      $("#error-login1").text("Please fill in all the fields.");
-    } else {
-      $("#sign-in").text("Processing.....");
-
-      let options = {
-        method: "POST",
-        headers: { "Content-type": "application/json; charset=UTF-8" },
-        body: JSON.stringify({
-          email: email,
-          password: pass,
-        }),
-      };
-
-      fetch(getKatalonAPI().signin, options)
-        .then((rp) => rp.json())
-        .then(async (rs) => {
-          if (!rs.errors) {
-            rs.email = email;
-            await setUserLogin(rs, true);
-          } else {
-            $("#sign-in").text("Sign-in");
-            $("#error-login1")
-              .css("color", "#ff0000d6")
-              .text("Wrong username or password, please try again.");
-          }
+        $('#req-pass').css({
+            'position': 'absolute',
+            'display': 'block',
+            'border': '1px solid #000000',
+            'background-color': 'white',
+            'color': 'black',
+            'padding': '5px',
+            'border-radius': '10px',
+            'z-index': 2,
+            'text-align': 'left',
+            'margin-left': '123px',
+            'opacity': 1
         });
-    }
-  });
+    });
+    $('#pass').focusout(() => {
+        $('#req-pass').remove();
+    })
 
-  $("#ignore-2").click(() => {
-    $(dialogSignIn).dialog("close");
-  });
+    $("#sign-in").click(() => {
+        let email = $("#email-signin").val();
+        let pass = $("#pass-signin").val();
 
-  $("#sign-up").click(() => {
-    let name = $("#name").val();
-    let email = $("#email").val();
-    let pass = $("#pass").val();
+        if (!email || !pass) {
+            $("#error-login1").text("Please fill in all the fields.");
+        } else {
+            $("#sign-in").text("Processing.....");
 
-    if (name == "" || email == "" || pass == "") {
-      $("#error-login2").text("Please fill in all the fields.");
-    } else {
-      $("#sign-up").text("Processing.....");
-      const dataBody = new FormData();
-      dataBody.append("user_login", name);
-      dataBody.append("user_email", email);
-      dataBody.append("user_pass", pass);
-      dataBody.append("source_from", "Katalon Recorder");
+            let options = {
+                method: "POST",
+                headers: { "Content-type": "application/json; charset=UTF-8" },
+                body: JSON.stringify({
+                    email: email,
+                    password: pass,
+                }),
+            };
 
-      let options = {
-        method: "POST",
-        body: dataBody,
-      };
+            fetch(getKatalonAPI().signin, options)
+                .then((rp) => rp.json())
+                .then(async(rs) => {
+                    if (!rs.errors) {
+                        rs.email = email;
+                        await setUserLogin(rs, true);
+                    } else {
+                        $("#sign-in").text("Sign-in");
+                        $("#error-login1")
+                            .css("color", "#ff0000d6")
+                            .text("Wrong username or password, please try again.");
+                    }
+                });
+        }
+    });
 
-      fetch(getKatalonAPI().signup, options)
-        .then((rp) => rp.json())
-        .then(async (rs) => {
-          if (!rs.error) {
-            segmentTrackingService().then((r) => r.trackingSignup());
-            _gaq.push(['_trackEvent', 'kru_registration', 'kru_sign_in']);
-            await setUserLogin(rs, false);
-          } else {
-            $("#sign-up").text("Sign up");
-            $("#error-login2").text(rs.message);
-          }
-        });
-    }
-  });
+    $("#ignore-2").click(() => {
+        $(dialogSignIn).dialog("close");
+    });
 
-  $("#toggle-pass").on("click", function () {
-    togglePassword(this);
-  });
-  $("#toggle-pass1").on("click", function () {
-    togglePassword(this);
-  });
+    $("#sign-up").click(() => {
+        let name = $("#name").val();
+        let email = $("#email").val();
+        let pass = $("#pass").val();
+
+        if (name == "" || email == "" || pass == "") {
+            $("#error-login2").text("Please fill in all the fields.");
+        } else {
+            // if (new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$').test(pass)) {
+            $("#sign-up").text("Processing.....");
+            const dataBody = new FormData();
+            dataBody.append("user_login", name);
+            dataBody.append("user_email", email);
+            dataBody.append("user_pass", pass);
+            dataBody.append("source_from", "Katalon Recorder");
+
+            let options = {
+                method: "POST",
+                body: dataBody,
+            };
+
+            fetch(getKatalonAPI().signup, options)
+                .then((rp) => rp.json())
+                .then(async(rs) => {
+                    if (!rs.error) {
+                        segmentTrackingService().then((r) => r.trackingSignup());
+                        _gaq.push(['_trackEvent', 'kru_registration', 'kru_sign_in']);
+                        await setUserLogin(rs, false);
+                    } else {
+                        $("#sign-up").text("Sign up");
+                        $("#error-login2").text(rs.message);
+                    }
+                });
+            // } else {
+            //     $("#sign-up").text("Sign up");
+            //     $("#error-login2").text('Invalid password! Please try again!');
+            // }
+        }
+    });
+
+    $("#toggle-pass").on("click", function() {
+        togglePassword(this);
+    });
+    $("#toggle-pass1").on("click", function() {
+        togglePassword(this);
+    });
 }
 
 
 
-function popupCreateMoreTestCase(){
-  let popup = $("#createTestMoreCaseDialog");
-  if (popup.length){
-    $(popup).show().effect("shake");
-    return;
-  }
+function popupCreateMoreTestCase() {
+    let popup = $("#createTestMoreCaseDialog");
+    if (popup.length) {
+        $(popup).show().effect("shake");
+        return;
+    }
 
-  let dialogHTML = `
+    let dialogHTML = `
     <div style="text-align:center; font-size: 15px;"><strong>Is it time to automate more?</strong></div>
     </br>
     <span>
@@ -466,66 +501,61 @@ function popupCreateMoreTestCase(){
         <button id="createTestCase-okay" class="createTestCaseBtn" type="button">Yes, I want more</button>
     </div>`;
 
-  popup = $('<div id="createTestMoreCaseDialog"></div>').css({
-    'position': 'absolute',
-    'display': 'none',
-    'bottom': '50px',
-    'z-index': '1',
-    'background-color': '#f1f1f1',
-    'max-width': '300px',
-    'box-shadow': '0px 8px 16px 0px rgba(0,0,0,0.2)',
-    'padding': '10px',
-    'margin-bottom': '-1%',
-    'right': '0',
-    'color' : "black"
+    popup = $('<div id="createTestMoreCaseDialog"></div>').css({
+        'position': 'absolute',
+        'display': 'none',
+        'bottom': '50px',
+        'z-index': '1',
+        'background-color': '#f1f1f1',
+        'max-width': '300px',
+        'box-shadow': '0px 8px 16px 0px rgba(0,0,0,0.2)',
+        'padding': '10px',
+        'margin-bottom': '-1%',
+        'right': '0',
+        'color': "black"
 
-  }).html(dialogHTML);
-  $("body").append(popup);
+    }).html(dialogHTML);
+    $("body").append(popup);
 
-  $("#createTestCase-later").click(function (){
-    $(popup).hide();
-  });
+    $("#createTestCase-later").click(function() {
+        $(popup).hide();
+    });
 
-  $("#createTestCase-okay").click(function (){
-    setLoginOrSignup();
-    $(popup).hide();
-  });
-  $(popup).show().effect("shake")
+    $("#createTestCase-okay").click(function() {
+        setLoginOrSignup();
+        $(popup).hide();
+    });
+    $(popup).show().effect("shake")
 
 }
 
 
 
 export async function checkLoginOrSignupUser() {
-  const createTestCaseThreshold = 1;
-  let result = await browser.storage.local.get("checkLoginData");
-  if (!result.checkLoginData) {
-    result = {
-      checkLoginData: {
-        recordTimes: 0,
-        playTimes: 0,
-        hasLoggedIn: false,
-        user: "",
-        isActived: false,
-        testCreated: 0
-      },
-    };
-  }
-  let checkLoginData = result.checkLoginData;
+    const createTestCaseThreshold = 1;
+    let result = await browser.storage.local.get("checkLoginData");
+    if (!result.checkLoginData) {
+        result = {
+            checkLoginData: {
+                recordTimes: 0,
+                playTimes: 0,
+                hasLoggedIn: false,
+                user: "",
+                isActived: false,
+                testCreated: 0
+            },
+        };
+    }
+    let checkLoginData = result.checkLoginData;
 
-  if (!checkLoginData.isActived && checkLoginData.testCreated >= createTestCaseThreshold) {
-    popupCreateMoreTestCase()
-    return false;
-  }
-  if (!checkLoginData.playTimes) {
-    checkLoginData.playTimes = 0;
-  }
-  checkLoginData.playTimes++;
-
-
-
-
-  browser.storage.local.set(result);
-  return true;
-
+    if (!checkLoginData.isActived && checkLoginData.testCreated >= createTestCaseThreshold) {
+        popupCreateMoreTestCase()
+        return false;
+    }
+    if (!checkLoginData.playTimes) {
+        checkLoginData.playTimes = 0;
+    }
+    checkLoginData.playTimes++;
+    browser.storage.local.set(result);
+    return true;
 }

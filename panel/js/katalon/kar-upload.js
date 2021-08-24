@@ -1,13 +1,18 @@
 var waitDialog;
 
 function showBackupDisabledStatus() {
+    $("#ka-upload").addClass("disable");
     updateBackupStatus(`<a href="${testOpsEndpoint}" target="_blank" class="katalon-link">Sign in</a> to enable automatic backup.`);
-    hideBackupRestoreButton();
+    $('#backup-restore-btn').hide();
+    $('#backup-refresh-btn').show();
 }
 
 function showBackupEnabledStatus() {
-    updateBackupStatus(`Automatic backup to <a href="${testOpsEndpoint}" target="_blank" class="katalon-link" target="_blank">Katalon TestOps</a> is enabled.`);
-    showBackupRestoreButton();
+    $("#ka-upload").removeClass("disable");
+    var TestOpsKatalonRecorderBackup = testOpsEndpoint + "/user/katalon-recorder-backup";
+    updateBackupStatus(`Your data is safely stored <a href="${TestOpsKatalonRecorderBackup}" target="_blank" class="katalon-link">here</a>.`);
+    $('#backup-restore-btn').show();
+    $('#backup-refresh-btn').hide();
 }
 
 function updateBackupStatus(html) {
@@ -127,6 +132,35 @@ function uploadTestReportsToTestOps(teamId, projectId, autouploaded) {
     });
 }
 
+
+function getProjects() {
+    return $.ajax({
+        url: testOpsUrls.getUserInfo,
+        type: 'GET',
+    }).then(data => {
+        if (data.projects.length == 0) {
+            return $.ajax({
+                url: testOpsUrls.getFirstProject,
+                type: 'GET',
+            });
+        } else {
+            return data.projects;
+        }
+    });
+}
+
+function showTestOpsLoginDialog(){
+    var dialogHtml = `
+                    <img class="kto-light" style="max-width: 50%;" src="../../../katalon/images/branding/Katalon-TestOps-full-color-large-w.png" alt="Katalon TestOps" />
+                    <img class="kto-dark" style="max-width: 50%;" src="../../../katalon/images/branding/Katalon-TestOps-full-color-large.png" alt="Katalon TestOps" />
+                    <p>Please log in to <a target="_blank" href="${testOpsEndpoint}" class="testops-link">Katalon TestOps</a> first and try again.</p>                    
+                    <p>Katalon TestOps helps you generate quality, performance and flakiness reports to improve your confidence in evaluating the test results.</p>
+                    <p>When using with Katalon Recorder, Katalon TestOps also helps you backup your entire project to avoid the possibility of data loss.</p>
+                    <p>You can register a completely free account at <a target="_blank" href="${katalonEndpoint}" class="testops-link">katalon.com</a>.</p>
+                `;
+    showDialog(dialogHtml, true);
+}
+
 $(function() {
     var dialog = $( '#ka-select-project-dialog');
     dialog.dialog({
@@ -186,21 +220,7 @@ $(function() {
         });
     }
 
-    function getProjects() {
-        return $.ajax({
-            url: testOpsUrls.getUserInfo,
-            type: 'GET',
-        }).then(data => {
-            if (data.projects.length == 0) {
-                return $.ajax({
-                    url: testOpsUrls.getFirstProject,
-                    type: 'GET',
-                });
-            } else {
-                return data.projects;
-            }
-        });
-    }
+
 
     $(document).on('click', '#ka-upload,#ka-upload-log', function() {
         getProjects()
@@ -217,21 +237,9 @@ $(function() {
                 dialog.dialog('open');
             }).catch(e => {
                 console.log(e);
-                var dialogHtml = `
-                    <img class="kto-light" style="max-width: 50%;" src="../../../katalon/images/branding/Katalon-TestOps-full-color-large-w.png" alt="Katalon TestOps" />
-                    <img class="kto-dark" style="max-width: 50%;" src="../../../katalon/images/branding/Katalon-TestOps-full-color-large.png" alt="Katalon TestOps" />
-                    <p>Please log in to <a target="_blank" href="${testOpsEndpoint}" class="testops-link">Katalon TestOps</a> first and try again.</p>
-                    <p>You can register a completely free account at <a target="_blank" href="${katalonEndpoint}" class="testops-link">katalon.com</a>.</p>
-                    <p>Katalon TestOps helps you manage automation results as you test it manually and generate quality, performance and flakiness reports to improve your confidence in evaluating the test results. 
-                    Katalon TestOps supports both <a target="_blank" href="${katalonEndpoint}" class="testops-link">Katalon Studio</a> (one of the top 10 test automation solutions) and Katalon Recorder.</p>
-                    <p style="margin-bottom: 0;"><a target="_blank" href="${katalonEndpoint}/testops/" class="testops-link">Learn more</a> about Katalon TestOps.</p>'
-                `;
-                showDialog(dialogHtml, true);
+                showTestOpsLoginDialog()
+                showBackupDisabledStatus();
             });
     });
 
-    $('#ka-open').on('click', function() {
-        console.log('open testops');
-        window.open(testOpsEndpoint);
-    });
 });

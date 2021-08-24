@@ -1,17 +1,10 @@
 [
-    {
-      "id": "kr-5.5.0-cta",
-      "type": "new-media",
-      "date": "2021-06-30",
-      "title": "Katalon Recorder 5.5!",
-      "content": "You're invited to our Katalon Recorder 5.5 – Speed and rhythm to your web automation!. <a target='_blank' href='https://www.katalon.com/webinars/katalon-recorder-5-5-power-web-automation/'>Sign up</a> for a demo to speed up and simplify your web testing with Katalon Recorder latest enhancements!"
-    },
       {
-      "id": "sample-projects-cta",
+      "id": "kr-5.5.0-video",
       "type": "new-content",
-      "date": "2021-06-28",
-      "title": "Kickstart your automation with templates",
-      "content": "Go to Help > Sample Projects and add popular automation templates to your project."
+      "date": "2021-08-24",
+      "title": "Katalon Recorder 5.5.0 demo is available.",
+      "content": "The demo for KR 5.5.0 with self-healing, command-line execution and Import from Selenium IDE is <a href='https://youtu.be/ZmrqojStcpw' target='_blank'>availiable here.</a>"
     }
   ]
   
