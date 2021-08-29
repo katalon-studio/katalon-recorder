@@ -5,6 +5,13 @@
       "date": "2021-08-24",
       "title": "Katalon Recorder 5.5.0 demo is available.",
       "content": "The demo for KR 5.5.0 with self-healing, command-line execution and Import from Selenium IDE is <a href='https://youtu.be/ZmrqojStcpw' target='_blank'>availiable here.</a>"
+    },
+    {
+      "id": "kr-sign-up",
+      "type": "new-release",
+      "date": "2021-09-01",
+      "title": "New users can now sign up!",
+      "content": "The <a href='https://docs.katalon.com/katalon-recorder/docs/release-notes.html' target='_blank'>new release</a> contains many bug fixes, one of them prevented new users from signing up in-app. If you were not able to sign up, please try again!"
     }
   ]
   
