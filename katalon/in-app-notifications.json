@@ -1,4 +1,11 @@
 [
+{
+      "id": "kr-on-firefox-in-progress",
+      "type": "new-content",
+      "date": "2021-09-27",
+      "title": "If you are using KR on Firefox...",
+      "content": "We are working on making the new version of KR compliant with Firefox Web Store. In the mean time please use KR on Chrome for the latest updates."
+    },
       {
       "id": "kr-5.5.0-video",
       "type": "new-content",
