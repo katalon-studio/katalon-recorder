@@ -1,5 +1,12 @@
 [
-{
+      {
+      "id": "kr-user-research",
+      "type": "new-content",
+      "date": "2021-10-11",
+      "title": "Calling for all Katalon Recorder users",
+      "content": "We hope your experience with Katalon Recorder has been well. To help us understand and make Katalon Recorder useful to all users, please fill in this <a href='https://www.research.net/r/LH567SF' target='_blank'>2-minute survey</a> to let us know why you chose Recorder and any cool perks/upgrades you want to see in the future!"
+    },
+      {
       "id": "kr-on-firefox-in-progress",
       "type": "new-content",
       "date": "2021-09-27",
