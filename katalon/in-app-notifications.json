@@ -1,5 +1,12 @@
 [
       {
+      "id": "kr-webinar-test-automation-for-startups-reminder",
+      "type": "new-release",
+      "date": "2021-11-22",
+      "title": "Test Automation for Start-ups: How to Kick-start With Confidence webinar",
+      "content": "Only 1 DAY LEFT until our <a href='https://www.katalon.com/webinars/test-automation-start-ups/?utm_source=Katalon&utm_medium=in_app&utm_campaign=kr_webinar_Nov'>Test Automation for Start-ups: How to Kick-start With Confidence</a> webinar. Save the date and join the live discussion with Recorder's experts!"
+    },
+      {
       "id": "kr-webinar-test-automation-for-startups",
       "type": "new-release",
       "date": "2021-11-16",
