@@ -4,8 +4,6 @@
 </a>
 </h1>
 
-## Introduction
-
 **Katalon Recorder** is a free, Selenium IDE alternative, lightweight web extension for automating actions and automated testing on the browser. Currently, we are available on **Chrome**, **Firefox** and **Edge**.
 
 ## Installation
