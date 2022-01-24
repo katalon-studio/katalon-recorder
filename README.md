@@ -4,7 +4,7 @@
 </a>
 </h1>
 
-**Katalon Recorder** is a free, Selenium IDE alternative, lightweight web extension for automating actions and automated testing on the browser. Currently, we are available on **Chrome**, **Firefox** and **Edge**.
+**Katalon Recorder** is a free, Selenium IDE alternative. It is a lightweight web extension you can use to automate actions and tests from your browser. Currently, we are available on **Chrome**, **Firefox** and **Edge**.
 
 ## Installation
 
@@ -17,7 +17,7 @@ For instructions on using Katalon Recorder, visit our documentation website: [Fu
 
 * Visit the [Documentation website](https://docs.katalon.com/katalon-recorder/docs/overview.html) for some useful tutorials.
 * Learn automation testing with Katalon Recorder by enrolling in [Katalon Academy](https://academy.katalon.com/#katalon-recorder) courses.
-* Ask questions on the [Katalon Community](https://forum.katalon.com/) forum.
+* Ask questions on the [Katalon Community](https://forum.katalon.com/c/katalon-recorder/17) forum.
 * Create [Github Issues](https://github.com/katalon-studio/katalon-recorder/issues) for bug reports and feature requests.
 
 ## Configurations
