@@ -15,7 +15,8 @@ For instructions on using Katalon Recorder, visit our documentation website: [Fu
 
 ## Community and support
 
-* Visit the [Documentation website](https://docs.katalon.com/katalon-recorder/docs/overview.html).
+* Visit the [Documentation website](https://docs.katalon.com/katalon-recorder/docs/overview.html) for some useful tutorials.
+* Learn automation testing with Katalon Recorder by enrolling in [Katalon Academy](https://academy.katalon.com/#katalon-recorder) courses.
 * Ask questions on the [Katalon Community](https://forum.katalon.com/) forum.
 * Create [Github Issues](https://github.com/katalon-studio/katalon-recorder/issues) for bug reports and feature requests.
 
