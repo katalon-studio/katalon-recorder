@@ -7,9 +7,13 @@
 ## Introduction
 
 **Katalon Recorder** is a free, Selenium IDE alternative, lightweight web extension for automating actions and automated testing on the browser. Currently, we are available on **Chrome**, **Firefox** and **Edge**.
+
+## Installation
+
+To install Katalon Recorder on your desired browser, visit our website: [Katalon Recorder](https://www.katalon.com/katalon-recorder-ide/).
 ## Documentation
 
-For instructions on installing and using Katalon Recorder, visit our documentation website: [Full documentation](https://docs.katalon.com/katalon-recorder/docs/overview.html)
+For instructions on using Katalon Recorder, visit our documentation website: [Full documentation](https://docs.katalon.com/katalon-recorder/docs/overview.html).
 
 ## Community and support
 
