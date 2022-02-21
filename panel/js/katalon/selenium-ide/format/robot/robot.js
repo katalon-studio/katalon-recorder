@@ -207,8 +207,8 @@ options.footer =
     '    [Arguments]        ${element}  ${value}\n' +
     '    Select From List   ${element}  ${value}\n\n' +
     'select\n' +
-    '    [Arguments]        ${element}  ${value}\n' +
-    '    Select From List   ${element}  ${value}\n\n' +
+    '    [Arguments]                 ${element}  ${value}\n' +
+    '    Select From List By Label   ${element}  ${value}\n\n' +
     'verifyValue\n' +
     '    [Arguments]                  ${element}  ${value}\n' +
     '    Element Should Contain       ${element}  ${value}\n\n' +
