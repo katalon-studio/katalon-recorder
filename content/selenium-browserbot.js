@@ -1852,7 +1852,7 @@ BrowserBot.prototype.locateElementByLinkText.prefix = "link";
 BrowserBot.prototype.findAttribute = function(locator) {
     // Split into locator + attributeName
     var attributePos = locator.lastIndexOf("@");
-    var elementLocator = locator.slice(0, attributePos);
+    var elementLocator = locator.slice(0, attributePos + 1);
     var attributeName = locator.slice(attributePos + 1);
 
     // Find the element.
