@@ -10,6 +10,280 @@ This document outlines a comprehensive modernization strategy for Katalon Record
 
 ---
 
+## Competitive Analysis: Lessons from Other Recorders
+
+A comprehensive analysis of leading test recorders reveals key features and approaches that Katalon Recorder should adopt to remain competitive.
+
+### Comparison Matrix
+
+| Feature | Katalon Recorder | Chrome DevTools Recorder | Playwright Codegen | Cypress Studio |
+|---------|-----------------|-------------------------|-------------------|----------------|
+| **Locator Strategy** | XPath-first | Mixed | Role/TestID-first | data-* attributes |
+| **Export Formats** | 6+ formats | JSON + Extensions | 4 languages | Cypress only |
+| **AI Features** | None | None | None | Coming soon |
+| **Self-Healing** | Heuristic | None | Auto-wait | Smart locators |
+| **Assertion Generation** | Manual | Manual | Manual | Right-click |
+| **JSON Interchange** | HTML-based | ✅ Standard | ✅ Native | ❌ |
+| **Extensibility** | Limited | Plugin API | Transforms | Limited |
+| **CI/CD Ready** | Via export | @puppeteer/replay | Native | Native |
+
+### Key Takeaways by Tool
+
+#### 1. Chrome DevTools Recorder
+**Source**: [Chrome DevTools Recorder Reference](https://developer.chrome.com/docs/devtools/recorder/reference)
+
+**What to Adopt:**
+- **JSON User Flow Format**: A standardized, portable JSON format for recordings that can be:
+  - Imported/exported easily
+  - Transformed by third-party tools
+  - Version controlled
+  - Shared between team members
+
+```json
+// Chrome DevTools User Flow JSON Schema
+{
+  "title": "Login Test",
+  "selectorAttribute": "data-testid",
+  "steps": [
+    { "type": "navigate", "url": "https://example.com" },
+    { "type": "click", "selectors": [["#login-btn"]], "offsetX": 1, "offsetY": 1 },
+    { "type": "change", "selectors": [["#email"]], "value": "test@example.com" }
+  ]
+}
+```
+
+- **Extension API for Export**: Allow third parties to add custom export formats via a plugin system
+- **Performance Metrics**: Integrate Lighthouse-style performance measurement during replay
+- **Replay with Modifications**: Edit steps inline before replay
+
+**Recommendation**: Implement a JSON interchange format compatible with Chrome DevTools User Flow schema. This enables interoperability with the broader ecosystem including [Puppeteer Replay](https://github.com/puppeteer/replay).
+
+---
+
+#### 2. Playwright Codegen
+**Source**: [Playwright Best Practices](https://playwright.dev/docs/best-practices)
+
+**What to Adopt:**
+
+**A. Modern Locator Hierarchy** (Critical)
+
+Playwright's locator strategy prioritizes resilience over specificity:
+
+| Priority | Locator Type | Example | Why |
+|----------|-------------|---------|-----|
+| 1 | Role | `getByRole('button', { name: 'Submit' })` | Accessibility-based, survives UI changes |
+| 2 | Test ID | `getByTestId('submit-btn')` | Explicit, stable, developer-controlled |
+| 3 | Text | `getByText('Submit')` | User-visible, semantic |
+| 4 | Label | `getByLabel('Email')` | Form accessibility |
+| 5 | Placeholder | `getByPlaceholder('Enter email')` | Input hints |
+| **Avoid** | XPath/CSS | `//div[@class='btn']` | Brittle, tied to DOM structure |
+
+**Current Katalon Issue**: XPath is often generated first, leading to fragile tests.
+
+**Proposed Change**:
+```typescript
+// New locator priority configuration
+const LOCATOR_PRIORITY = [
+  'data-testid',      // Explicit test IDs
+  'data-test',        // Alternative test attribute
+  'aria-label',       // Accessibility
+  'role',             // ARIA roles
+  'name',             // Form element names
+  'id',               // Only if stable (not auto-generated)
+  'css',              // Simple, stable selectors
+  'xpath'             // Last resort
+];
+```
+
+**B. Auto-Waiting Built-In**
+
+Playwright automatically waits for elements to be:
+- Visible
+- Stable (not animating)
+- Enabled
+- Receiving events
+
+**Recommendation**: Enhance playback engine with similar actionability checks before each command.
+
+**C. Strict Mode**
+
+Playwright fails if a selector matches multiple elements, preventing silent bugs.
+
+**Recommendation**: Add optional strict mode that warns when selectors are ambiguous.
+
+---
+
+#### 3. Cypress Studio
+**Source**: [Cypress Studio Documentation](https://docs.cypress.io/app/guides/cypress-studio)
+
+**What to Adopt:**
+
+**A. Right-Click Assertion Menu**
+
+Cypress Studio allows right-clicking any element to add assertions:
+- `should('be.visible')`
+- `should('contain', 'text')`
+- `should('have.value', 'expected')`
+
+**Current Gap**: Katalon Recorder requires manual assertion command entry.
+
+**Proposed UI Enhancement**:
+```
+Right-click menu on recorded element:
+├── Assert text equals...
+├── Assert text contains...
+├── Assert is visible
+├── Assert is enabled
+├── Assert has value...
+├── Assert has attribute...
+└── Assert element count...
+```
+
+**B. Inline Test Editing**
+
+Ability to add commands to existing tests without re-recording.
+
+**C. Smart Selector Detection**
+
+Cypress Studio prioritizes `data-cy`, `data-test`, `data-testid` attributes when present.
+
+**Recommendation**: Detect and prefer custom test attributes over auto-generated locators.
+
+---
+
+#### 4. AI-Powered Tools (Emerging Competitors)
+**Sources**: [testRigor](https://testrigor.com/), [Testim.io](https://www.testim.io/), [SmartBear Reflect](https://support.smartbear.com/reflect/docs/en/recording/test-with-ai)
+
+These tools represent the future direction of test automation:
+
+| Tool | AI Feature | Implementation |
+|------|------------|----------------|
+| **testRigor** | Natural language tests | "Click on 'Login' button" → test code |
+| **Testim.io** | Smart locators | ML-based element identification |
+| **Relicx** | Auto-assertions | AI suggests verification points |
+| **Reflect** | AI Prompts | Natural language → actions/assertions |
+| **KaneAI** | NL assertions | "verify the price is under $100" |
+
+**Key AI Features to Implement (via BYOK)**:
+
+1. **Natural Language Test Steps**
+   ```
+   User types: "Login with invalid credentials and verify error message"
+   AI generates: open, type, type, click, assertText commands
+   ```
+
+2. **Smart Assertion Suggestions**
+   ```
+   After recording a form submission:
+   AI suggests: "Assert success message is visible"
+              "Assert form fields are cleared"
+              "Assert URL changed to /dashboard"
+   ```
+
+3. **Failure Explanation**
+   ```
+   Test fails: "Element not found: #submit-btn"
+   AI explains: "The button ID changed from #submit-btn to #submitButton
+                in the latest deployment. Update the locator or use
+                getByRole('button', {name: 'Submit'}) for resilience."
+   ```
+
+---
+
+### Recommended Feature Additions
+
+Based on competitive analysis, prioritize these features:
+
+#### High Priority (Competitive Parity)
+| Feature | Inspired By | Effort | Impact |
+|---------|-------------|--------|--------|
+| Role-based locators | Playwright | Medium | High |
+| JSON interchange format | Chrome DevTools | Medium | High |
+| Right-click assertions | Cypress Studio | Low | High |
+| Test ID attribute priority | All modern tools | Low | Medium |
+| Auto-wait improvements | Playwright | Medium | High |
+
+#### Medium Priority (Differentiation)
+| Feature | Description | Effort | Impact |
+|---------|-------------|--------|--------|
+| AI assertion suggestions | BYOK-powered smart assertions | High | High |
+| Natural language generation | "Test login flow" → commands | High | High |
+| Export plugin API | Third-party export formats | Medium | Medium |
+| Performance metrics | Lighthouse integration | Medium | Medium |
+
+#### Lower Priority (Nice to Have)
+| Feature | Description | Effort | Impact |
+|---------|-------------|--------|--------|
+| Visual regression | Screenshot comparison | High | Medium |
+| Network mocking | Intercept/stub API calls | High | Medium |
+| Multi-tab support | Test across browser tabs | Medium | Low |
+
+---
+
+### Proposed JSON Format (Chrome DevTools Compatible)
+
+To enable ecosystem interoperability, adopt a JSON format compatible with Chrome DevTools:
+
+```typescript
+// src/shared/types/user-flow.ts
+interface KatalonUserFlow {
+  title: string;
+  version: '1.0';
+  generator: 'katalon-recorder';
+  selectorAttribute?: string;  // Custom test ID attribute
+  steps: KatalonStep[];
+  metadata?: {
+    baseUrl?: string;
+    browser?: string;
+    recordedAt?: string;
+  };
+}
+
+interface KatalonStep {
+  type: 'navigate' | 'click' | 'change' | 'keyDown' | 'keyUp' |
+        'scroll' | 'waitForElement' | 'assert' | 'custom';
+  selectors?: string[][];  // Multiple selector strategies
+  url?: string;            // For navigate
+  value?: string;          // For change/assert
+  key?: string;            // For keyDown/keyUp
+  command?: string;        // For custom Katalon commands
+  timeout?: number;
+  assertType?: 'text' | 'visible' | 'enabled' | 'value' | 'attribute';
+}
+```
+
+**Benefits**:
+- Import recordings from Chrome DevTools
+- Export to Chrome DevTools format
+- Use Puppeteer Replay ecosystem tools
+- Share recordings across teams
+
+---
+
+### Implementation Priorities
+
+```
+Phase 1: Foundation
+├── Implement role-based locator generation
+├── Add data-testid priority in locator builder
+├── Create JSON import/export format
+└── Add right-click assertion menu
+
+Phase 2: AI Integration (BYOK)
+├── Implement AI provider abstraction
+├── Add assertion suggestion feature
+├── Add natural language test generation
+└── Add failure analysis
+
+Phase 3: Ecosystem
+├── Create export plugin API
+├── Add Chrome DevTools format compatibility
+├── Build Puppeteer Replay integration
+└── Add performance metrics collection
+```
+
+---
+
 ## Part 1: Manifest V3 Migration (Critical Priority)
 
 ### Background
