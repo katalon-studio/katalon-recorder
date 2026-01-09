@@ -868,6 +868,728 @@ export class SecureKeyStorage {
 
 ---
 
+## Part 4: MCP Server Integration (Coding Agent Control)
+
+### Vision
+
+Transform Katalon Recorder into an **MCP (Model Context Protocol) server** that coding agents (Claude Code, Cursor, VS Code Copilot, Google Antigravity) can control programmatically. This enables:
+
+- AI agents to record, execute, and modify tests
+- Integration with development workflows (CI/CD, code review)
+- Natural language test creation from within IDEs
+- Automated test maintenance by coding assistants
+
+### Competitive Landscape
+
+| Tool | Approach | Open Source |
+|------|----------|-------------|
+| **Claude in Chrome** | Native Messaging API + MCP | ❌ Closed source |
+| **Chrome DevTools MCP** | Chrome DevTools Protocol | ✅ [GitHub](https://github.com/ChromeDevTools/chrome-devtools-mcp) |
+| **Playwright MCP** | Accessibility tree snapshots | ✅ [GitHub](https://github.com/microsoft/playwright-mcp) |
+| **Browser MCP** | Extension + local MCP server | ✅ Partial [GitHub](https://github.com/BrowserMCP/mcp) |
+| **mcp-chrome** | Extension-based MCP server | ✅ [GitHub](https://github.com/hangwin/mcp-chrome) |
+| **Google Antigravity** | Built-in browser control | ❌ Closed source |
+
+### Architecture Patterns (From Research)
+
+#### Pattern 1: Claude in Chrome (Native Messaging)
+**Source**: [Claude Code Chrome Docs](https://code.claude.com/docs/en/chrome)
+
+```
+┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
+│   Claude Code   │────▶│  Native Messaging │────▶│ Chrome Extension│
+│   (Terminal)    │◀────│     Host          │◀────│   (MCP Server)  │
+└─────────────────┘     └──────────────────┘     └─────────────────┘
+        │                        │                        │
+        │ JSON-RPC               │ Unix Socket            │ Chrome APIs
+        │ (MCP Protocol)         │ /tmp/claude-mcp-*      │
+        ▼                        ▼                        ▼
+   Tool Invocations         Bridge Process          Browser Control
+```
+
+**Key Insight**: Uses Chrome's Native Messaging API with a bridge process for bidirectional communication.
+
+#### Pattern 2: Chrome DevTools MCP (CDP)
+**Source**: [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp)
+
+```
+┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
+│   AI Agent      │────▶│   MCP Server     │────▶│ Chrome DevTools │
+│ (Claude/Cursor) │◀────│ (Node.js process)│◀────│   Protocol      │
+└─────────────────┘     └──────────────────┘     └─────────────────┘
+        │                        │                        │
+        │ STDIO/SSE              │ WebSocket              │ CDP Commands
+        │                        │ ws://127.0.0.1:9222    │
+        ▼                        ▼                        ▼
+   26 Tools Available      Protocol Adapter         Browser Instance
+```
+
+**Key Insight**: Connects to Chrome's remote debugging port, doesn't require an extension.
+
+#### Pattern 3: Browser MCP (Extension + HTTP)
+**Source**: [mcp-chrome](https://github.com/hangwin/mcp-chrome)
+
+```
+┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
+│   AI Agent      │────▶│   MCP Server     │────▶│ Chrome Extension│
+│                 │◀────│ (mcp-chrome-     │◀────│   (MCP Chrome)  │
+└─────────────────┘     │  bridge)         │     └─────────────────┘
+        │               └──────────────────┘              │
+        │ HTTP                   │                        │
+        │ localhost:12306/mcp    │ WebSocket/Extension    │ Chrome APIs
+        ▼                        ▼  Messaging             ▼
+   Streamable HTTP          Bridge to Extension      20+ Browser Tools
+```
+
+**Key Insight**: Uses HTTP transport with a bridge to the extension, easier to integrate.
+
+### Proposed Katalon MCP Architecture
+
+#### Option A: Extension-Native MCP Server (Recommended)
+
+Katalon Recorder becomes its own MCP server, exposing test automation tools directly:
+
+```
+┌─────────────────┐     ┌──────────────────┐     ┌─────────────────┐
+│   AI Agent      │────▶│  Katalon MCP     │────▶│ Katalon Recorder│
+│ (Claude Code,   │◀────│  Bridge          │◀────│  Extension      │
+│  Cursor, etc.)  │     │ (Node.js)        │     │                 │
+└─────────────────┘     └──────────────────┘     └─────────────────┘
+        │                        │                        │
+        │ STDIO/HTTP             │ WebSocket              │ Test Automation
+        │ (MCP Protocol)         │ localhost:50001        │
+        ▼                        ▼                        ▼
+   Test Automation          Message Routing          Record/Playback
+   Tools (30+)                                       Self-Healing
+                                                     Export
+```
+
+**Components**:
+
+1. **katalon-mcp-bridge** (npm package)
+   - Node.js process that implements MCP server protocol
+   - Communicates with extension via WebSocket
+   - Exposes tools to AI agents
+
+2. **Extension WebSocket Server**
+   - Runs inside Katalon Recorder extension
+   - Receives commands from bridge
+   - Executes test automation actions
+
+3. **MCP Tool Definitions**
+   - Structured tools for recording, playback, export
+   - JSON schema for tool parameters
+   - Streaming responses for long operations
+
+### MCP Tools Specification
+
+#### Test Management Tools
+
+```typescript
+// src/mcp/tools/test-management.ts
+
+/**
+ * Tool: katalon_list_test_suites
+ * Lists all test suites in the current project
+ */
+interface ListTestSuitesTool {
+  name: 'katalon_list_test_suites';
+  description: 'List all test suites and test cases in Katalon Recorder';
+  inputSchema: {
+    type: 'object';
+    properties: {};
+  };
+  returns: {
+    suites: Array<{
+      id: string;
+      name: string;
+      testCases: Array<{
+        id: string;
+        name: string;
+        commandCount: number;
+      }>;
+    }>;
+  };
+}
+
+/**
+ * Tool: katalon_get_test_case
+ * Get details of a specific test case
+ */
+interface GetTestCaseTool {
+  name: 'katalon_get_test_case';
+  description: 'Get the commands in a specific test case';
+  inputSchema: {
+    type: 'object';
+    properties: {
+      testCaseId: { type: 'string', description: 'ID of the test case' };
+    };
+    required: ['testCaseId'];
+  };
+  returns: {
+    id: string;
+    name: string;
+    commands: Array<{
+      command: string;
+      target: string;
+      value: string;
+    }>;
+  };
+}
+
+/**
+ * Tool: katalon_create_test_case
+ * Create a new test case from commands
+ */
+interface CreateTestCaseTool {
+  name: 'katalon_create_test_case';
+  description: 'Create a new test case with the specified commands';
+  inputSchema: {
+    type: 'object';
+    properties: {
+      name: { type: 'string', description: 'Name of the test case' };
+      suiteId: { type: 'string', description: 'ID of the parent test suite' };
+      commands: {
+        type: 'array';
+        items: {
+          type: 'object';
+          properties: {
+            command: { type: 'string' };
+            target: { type: 'string' };
+            value: { type: 'string' };
+          };
+        };
+      };
+    };
+    required: ['name', 'commands'];
+  };
+}
+```
+
+#### Recording Tools
+
+```typescript
+/**
+ * Tool: katalon_start_recording
+ * Start recording user interactions
+ */
+interface StartRecordingTool {
+  name: 'katalon_start_recording';
+  description: 'Start recording browser interactions into a test case';
+  inputSchema: {
+    type: 'object';
+    properties: {
+      testCaseId: { type: 'string', description: 'Target test case ID (optional, creates new if omitted)' };
+      url: { type: 'string', description: 'URL to navigate to before recording' };
+    };
+  };
+}
+
+/**
+ * Tool: katalon_stop_recording
+ * Stop recording and return captured commands
+ */
+interface StopRecordingTool {
+  name: 'katalon_stop_recording';
+  description: 'Stop recording and return the captured commands';
+  inputSchema: {
+    type: 'object';
+    properties: {};
+  };
+  returns: {
+    commands: Array<{ command: string; target: string; value: string }>;
+    duration: number;
+  };
+}
+```
+
+#### Playback Tools
+
+```typescript
+/**
+ * Tool: katalon_run_test_case
+ * Execute a test case and return results
+ */
+interface RunTestCaseTool {
+  name: 'katalon_run_test_case';
+  description: 'Run a test case and return pass/fail results';
+  inputSchema: {
+    type: 'object';
+    properties: {
+      testCaseId: { type: 'string', description: 'ID of the test case to run' };
+      variables: {
+        type: 'object';
+        description: 'Variables to substitute in the test';
+        additionalProperties: { type: 'string' };
+      };
+    };
+    required: ['testCaseId'];
+  };
+  returns: {
+    status: 'passed' | 'failed' | 'error';
+    duration: number;
+    results: Array<{
+      command: string;
+      target: string;
+      status: 'passed' | 'failed';
+      error?: string;
+      screenshot?: string; // base64
+    }>;
+  };
+}
+
+/**
+ * Tool: katalon_run_test_suite
+ * Execute an entire test suite
+ */
+interface RunTestSuiteTool {
+  name: 'katalon_run_test_suite';
+  description: 'Run all test cases in a test suite';
+  inputSchema: {
+    type: 'object';
+    properties: {
+      suiteId: { type: 'string' };
+      stopOnFailure: { type: 'boolean', default: false };
+    };
+    required: ['suiteId'];
+  };
+}
+```
+
+#### Export Tools
+
+```typescript
+/**
+ * Tool: katalon_export_test
+ * Export test case to various formats
+ */
+interface ExportTestTool {
+  name: 'katalon_export_test';
+  description: 'Export a test case to Playwright, Puppeteer, or other formats';
+  inputSchema: {
+    type: 'object';
+    properties: {
+      testCaseId: { type: 'string' };
+      format: {
+        type: 'string';
+        enum: ['playwright', 'puppeteer', 'webdriver', 'cypress', 'json'];
+      };
+    };
+    required: ['testCaseId', 'format'];
+  };
+  returns: {
+    code: string;
+    language: string;
+  };
+}
+```
+
+#### Browser Interaction Tools
+
+```typescript
+/**
+ * Tool: katalon_execute_command
+ * Execute a single Katalon command on the current page
+ */
+interface ExecuteCommandTool {
+  name: 'katalon_execute_command';
+  description: 'Execute a single test command on the active browser tab';
+  inputSchema: {
+    type: 'object';
+    properties: {
+      command: {
+        type: 'string';
+        enum: ['click', 'type', 'select', 'open', 'assertText', 'assertElementPresent',
+               'waitForElementPresent', 'verifyText', 'storeText', 'pause'];
+      };
+      target: { type: 'string', description: 'Element locator (CSS, XPath, ID, etc.)' };
+      value: { type: 'string', description: 'Value for the command (optional)' };
+    };
+    required: ['command', 'target'];
+  };
+}
+
+/**
+ * Tool: katalon_get_page_elements
+ * Get interactive elements on the current page
+ */
+interface GetPageElementsTool {
+  name: 'katalon_get_page_elements';
+  description: 'Get a list of interactive elements on the current page with their locators';
+  inputSchema: {
+    type: 'object';
+    properties: {
+      filter: {
+        type: 'string';
+        enum: ['all', 'buttons', 'inputs', 'links', 'forms'];
+        default: 'all';
+      };
+    };
+  };
+  returns: {
+    elements: Array<{
+      tagName: string;
+      text: string;
+      locators: {
+        id?: string;
+        css: string;
+        xpath: string;
+        testId?: string;
+      };
+      attributes: Record<string, string>;
+    }>;
+  };
+}
+
+/**
+ * Tool: katalon_get_page_snapshot
+ * Get accessibility tree snapshot of current page
+ */
+interface GetPageSnapshotTool {
+  name: 'katalon_get_page_snapshot';
+  description: 'Get structured accessibility snapshot of the current page (like Playwright MCP)';
+  inputSchema: {
+    type: 'object';
+    properties: {
+      includeHidden: { type: 'boolean', default: false };
+    };
+  };
+  returns: {
+    url: string;
+    title: string;
+    accessibilityTree: AccessibilityNode[];
+  };
+}
+```
+
+#### Self-Healing Tools
+
+```typescript
+/**
+ * Tool: katalon_get_healing_suggestions
+ * Get AI-suggested locator fixes for a failed element
+ */
+interface GetHealingSuggestionsTool {
+  name: 'katalon_get_healing_suggestions';
+  description: 'Get alternative locators for a broken element selector';
+  inputSchema: {
+    type: 'object';
+    properties: {
+      failedLocator: { type: 'string', description: 'The locator that failed' };
+      context: { type: 'string', description: 'Description of what element you are looking for' };
+    };
+    required: ['failedLocator'];
+  };
+  returns: {
+    suggestions: Array<{
+      locator: string;
+      type: 'css' | 'xpath' | 'id' | 'testId';
+      confidence: number;
+      reason: string;
+    }>;
+  };
+}
+
+/**
+ * Tool: katalon_apply_healing
+ * Apply a healing suggestion to a test case
+ */
+interface ApplyHealingTool {
+  name: 'katalon_apply_healing';
+  description: 'Update a test case command with a new locator';
+  inputSchema: {
+    type: 'object';
+    properties: {
+      testCaseId: { type: 'string' };
+      commandIndex: { type: 'number' };
+      newTarget: { type: 'string' };
+    };
+    required: ['testCaseId', 'commandIndex', 'newTarget'];
+  };
+}
+```
+
+### Implementation: MCP Bridge Package
+
+```typescript
+// packages/katalon-mcp-bridge/src/index.ts
+import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { WebSocket } from 'ws';
+
+const KATALON_WS_PORT = 50001;
+
+class KatalonMCPServer {
+  private server: Server;
+  private ws: WebSocket | null = null;
+  private pendingRequests = new Map<string, { resolve: Function; reject: Function }>();
+
+  constructor() {
+    this.server = new Server(
+      { name: 'katalon-recorder', version: '1.0.0' },
+      { capabilities: { tools: {} } }
+    );
+
+    this.registerTools();
+    this.connectToExtension();
+  }
+
+  private async connectToExtension() {
+    this.ws = new WebSocket(`ws://localhost:${KATALON_WS_PORT}`);
+
+    this.ws.on('message', (data) => {
+      const response = JSON.parse(data.toString());
+      const pending = this.pendingRequests.get(response.id);
+      if (pending) {
+        pending.resolve(response.result);
+        this.pendingRequests.delete(response.id);
+      }
+    });
+  }
+
+  private async sendToExtension(method: string, params: any): Promise<any> {
+    const id = crypto.randomUUID();
+
+    return new Promise((resolve, reject) => {
+      this.pendingRequests.set(id, { resolve, reject });
+      this.ws?.send(JSON.stringify({ id, method, params }));
+
+      // Timeout after 30 seconds
+      setTimeout(() => {
+        if (this.pendingRequests.has(id)) {
+          this.pendingRequests.delete(id);
+          reject(new Error('Request timeout'));
+        }
+      }, 30000);
+    });
+  }
+
+  private registerTools() {
+    // List test suites
+    this.server.setRequestHandler('tools/call', async (request) => {
+      const { name, arguments: args } = request.params;
+
+      switch (name) {
+        case 'katalon_list_test_suites':
+          return this.sendToExtension('listTestSuites', {});
+
+        case 'katalon_run_test_case':
+          return this.sendToExtension('runTestCase', args);
+
+        case 'katalon_start_recording':
+          return this.sendToExtension('startRecording', args);
+
+        case 'katalon_stop_recording':
+          return this.sendToExtension('stopRecording', {});
+
+        case 'katalon_execute_command':
+          return this.sendToExtension('executeCommand', args);
+
+        case 'katalon_export_test':
+          return this.sendToExtension('exportTest', args);
+
+        case 'katalon_get_page_elements':
+          return this.sendToExtension('getPageElements', args);
+
+        // ... more tools
+      }
+    });
+
+    // List available tools
+    this.server.setRequestHandler('tools/list', async () => ({
+      tools: [
+        {
+          name: 'katalon_list_test_suites',
+          description: 'List all test suites and test cases',
+          inputSchema: { type: 'object', properties: {} }
+        },
+        {
+          name: 'katalon_run_test_case',
+          description: 'Execute a test case and return results',
+          inputSchema: {
+            type: 'object',
+            properties: {
+              testCaseId: { type: 'string' }
+            },
+            required: ['testCaseId']
+          }
+        },
+        // ... more tool definitions
+      ]
+    }));
+  }
+
+  async start() {
+    const transport = new StdioServerTransport();
+    await this.server.connect(transport);
+  }
+}
+
+// Entry point
+const server = new KatalonMCPServer();
+server.start();
+```
+
+### Extension WebSocket Handler
+
+```typescript
+// src/mcp/extension-ws-server.ts
+
+class KatalonMCPExtensionServer {
+  private wss: WebSocketServer;
+
+  constructor() {
+    // Create WebSocket server in extension's background service worker
+    // Note: This requires specific permissions in manifest.json
+    this.wss = new WebSocketServer({ port: 50001 });
+
+    this.wss.on('connection', (ws) => {
+      ws.on('message', async (data) => {
+        const request = JSON.parse(data.toString());
+        const result = await this.handleRequest(request);
+        ws.send(JSON.stringify({ id: request.id, result }));
+      });
+    });
+  }
+
+  private async handleRequest(request: { method: string; params: any }) {
+    switch (request.method) {
+      case 'listTestSuites':
+        return this.listTestSuites();
+      case 'runTestCase':
+        return this.runTestCase(request.params);
+      case 'startRecording':
+        return this.startRecording(request.params);
+      case 'executeCommand':
+        return this.executeCommand(request.params);
+      // ... more handlers
+    }
+  }
+
+  private async listTestSuites() {
+    // Access Katalon Recorder's internal state
+    const suites = window.KRData?.testSuites || [];
+    return {
+      suites: suites.map(suite => ({
+        id: suite.id,
+        name: suite.name,
+        testCases: suite.testCases.map(tc => ({
+          id: tc.id,
+          name: tc.name,
+          commandCount: tc.commands.length
+        }))
+      }))
+    };
+  }
+
+  private async runTestCase(params: { testCaseId: string }) {
+    // Trigger playback and stream results
+    return new Promise((resolve) => {
+      window.KRPlayback.run(params.testCaseId, (results) => {
+        resolve({
+          status: results.every(r => r.passed) ? 'passed' : 'failed',
+          results: results
+        });
+      });
+    });
+  }
+}
+```
+
+### Configuration for AI Clients
+
+#### Claude Code Configuration
+```bash
+# Add Katalon MCP server to Claude Code
+claude mcp add katalon-recorder npx katalon-mcp-bridge@latest
+```
+
+#### Claude Desktop (config.json)
+```json
+{
+  "mcpServers": {
+    "katalon-recorder": {
+      "command": "npx",
+      "args": ["katalon-mcp-bridge@latest"]
+    }
+  }
+}
+```
+
+#### VS Code / Cursor Settings
+```json
+{
+  "mcp.servers": {
+    "katalon-recorder": {
+      "command": "npx",
+      "args": ["katalon-mcp-bridge@latest"]
+    }
+  }
+}
+```
+
+### Use Cases Enabled by MCP
+
+#### 1. AI-Driven Test Creation
+```
+User: "Create a test that logs into example.com with user@test.com"
+
+Agent uses:
+1. katalon_execute_command(open, "https://example.com/login")
+2. katalon_get_page_elements(filter: "inputs")
+3. katalon_execute_command(type, "#email", "user@test.com")
+4. katalon_execute_command(type, "#password", "***")
+5. katalon_execute_command(click, "#login-btn")
+6. katalon_create_test_case(name: "Login Test", commands: [...])
+```
+
+#### 2. Automated Test Maintenance
+```
+User: "Fix the failing login test"
+
+Agent uses:
+1. katalon_run_test_case(testCaseId: "login-test")
+2. (sees failure on step 3: element not found)
+3. katalon_get_healing_suggestions(failedLocator: "#email")
+4. katalon_apply_healing(testCaseId, 2, "[data-testid='email-input']")
+5. katalon_run_test_case (verify fix)
+```
+
+#### 3. CI/CD Integration
+```
+Agent in GitHub Actions:
+1. katalon_list_test_suites()
+2. katalon_run_test_suite(suiteId: "regression")
+3. Return results as PR comment
+```
+
+### Security Model
+
+```typescript
+// Security configuration for MCP server
+interface MCPSecurityConfig {
+  // Allowed origins for WebSocket connections
+  allowedOrigins: string[];  // ['localhost', '127.0.0.1']
+
+  // Require authentication token
+  requireAuth: boolean;
+  authToken?: string;
+
+  // Rate limiting
+  maxRequestsPerMinute: number;
+
+  // Capability restrictions
+  capabilities: {
+    canRecord: boolean;       // Allow recording
+    canExecute: boolean;      // Allow command execution
+    canExport: boolean;       // Allow code export
+    canModifyTests: boolean;  // Allow test modification
+  };
+}
+```
+
+---
+
 ## Implementation Roadmap
 
 ### Phase 1: Foundation (Weeks 1-4)
@@ -900,7 +1622,17 @@ export class SecureKeyStorage {
 - [ ] Add failure analysis
 - [ ] Security audit of AI features
 
-### Phase 5: Polish & Release (Weeks 21-24)
+### Phase 5: MCP Server Integration (Weeks 21-26)
+- [ ] Design WebSocket server architecture for extension
+- [ ] Create katalon-mcp-bridge npm package
+- [ ] Implement core MCP tools (list, run, record, export)
+- [ ] Add browser interaction tools (execute command, get elements)
+- [ ] Add self-healing tools integration
+- [ ] Implement security model (auth, rate limiting)
+- [ ] Test with Claude Code, Cursor, VS Code
+- [ ] Publish to npm registry
+
+### Phase 6: Polish & Release (Weeks 27-30)
 - [ ] Performance optimization
 - [ ] Documentation updates
 - [ ] Beta testing program
