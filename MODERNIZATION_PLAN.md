@@ -414,85 +414,334 @@ chrome.scripting.executeScript({
 
 ## Part 2: TypeScript & Build System Modernization
 
-### Current State
-- Vanilla JavaScript (ES6 modules)
-- No build system (raw files served directly)
-- jQuery 3.2.1 for DOM manipulation
-- No type checking
-- No bundling or minification
+### Current State Assessment
 
-### Proposed Architecture
+**Codebase Statistics:**
+| Directory | Lines of Code | Recommendation |
+|-----------|---------------|----------------|
+| `/content/` | 34,127 | REWRITE |
+| `/panel/js/` | 50,552 | REFACTOR |
+| `/katalon/` | 5,276 | REFACTOR |
+| `/playback/` | 1,241 | REWRITE |
+| **Total** | **~91,196** | |
+
+**Technical Debt Indicators:**
+- 104+ TODO/FIXME comments
+- 2,919 `var` declarations (ES5 style)
+- No package.json (no dependency management)
+- No build system, bundler, or minification
+- No TypeScript or type checking
+- No linter (ESLint) or formatter (Prettier)
+- 14 test files only (minimal coverage)
+
+**Critical Issues Found:**
+1. **Security**: `eval()` usage in `/playback/service/variable-sevice.js`
+2. **Security**: `innerHTML` XSS vulnerabilities in parser
+3. **Maintainability**: `atoms.js` is 11,837 LOC of compiled/minified code
+4. **Duplication**: Duplicate implementations across `/content/` and `/katalon/`
+5. **Dependencies**: jQuery 3.2.1 (multiple copies), outdated libraries
+
+---
+
+### Module-by-Module Rewrite Assessment
+
+#### `/content/` Directory (34,127 LOC) → **REWRITE**
+
+| Module | Current State | Recommendation | Modern Alternative |
+|--------|---------------|----------------|-------------------|
+| `atoms.js` (11,837 LOC) | Compiled Selenium WebDriver atoms, unmaintainable | **REMOVE** | Use Playwright locator patterns directly |
+| `sideex.js` (546 LOC) | Legacy Selenium IDE compatibility | **REWRITE** | New RecorderCore.ts with modern event listeners |
+| `sideex-command.js` (2,847 LOC) | Command implementations | **EXTRACT & REWRITE** | Modular CommandExecutor.ts |
+| `contextmenu.js` | Right-click menu handler | **REFACTOR** | Keep logic, convert to TypeScript |
+| `sideex-log.js` | Logging utilities | **REFACTOR** | Modern logging service with levels |
+
+**Rationale:** The `atoms.js` file alone is 35% of this directory and is unmaintainable compiled code from Selenium WebDriver. Modern browsers provide native APIs that eliminate the need for these atoms. The Selenium IDE architecture from which this was forked is outdated.
+
+#### `/panel/js/` Directory (50,552 LOC) → **REFACTOR**
+
+| Module | Current State | Recommendation | Notes |
+|--------|---------------|----------------|-------|
+| `UI/` (majority) | Vanilla JS UI components | **REFACTOR** | Convert to Vue/React components incrementally |
+| `UI/models/` | Test data models | **PRESERVE** | Good separation, convert to TypeScript interfaces |
+| `UI/services/` | Business logic services | **PRESERVE** | Well-structured, add types |
+| `self-healing/` | AI healing implementation | **PRESERVE & ENHANCE** | Core value-add, add TypeScript |
+| `background/` | Extension background logic | **REFACTOR** | Convert to WXT service worker |
+| `katalon-extension/` | Katalon-specific features | **REFACTOR** | Merge with main codebase |
+
+**Rationale:** The panel code is better structured with clear separation of concerns. The self-healing implementation is a key differentiator and should be preserved. UI components can be incrementally converted to a modern framework.
+
+**Key Files to Preserve:**
+- `UI/models/test-model/test-data.js` - Core test data structure
+- `self-healing/service/*` - Self-healing business logic
+- `UI/services/html-service/*` - HTML parsing utilities
+- `UI/command/*` - Command pattern implementation (good design)
+
+#### `/katalon/` Directory (5,276 LOC) → **REFACTOR**
+
+| Module | Current State | Recommendation | Notes |
+|--------|---------------|----------------|-------|
+| `kar-framework/` | Test framework code | **REFACTOR** | Convert to TypeScript |
+| `kar-handler/` | Handler implementations | **REFACTOR** | Consolidate with panel handlers |
+| `utilities/` | Shared utilities | **EXTRACT** | Move to shared `/lib/utils/` |
+
+**Rationale:** Moderate-sized with clear purpose. Primarily needs TypeScript conversion and consolidation with duplicate implementations in other directories.
+
+#### `/playback/` Directory (1,241 LOC) → **REWRITE**
+
+| Module | Current State | Recommendation | Notes |
+|--------|---------------|----------------|-------|
+| `service/variable-service.js` | Uses `eval()` | **REWRITE CRITICAL** | Use `expr-eval` or `mathjs` |
+| `service/playback-service.js` | Test execution engine | **REWRITE** | Modern async/await PlaybackEngine |
+| `Playback.js` | Entry point | **REFACTOR** | Update to use new engine |
+
+**Rationale:** The `eval()` usage is a security vulnerability and MV3 blocker. This must be rewritten with a safe expression parser. The playback logic should use modern async/await patterns instead of callbacks.
+
+**Security Fix - Replace `eval()`:**
+```typescript
+// BEFORE (Security vulnerability)
+function evaluateExpression(expr, variables) {
+  return eval(expr);  // DANGER: arbitrary code execution
+}
+
+// AFTER (Safe expression evaluation)
+import { Parser } from 'expr-eval';
+const parser = new Parser();
+
+function evaluateExpression(expr: string, variables: Record<string, any>): any {
+  const parsed = parser.parse(expr);
+  return parsed.evaluate(variables);
+}
+```
+
+#### Files to DELETE (Legacy/Dead Code)
+
+| File/Pattern | Reason |
+|-------------|--------|
+| `content/atoms.js` | Unmaintainable compiled code, modern alternatives exist |
+| `panel/js/UI/view/closure-library/` | Google Closure dependency, replace with modern solution |
+| `libs/jquery-3.2.1.min.js` (multiple copies) | Update to single modern version or replace |
+| `*.bak`, `*.old` files | Backup files in version control |
+| Inline CSS in JS | Extract to proper CSS files |
+
+---
+
+### Migration Path Summary
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                     KATALON RECORDER MIGRATION                       │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  Phase 1: Foundation (WXT Setup)                                    │
+│  ├── Initialize WXT project                                         │
+│  ├── Set up TypeScript + ESLint + Prettier                         │
+│  └── Configure manifest auto-generation                             │
+│                                                                      │
+│  Phase 2: Critical Rewrites (~13,000 LOC)                          │
+│  ├── REWRITE: /content/atoms.js → Modern locators                  │
+│  ├── REWRITE: /playback/ → Safe expression parser                  │
+│  └── REWRITE: Recording engine → RecorderCore.ts                   │
+│                                                                      │
+│  Phase 3: Gradual Migration (~56,000 LOC)                          │
+│  ├── REFACTOR: /panel/js/UI/ → Vue/React components               │
+│  ├── PRESERVE: /panel/js/self-healing/ → Add types                 │
+│  └── REFACTOR: /katalon/ → Consolidate & type                      │
+│                                                                      │
+│  Phase 4: New Features                                              │
+│  ├── MCP Server Integration                                         │
+│  ├── AI BYOK Enhancement                                            │
+│  └── Modern export formats (Playwright, etc.)                       │
+│                                                                      │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### Recommended Framework: WXT
+
+**Source**: [wxt.dev](https://wxt.dev/) | [GitHub](https://github.com/wxt-dev/wxt)
+
+WXT is the leading open-source browser extension framework for 2025, offering the best path for Katalon Recorder's modernization.
+
+#### Why WXT?
+
+| Feature | Benefit for Katalon |
+|---------|---------------------|
+| **MV2 & MV3 from same codebase** | Critical for Firefox compatibility during transition |
+| **TypeScript by default** | Gradual migration, type safety |
+| **Framework agnostic** | Can keep vanilla JS or migrate to Vue/React incrementally |
+| **Auto-generated manifest** | Reduces MV3 migration complexity |
+| **Unified browser API** | Handles Chrome/Firefox differences automatically |
+| **File-based entrypoints** | Cleaner architecture |
+| **Lightning fast HMR** | Better developer experience |
+| **Built-in publishing** | Automates store submissions |
+
+#### WXT vs. Alternatives
+
+| Framework | Status | Best For |
+|-----------|--------|----------|
+| **WXT** | ✅ Active, leading | Katalon (recommended) |
+| Plasmo | ⚠️ Maintenance mode | React-only projects |
+| CRXJS | ✅ Active | Minimal abstraction |
+| Custom Webpack | ❌ | Maximum control (not recommended) |
+
+### Proposed Architecture with WXT
 
 ```
 katalon-recorder/
-├── src/
-│   ├── background/           # Service worker code
-│   │   └── service-worker.ts
-│   ├── content/             # Content scripts
-│   │   ├── recorder.ts
-│   │   └── locator-builder.ts
-│   ├── panel/               # Main UI
-│   │   ├── components/      # UI components
-│   │   ├── services/        # Business logic
-│   │   ├── models/          # Data models
-│   │   └── index.tsx
-│   ├── shared/              # Shared utilities
-│   │   ├── types/          # TypeScript interfaces
-│   │   ├── constants.ts
-│   │   └── storage.ts
-│   └── ai/                  # AI integration module
-│       ├── providers/       # LLM provider implementations
-│       ├── services/        # AI services
-│       └── index.ts
-├── dist/                    # Built extension
-├── tests/                   # Test suite
+├── entrypoints/                    # WXT entrypoints (auto-discovered)
+│   ├── background.ts               # Service worker
+│   ├── content.ts                  # Main content script
+│   ├── panel/                      # Extension panel
+│   │   ├── index.html
+│   │   ├── main.ts
+│   │   └── App.vue                 # Or React/Svelte/vanilla
+│   ├── options/                    # Settings page
+│   │   ├── index.html
+│   │   └── main.ts
+│   └── popup.ts                    # Browser action popup
+├── components/                     # Shared UI components
+├── lib/                           # Core business logic
+│   ├── recorder/                  # Recording engine (extracted)
+│   │   ├── RecorderCore.ts
+│   │   ├── LocatorBuilder.ts
+│   │   └── EventCapture.ts
+│   ├── playback/                  # Playback engine (rewritten)
+│   │   ├── PlaybackEngine.ts
+│   │   ├── CommandExecutor.ts
+│   │   └── ExpressionParser.ts    # Safe eval replacement
+│   ├── self-healing/              # Self-healing logic
+│   │   ├── HealingService.ts
+│   │   └── LocatorMatcher.ts
+│   ├── formatters/                # Export formatters
+│   │   ├── PlaywrightFormatter.ts
+│   │   ├── PuppeteerFormatter.ts
+│   │   └── index.ts
+│   ├── ai/                        # AI integration (BYOK)
+│   │   ├── providers/
+│   │   └── services/
+│   └── mcp/                       # MCP server integration
+│       ├── tools/
+│       └── bridge/
+├── utils/                         # Shared utilities
+├── types/                         # TypeScript definitions
+├── public/                        # Static assets
+├── tests/                         # Test suite (Vitest)
+├── wxt.config.ts                  # WXT configuration
 ├── package.json
-├── tsconfig.json
-├── webpack.config.js
-└── manifest.json
+└── tsconfig.json
 ```
 
-### Build System Setup
+### WXT Configuration
 
-#### Package.json (New)
+```typescript
+// wxt.config.ts
+import { defineConfig } from 'wxt';
+
+export default defineConfig({
+  modules: ['@wxt-dev/module-vue'],  // Or @wxt-dev/module-react
+
+  manifest: {
+    name: 'Katalon Recorder',
+    description: 'Selenium IDE alternative for test automation',
+    permissions: [
+      'tabs',
+      'activeTab',
+      'storage',
+      'contextMenus',
+      'downloads',
+      'notifications'
+    ],
+    host_permissions: ['<all_urls>'],
+  },
+
+  // Build for multiple browsers
+  browser: process.env.BROWSER || 'chrome',
+
+  // MV3 for Chrome, MV2 for Firefox (automatic)
+  manifestVersion: 3,
+});
+```
+
+### WXT Entrypoint Examples
+
+```typescript
+// entrypoints/background.ts
+export default defineBackground(() => {
+  console.log('Katalon Recorder background initialized');
+
+  // Service worker logic
+  browser.action.onClicked.addListener(async (tab) => {
+    await openKatalonPanel();
+  });
+
+  // MCP WebSocket server initialization
+  initMCPServer();
+});
+
+// entrypoints/content.ts
+export default defineContentScript({
+  matches: ['<all_urls>'],
+  runAt: 'document_idle',
+
+  main(ctx) {
+    // Recorder injection
+    const recorder = new RecorderCore(ctx);
+
+    // Listen for recording commands from background
+    browser.runtime.onMessage.addListener((message) => {
+      if (message.type === 'START_RECORDING') {
+        recorder.start();
+      }
+    });
+  },
+});
+```
+
+### Package.json with WXT
+
 ```json
 {
   "name": "katalon-recorder",
   "version": "6.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "webpack --mode development --watch",
-    "build": "webpack --mode production",
-    "test": "jest",
-    "lint": "eslint src/",
+    "dev": "wxt",
+    "dev:firefox": "wxt -b firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip -b firefox",
+    "test": "vitest",
+    "test:e2e": "playwright test",
+    "lint": "eslint .",
     "type-check": "tsc --noEmit"
   },
-  "devDependencies": {
+  "dependencies": {
+    "expr-eval": "^2.0.2",
     "@anthropic-ai/sdk": "^0.24.0",
-    "@types/chrome": "^0.0.260",
-    "@typescript-eslint/eslint-plugin": "^7.0.0",
-    "@typescript-eslint/parser": "^7.0.0",
-    "copy-webpack-plugin": "^12.0.0",
-    "css-loader": "^6.10.0",
-    "eslint": "^8.57.0",
-    "jest": "^29.7.0",
-    "openai": "^4.28.0",
-    "style-loader": "^3.3.4",
-    "ts-jest": "^29.1.0",
-    "ts-loader": "^9.5.0",
+    "openai": "^4.28.0"
+  },
+  "devDependencies": {
+    "wxt": "^0.19.0",
+    "@wxt-dev/module-vue": "^1.0.0",
     "typescript": "^5.4.0",
-    "webpack": "^5.90.0",
-    "webpack-cli": "^5.1.0"
+    "vue": "^3.4.0",
+    "vitest": "^1.3.0",
+    "@playwright/test": "^1.42.0",
+    "eslint": "^8.57.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0"
   }
 }
 ```
 
 ### TypeScript Migration Strategy
 
-#### Phase 2.1: Setup Infrastructure
-1. Initialize TypeScript configuration
-2. Set up Webpack for bundling
-3. Configure ESLint with TypeScript rules
-4. Set up Jest for testing
+#### Phase 2.1: Setup Infrastructure (Now Using WXT)
+1. Initialize WXT project with TypeScript
+2. Configure automatic manifest generation
+3. Set up Vitest for unit testing
+4. Configure Playwright for E2E testing
 
 #### Phase 2.2: Define Core Types
 ```typescript
@@ -519,7 +768,7 @@ export interface TestSuite {
 }
 
 export interface Locator {
-  type: 'xpath' | 'css' | 'id' | 'name' | 'linkText';
+  type: 'xpath' | 'css' | 'id' | 'name' | 'linkText' | 'role' | 'testId';
   value: string;
   confidence?: number;  // For AI-generated locators
 }
