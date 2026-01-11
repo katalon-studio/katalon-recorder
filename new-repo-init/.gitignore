@@ -1,0 +1,55 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+.output/
+*.tsbuildinfo
+
+# WXT
+.wxt/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Extension packages
+*.zip
+*.crx
+*.xpi
+
+# Native bridge
+packages/native-bridge/src-tauri/target/
+
+# Secrets (never commit)
+**/secrets/
+**/*.pem
+**/*.key

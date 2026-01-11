@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "@katalon/core": ["packages/core/src"],
+      "@katalon/core/*": ["packages/core/src/*"],
+      "@katalon/formatters": ["packages/formatters/src"],
+      "@katalon/formatters/*": ["packages/formatters/src/*"],
+      "@katalon/ai": ["packages/ai/src"],
+      "@katalon/ai/*": ["packages/ai/src/*"],
+      "@katalon/mcp-server": ["packages/mcp-server/src"],
+      "@katalon/mcp-server/*": ["packages/mcp-server/src/*"]
+    }
+  },
+  "exclude": ["node_modules", "**/dist", "**/.output"]
+}

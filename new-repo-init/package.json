@@ -1,0 +1,55 @@
+{
+  "name": "katalon-recorder-next",
+  "version": "7.0.0",
+  "private": true,
+  "description": "AI-powered browser extension for test automation",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/katalon-studio/katalon-recorder-next.git"
+  },
+  "license": "Apache-2.0",
+  "author": "Katalon <info@katalon.com>",
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --filter @katalon/extension dev",
+    "dev:firefox": "BROWSER=firefox pnpm --filter @katalon/extension dev",
+    "build": "pnpm -r build",
+    "build:extension": "pnpm --filter @katalon/extension build",
+    "test": "pnpm -r test",
+    "test:watch": "pnpm -r --parallel test:watch",
+    "test:e2e": "pnpm --filter @katalon/extension test:e2e",
+    "lint": "eslint 'packages/*/src/**/*.{ts,vue}'",
+    "lint:fix": "eslint 'packages/*/src/**/*.{ts,vue}' --fix",
+    "format": "prettier --write 'packages/*/src/**/*.{ts,vue,json}'",
+    "type-check": "pnpm -r type-check",
+    "zip": "pnpm --filter @katalon/extension zip",
+    "zip:firefox": "BROWSER=firefox pnpm --filter @katalon/extension zip",
+    "clean": "pnpm -r clean && rm -rf node_modules",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-vue": "^9.22.0",
+    "husky": "^9.0.0",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.2.0",
+    "typescript": "^5.4.0"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "lint-staged": {
+    "*.{ts,vue}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
+  }
+}
